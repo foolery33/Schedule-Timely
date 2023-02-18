@@ -16,4 +16,6 @@ extension Color {
     public static let dayOfMonthColor: Color = Color(UIColor(red: 33/255, green: 37/255, blue: 37/255, alpha: 1.0))
     public static let backgroundCurrentSubjectColor: Color = Color(UIColor(red: 77/255, green: 197/255, blue: 145/255, alpha: 1.0))
     public static let backgroundNotCurrentSubjectColor: Color = Color(UIColor(red: 246/255, green: 246/255, blue: 245/255, alpha: 1.0))
+    public static let grayColor: Color = Color(UIColor(red: 137/255, green: 143/255, blue: 166/255, alpha: 1.0))
+    public static let darkGreenColor: Color = Color(UIColor(red: 0/255, green: 114/255, blue: 109/255, alpha: 1.0))
 }

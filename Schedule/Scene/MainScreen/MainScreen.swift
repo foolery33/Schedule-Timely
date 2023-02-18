@@ -55,7 +55,9 @@ struct MainScreen: View {
                         HStack(spacing: 0) {
                             Text("Time")
                                 .frame(width: 50, alignment: .leading)
+                                .font(.custom("Poppins-Medium", size: 14))
                             Text("Course")
+                                .font(.custom("Poppins-Medium", size: 14))
                             Spacer()
                             Image(systemName: "arrow.turn.right.down")
                                 .imageScale(.medium)
@@ -67,9 +69,7 @@ struct MainScreen: View {
                                 }
                         }
                         .padding([.leading, .trailing], 20)
-                        .font(.custom("Poppins-Medium", size: 15))
                         .foregroundColor(.softGray)
-                        .font(.custom("Poppins-Medium", size: 15))
                         Spacer().frame(height: 15)
                         ScrollView(showsIndicators: false) {
                             LazyVStack(spacing: 16) {

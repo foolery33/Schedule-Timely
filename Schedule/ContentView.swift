@@ -10,7 +10,15 @@ import SwiftUI
 struct ContentView: View {
     
     var body: some View {
-        MainScreen()
+        LoginScreen(emailText: "", passwordText: "", rememberPassword: true)
+//        NavigationView {
+//            NavigationLink(destination: Text("lalala")) {
+//                Text("lalala")
+//            }
+//            .onTapGesture {
+//                print("lalala")
+//            }
+//        }
     }
 }
 

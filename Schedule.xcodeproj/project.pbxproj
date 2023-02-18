@@ -28,6 +28,10 @@
 		846F8F49299E569800FB3F93 /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 846F8F2F299E547300FB3F93 /* Poppins-ExtraBold.ttf */; };
 		846F8F4B299E854800FB3F93 /* AboutSubjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846F8F4A299E854800FB3F93 /* AboutSubjectData.swift */; };
 		84908730299CF97200D82210 /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8490872F299CF97200D82210 /* DateView.swift */; };
+		84C61B2E29A0EE200024E91C /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C61B2D29A0EE200024E91C /* LoginScreen.swift */; };
+		84C61B3129A0F1150024E91C /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C61B3029A0F1150024E91C /* TextFieldView.swift */; };
+		84C61B3329A1202A0024E91C /* FilledButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C61B3229A1202A0024E91C /* FilledButton.swift */; };
+		84C61B3529A126510024E91C /* UnfilledButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C61B3429A126510024E91C /* UnfilledButton.swift */; };
 		84CC1C06299BE5210075EAFC /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CC1C05299BE5210075EAFC /* MainScreen.swift */; };
 		84CC1C09299BE69C0075EAFC /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CC1C08299BE69C0075EAFC /* Colors.swift */; };
 		84E72C2D299A86D40060B9D7 /* ScheduleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E72C2C299A86D40060B9D7 /* ScheduleApp.swift */; };
@@ -79,6 +83,10 @@
 		846F8F37299E561300FB3F93 /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-BlackItalic.ttf"; path = "../../../../Downloads/Poppins/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
 		846F8F4A299E854800FB3F93 /* AboutSubjectData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSubjectData.swift; sourceTree = "<group>"; };
 		8490872F299CF97200D82210 /* DateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
+		84C61B2D29A0EE200024E91C /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
+		84C61B3029A0F1150024E91C /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
+		84C61B3229A1202A0024E91C /* FilledButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilledButton.swift; sourceTree = "<group>"; };
+		84C61B3429A126510024E91C /* UnfilledButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnfilledButton.swift; sourceTree = "<group>"; };
 		84CC1C05299BE5210075EAFC /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
 		84CC1C08299BE69C0075EAFC /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		84E72C29299A86D40060B9D7 /* Schedule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schedule.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,9 +161,29 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		84C61B2C29A0EDE40024E91C /* LoginScreen */ = {
+			isa = PBXGroup;
+			children = (
+				84C61B2F29A0F0FD0024E91C /* Views */,
+				84C61B2D29A0EE200024E91C /* LoginScreen.swift */,
+			);
+			path = LoginScreen;
+			sourceTree = "<group>";
+		};
+		84C61B2F29A0F0FD0024E91C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				84C61B3029A0F1150024E91C /* TextFieldView.swift */,
+				84C61B3229A1202A0024E91C /* FilledButton.swift */,
+				84C61B3429A126510024E91C /* UnfilledButton.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		84CC1C03299BE5080075EAFC /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				84C61B2C29A0EDE40024E91C /* LoginScreen */,
 				8490872E299CF92900D82210 /* Views */,
 				84CC1C04299BE5130075EAFC /* MainScreen */,
 			);
@@ -387,12 +415,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				84CC1C06299BE5210075EAFC /* MainScreen.swift in Sources */,
+				84C61B3329A1202A0024E91C /* FilledButton.swift in Sources */,
 				846F8F4B299E854800FB3F93 /* AboutSubjectData.swift in Sources */,
 				84908730299CF97200D82210 /* DateView.swift in Sources */,
 				84CC1C09299BE69C0075EAFC /* Colors.swift in Sources */,
 				846F8F21299E086D00FB3F93 /* SubjectView.swift in Sources */,
+				84C61B2E29A0EE200024E91C /* LoginScreen.swift in Sources */,
 				84E72C2F299A86D40060B9D7 /* ContentView.swift in Sources */,
 				84E72C2D299A86D40060B9D7 /* ScheduleApp.swift in Sources */,
+				84C61B3129A0F1150024E91C /* TextFieldView.swift in Sources */,
+				84C61B3529A126510024E91C /* UnfilledButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
