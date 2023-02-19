@@ -10,7 +10,9 @@ import SwiftUI
 struct ContentView: View {
     
     var body: some View {
-        LoginScreen(emailText: "", passwordText: "", rememberPassword: true)
+        NavigationStack {
+            GroupPickerScreen()
+        }
 //        NavigationView {
 //            NavigationLink(destination: Text("lalala")) {
 //                Text("lalala")
