@@ -1,5 +1,5 @@
 //
-//  GroupPickerScreen.swift
+//  TeacherPickerScreen.swift
 //  Schedule
 //
 //  Created by admin on 19.02.2023.
@@ -7,30 +7,29 @@
 
 import SwiftUI
 
-struct GroupPickerScreen: View {
-
+struct TeacherPickerScreen: View {
     var previousScreen: String = "s"
-    @State var groupText: String = ""
-    var groups: [String] = [
-        "972101",
-        "132105",
-        "972003",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101"
+    @State var teacherText: String = ""
+    var teachers: [String] = [
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич",
+        "Усов Никита Евгеньевич"
     ]
     
     var body: some View {
@@ -52,13 +51,13 @@ struct GroupPickerScreen: View {
                             .imageScale(.large)
                     }
                 }
-                Text("Groups")
+                Text("Teachers")
                     .frame(maxWidth: .infinity)
                     .font(.custom("Poppins-Bold", size: 17))
             }
             .foregroundColor(.dayOfMonthColor)
             Spacer().frame(height: 30)
-            SearchingTextField(text: $groupText, header: "Find your group", placeholderText: "Group number")
+            SearchingTextField(text: $teacherText, header: "Find a teacher by name", placeholderText: "Teacher name")
                 .padding([.leading, .trailing], 20)
             
             Spacer().frame(height: 20)
@@ -66,7 +65,7 @@ struct GroupPickerScreen: View {
             VStack {
                 ScrollView(showsIndicators: false) {
                     Spacer().frame(height: 10)
-                    ForEach(groupText.isEmpty ? groups : groups.filter {$0.contains(groupText)}, id: \.self) { group in
+                    ForEach(teacherText.isEmpty ? teachers : teachers.filter {$0.contains(teacherText)}, id: \.self) { group in
                         VStack(spacing: 0) {
                             HStack {
                                 Text(group)
@@ -98,8 +97,8 @@ struct GroupPickerScreen: View {
     }
 }
 
-struct GroupPickerScreen_Previews: PreviewProvider {
+struct TeacherPickerScreen_Previews: PreviewProvider {
     static var previews: some View {
-        GroupPickerScreen()
+        TeacherPickerScreen()
     }
 }

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		840A445429A1E86000C519DD /* GroupPickerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840A445329A1E86000C519DD /* GroupPickerScreen.swift */; };
 		840A445729A2025D00C519DD /* SearchingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840A445629A2025D00C519DD /* SearchingTextField.swift */; };
+		840A445A29A2471800C519DD /* TeacherPickerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840A445929A2471800C519DD /* TeacherPickerScreen.swift */; };
 		846F8F21299E086D00FB3F93 /* SubjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846F8F20299E086D00FB3F93 /* SubjectView.swift */; };
 		846F8F38299E569300FB3F93 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 846F8F23299E547300FB3F93 /* Poppins-Black.ttf */; };
 		846F8F39299E569800FB3F93 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 846F8F24299E547300FB3F93 /* Poppins-Medium.ttf */; };
@@ -66,6 +67,7 @@
 /* Begin PBXFileReference section */
 		840A445329A1E86000C519DD /* GroupPickerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupPickerScreen.swift; sourceTree = "<group>"; };
 		840A445629A2025D00C519DD /* SearchingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchingTextField.swift; sourceTree = "<group>"; };
+		840A445929A2471800C519DD /* TeacherPickerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherPickerScreen.swift; sourceTree = "<group>"; };
 		846F8F20299E086D00FB3F93 /* SubjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectView.swift; sourceTree = "<group>"; };
 		846F8F23299E547300FB3F93 /* Poppins-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-Black.ttf"; path = "../../../../Downloads/Poppins/Poppins-Black.ttf"; sourceTree = "<group>"; };
 		846F8F24299E547300FB3F93 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-Medium.ttf"; path = "../../../../Downloads/Poppins/Poppins-Medium.ttf"; sourceTree = "<group>"; };
@@ -149,6 +151,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		840A445829A2470000C519DD /* TeacherPickerScreen */ = {
+			isa = PBXGroup;
+			children = (
+				840A445929A2471800C519DD /* TeacherPickerScreen.swift */,
+			);
+			path = TeacherPickerScreen;
+			sourceTree = "<group>";
+		};
 		846F8F22299E543700FB3F93 /* Project Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,6 +224,7 @@
 		84CC1C03299BE5080075EAFC /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				840A445829A2470000C519DD /* TeacherPickerScreen */,
 				840A445229A1E84B00C519DD /* GroupPickerScreen */,
 				84C61B3729A138920024E91C /* RegisterScreen */,
 				84C61B2C29A0EDE40024E91C /* LoginScreen */,
@@ -452,6 +463,7 @@
 				840A445429A1E86000C519DD /* GroupPickerScreen.swift in Sources */,
 				84C61B3329A1202A0024E91C /* FilledButton.swift in Sources */,
 				840A445729A2025D00C519DD /* SearchingTextField.swift in Sources */,
+				840A445A29A2471800C519DD /* TeacherPickerScreen.swift in Sources */,
 				846F8F4B299E854800FB3F93 /* AboutSubjectData.swift in Sources */,
 				84908730299CF97200D82210 /* DateView.swift in Sources */,
 				84CC1C09299BE69C0075EAFC /* Colors.swift in Sources */,
