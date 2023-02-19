@@ -77,10 +77,13 @@ struct GroupPickerScreen: View {
                             HStack {
                                 Text(group)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.leading, 20)
                                     .font(.custom("Poppins-Regular", size: 16))
                                     .foregroundColor(.dayOfMonthColor)
+                                Spacer()
+                                Image(systemName: "chevron.forward")
+                                
                             }
+                            .padding([.leading, .trailing], 20)
                             .onTapGesture {
                                 print(groupText.isEmpty)
                             }
