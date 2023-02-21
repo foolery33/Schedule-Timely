@@ -12,6 +12,9 @@ struct RegisterScreen: View {
     @State var passwordText: String
     @State var confirmPassword: String
     @State var rememberPassword: Bool
+    
+    @Environment(\.dismiss) var dismiss
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Create Account")
@@ -42,9 +45,13 @@ struct RegisterScreen: View {
                     }
                     Spacer().frame(height: 30)
                     HStack(spacing: 0) {
-                        UnfilledButton(text: "Student")
+                        NavigationLink(destination: GroupPickerScreen().navigationBarBackButtonHidden(true)) {
+                            UnfilledButton(text: "Student")
+                        }
                         Spacer()
-                        UnfilledButton(text: "Teacher")
+                        NavigationLink(destination: TeacherPickerScreen().navigationBarBackButtonHidden(true)) {
+                            UnfilledButton(text: "Teacher")
+                        }
                     }
                 }
                 Spacer().frame(height: 40)
@@ -56,8 +63,12 @@ struct RegisterScreen: View {
             HStack(alignment: .center, spacing: 0) {
                 Text("Already have an account? ")
                     .foregroundColor(.grayColor)
+                
                 Text("Login")
                     .foregroundColor(.darkGreenColor)
+                    .onTapGesture {
+                        dismiss()
+                    }
             }
             .frame(maxWidth: .infinity)
             .font(.custom("Poppins-Regular", size: 14))

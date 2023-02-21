@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TeacherPickerScreen: View {
-    var previousScreen: String = "s"
+    @Environment(\.dismiss) var dismiss
     @State var teacherText: String = ""
     var teachers: [String] = [
         "Усов Никита Евгеньевич",
@@ -35,22 +35,13 @@ struct TeacherPickerScreen: View {
     var body: some View {
         VStack(spacing: 0) {
             ZStack(alignment: .leading) {
-                if(previousScreen == "main") {
-                    NavigationLink(destination: MainScreen().navigationBarBackButtonHidden(true)) {
-                        Image(systemName: "chevron.backward")
-                            .padding(.leading, 10)
-                            .font(.system(size: 16, weight: .medium))
-                            .imageScale(.large)
+                Image(systemName: "chevron.backward")
+                    .padding(.leading, 10)
+                    .font(.system(size: 16, weight: .medium))
+                    .imageScale(.large)
+                    .onTapGesture {
+                        dismiss()
                     }
-                }
-                else {
-                    NavigationLink(destination: LoginScreen(emailText: "", passwordText: "", rememberPassword: true).navigationBarBackButtonHidden(true)) {
-                        Image(systemName: "chevron.backward")
-                            .padding(.leading, 10)
-                            .font(.system(size: 16, weight: .medium))
-                            .imageScale(.large)
-                    }
-                }
                 Text("Teachers")
                     .frame(maxWidth: .infinity)
                     .font(.custom("Poppins-Bold", size: 17))
@@ -66,22 +57,24 @@ struct TeacherPickerScreen: View {
                 ScrollView(showsIndicators: false) {
                     Spacer().frame(height: 10)
                     ForEach(teacherText.isEmpty ? teachers : teachers.filter {$0.contains(teacherText)}, id: \.self) { group in
-                        VStack(spacing: 0) {
-                            HStack {
-                                Text(group)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding([.top, .bottom], 12)
-                                    .font(.custom("Poppins-Regular", size: 16))
-                                    .foregroundColor(.dayOfMonthColor)
-                                Spacer()
-                                Image(systemName: "chevron.forward")
-                                
-                            }
-//                                .frame(height: 30)
-                            .padding([.leading, .trailing], 20)
-                            Rectangle().fill(Color.softGray).frame(height: 1)
-                                .padding(.leading, 20)
+                        NavigationLink(destination: MainScreen().navigationBarBackButtonHidden(true)) {
+                            VStack(spacing: 0) {
+                                HStack {
+                                    Text(group)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .padding([.top, .bottom], 12)
+                                        .font(.custom("Poppins-Regular", size: 16))
+                                        .foregroundColor(.dayOfMonthColor)
+                                    Spacer()
+                                    Image(systemName: "chevron.forward")
+                                    
+                                }
+    //                                .frame(height: 30)
+                                .padding([.leading, .trailing], 20)
+                                Rectangle().fill(Color.softGray).frame(height: 1)
+                                    .padding(.leading, 20)
 
+                            }
                         }
                         
                     }
@@ -97,8 +90,8 @@ struct TeacherPickerScreen: View {
     }
 }
 
-struct TeacherPickerScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        TeacherPickerScreen()
-    }
-}
+//struct TeacherPickerScreen_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TeacherPickerScreen()
+//    }
+//}

@@ -10,6 +10,8 @@
 		840A445429A1E86000C519DD /* GroupPickerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840A445329A1E86000C519DD /* GroupPickerScreen.swift */; };
 		840A445729A2025D00C519DD /* SearchingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840A445629A2025D00C519DD /* SearchingTextField.swift */; };
 		840A445A29A2471800C519DD /* TeacherPickerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840A445929A2471800C519DD /* TeacherPickerScreen.swift */; };
+		840A445D29A270FC00C519DD /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840A445C29A270FC00C519DD /* ProfileScreen.swift */; };
+		840A446029A274B700C519DD /* SwiftUICurvedRectangleShape in Frameworks */ = {isa = PBXBuildFile; productRef = 840A445F29A274B700C519DD /* SwiftUICurvedRectangleShape */; };
 		846F8F21299E086D00FB3F93 /* SubjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846F8F20299E086D00FB3F93 /* SubjectView.swift */; };
 		846F8F38299E569300FB3F93 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 846F8F23299E547300FB3F93 /* Poppins-Black.ttf */; };
 		846F8F39299E569800FB3F93 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 846F8F24299E547300FB3F93 /* Poppins-Medium.ttf */; };
@@ -30,7 +32,10 @@
 		846F8F48299E569800FB3F93 /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 846F8F2E299E547300FB3F93 /* Poppins-SemiBoldItalic.ttf */; };
 		846F8F49299E569800FB3F93 /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 846F8F2F299E547300FB3F93 /* Poppins-ExtraBold.ttf */; };
 		846F8F4B299E854800FB3F93 /* AboutSubjectData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846F8F4A299E854800FB3F93 /* AboutSubjectData.swift */; };
+		8470825529A349D3000EC745 /* EditAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8470825429A349D3000EC745 /* EditAvatarView.swift */; };
+		8470825729A36243000EC745 /* ProfileSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8470825629A36243000EC745 /* ProfileSection.swift */; };
 		84908730299CF97200D82210 /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8490872F299CF97200D82210 /* DateView.swift */; };
+		84BAEE3529A4BB2B000D7C5C /* ScheduleDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAEE3429A4BB2B000D7C5C /* ScheduleDayView.swift */; };
 		84C61B2E29A0EE200024E91C /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C61B2D29A0EE200024E91C /* LoginScreen.swift */; };
 		84C61B3129A0F1150024E91C /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C61B3029A0F1150024E91C /* TextFieldView.swift */; };
 		84C61B3329A1202A0024E91C /* FilledButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C61B3229A1202A0024E91C /* FilledButton.swift */; };
@@ -68,6 +73,7 @@
 		840A445329A1E86000C519DD /* GroupPickerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupPickerScreen.swift; sourceTree = "<group>"; };
 		840A445629A2025D00C519DD /* SearchingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchingTextField.swift; sourceTree = "<group>"; };
 		840A445929A2471800C519DD /* TeacherPickerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherPickerScreen.swift; sourceTree = "<group>"; };
+		840A445C29A270FC00C519DD /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
 		846F8F20299E086D00FB3F93 /* SubjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectView.swift; sourceTree = "<group>"; };
 		846F8F23299E547300FB3F93 /* Poppins-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-Black.ttf"; path = "../../../../Downloads/Poppins/Poppins-Black.ttf"; sourceTree = "<group>"; };
 		846F8F24299E547300FB3F93 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-Medium.ttf"; path = "../../../../Downloads/Poppins/Poppins-Medium.ttf"; sourceTree = "<group>"; };
@@ -89,7 +95,10 @@
 		846F8F35299E54CD00FB3F93 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		846F8F37299E561300FB3F93 /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-BlackItalic.ttf"; path = "../../../../Downloads/Poppins/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
 		846F8F4A299E854800FB3F93 /* AboutSubjectData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSubjectData.swift; sourceTree = "<group>"; };
+		8470825429A349D3000EC745 /* EditAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAvatarView.swift; sourceTree = "<group>"; };
+		8470825629A36243000EC745 /* ProfileSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSection.swift; sourceTree = "<group>"; };
 		8490872F299CF97200D82210 /* DateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
+		84BAEE3429A4BB2B000D7C5C /* ScheduleDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDayView.swift; sourceTree = "<group>"; };
 		84C61B2D29A0EE200024E91C /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		84C61B3029A0F1150024E91C /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
 		84C61B3229A1202A0024E91C /* FilledButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilledButton.swift; sourceTree = "<group>"; };
@@ -114,6 +123,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				840A446029A274B700C519DD /* SwiftUICurvedRectangleShape in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,6 +169,15 @@
 			path = TeacherPickerScreen;
 			sourceTree = "<group>";
 		};
+		840A445B29A270DE00C519DD /* ProfileScreen */ = {
+			isa = PBXGroup;
+			children = (
+				8470825329A349BC000EC745 /* Views */,
+				840A445C29A270FC00C519DD /* ProfileScreen.swift */,
+			);
+			path = ProfileScreen;
+			sourceTree = "<group>";
+		};
 		846F8F22299E543700FB3F93 /* Project Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -184,12 +203,29 @@
 			path = "Project Fonts";
 			sourceTree = "<group>";
 		};
+		8470825329A349BC000EC745 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8470825429A349D3000EC745 /* EditAvatarView.swift */,
+				8470825629A36243000EC745 /* ProfileSection.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		8490872E299CF92900D82210 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				8490872F299CF97200D82210 /* DateView.swift */,
 				846F8F20299E086D00FB3F93 /* SubjectView.swift */,
 				846F8F4A299E854800FB3F93 /* AboutSubjectData.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		84BAEE3329A4BB1D000D7C5C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				84BAEE3429A4BB2B000D7C5C /* ScheduleDayView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -224,6 +260,7 @@
 		84CC1C03299BE5080075EAFC /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				840A445B29A270DE00C519DD /* ProfileScreen */,
 				840A445829A2470000C519DD /* TeacherPickerScreen */,
 				840A445229A1E84B00C519DD /* GroupPickerScreen */,
 				84C61B3729A138920024E91C /* RegisterScreen */,
@@ -237,6 +274,7 @@
 		84CC1C04299BE5130075EAFC /* MainScreen */ = {
 			isa = PBXGroup;
 			children = (
+				84BAEE3329A4BB1D000D7C5C /* Views */,
 				84CC1C05299BE5210075EAFC /* MainScreen.swift */,
 			);
 			path = MainScreen;
@@ -326,6 +364,9 @@
 			dependencies = (
 			);
 			name = Schedule;
+			packageProductDependencies = (
+				840A445F29A274B700C519DD /* SwiftUICurvedRectangleShape */,
+			);
 			productName = Schedule;
 			productReference = 84E72C29299A86D40060B9D7 /* Schedule.app */;
 			productType = "com.apple.product-type.application";
@@ -398,6 +439,9 @@
 				Base,
 			);
 			mainGroup = 84E72C20299A86D40060B9D7;
+			packageReferences = (
+				840A445E29A274B700C519DD /* XCRemoteSwiftPackageReference "SwiftUICurvedRectangleShape" */,
+			);
 			productRefGroup = 84E72C2A299A86D40060B9D7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -461,6 +505,7 @@
 				84C61B3929A138A60024E91C /* RegisterScreen.swift in Sources */,
 				84CC1C06299BE5210075EAFC /* MainScreen.swift in Sources */,
 				840A445429A1E86000C519DD /* GroupPickerScreen.swift in Sources */,
+				8470825729A36243000EC745 /* ProfileSection.swift in Sources */,
 				84C61B3329A1202A0024E91C /* FilledButton.swift in Sources */,
 				840A445729A2025D00C519DD /* SearchingTextField.swift in Sources */,
 				840A445A29A2471800C519DD /* TeacherPickerScreen.swift in Sources */,
@@ -468,11 +513,14 @@
 				84908730299CF97200D82210 /* DateView.swift in Sources */,
 				84CC1C09299BE69C0075EAFC /* Colors.swift in Sources */,
 				846F8F21299E086D00FB3F93 /* SubjectView.swift in Sources */,
+				8470825529A349D3000EC745 /* EditAvatarView.swift in Sources */,
 				84C61B2E29A0EE200024E91C /* LoginScreen.swift in Sources */,
 				84E72C2F299A86D40060B9D7 /* ContentView.swift in Sources */,
 				84E72C2D299A86D40060B9D7 /* ScheduleApp.swift in Sources */,
 				84C61B3129A0F1150024E91C /* TextFieldView.swift in Sources */,
 				84C61B3529A126510024E91C /* UnfilledButton.swift in Sources */,
+				84BAEE3529A4BB2B000D7C5C /* ScheduleDayView.swift in Sources */,
+				840A445D29A270FC00C519DD /* ProfileScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -793,6 +841,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		840A445E29A274B700C519DD /* XCRemoteSwiftPackageReference "SwiftUICurvedRectangleShape" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CypherPoet/SwiftUICurvedRectangleShape";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		840A445F29A274B700C519DD /* SwiftUICurvedRectangleShape */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 840A445E29A274B700C519DD /* XCRemoteSwiftPackageReference "SwiftUICurvedRectangleShape" */;
+			productName = SwiftUICurvedRectangleShape;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 84E72C21299A86D40060B9D7 /* Project object */;
 }

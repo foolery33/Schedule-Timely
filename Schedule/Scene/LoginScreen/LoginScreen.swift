@@ -45,7 +45,9 @@ struct LoginScreen: View {
                 Spacer().frame(height: 40)
             }
             Group {
-                FilledButton(text: "Login")
+                NavigationLink(destination: MainScreen().navigationBarBackButtonHidden(true)) {
+                    FilledButton(text: "Login")
+                }
                 Spacer().frame(height: 30)
                 HStack {
                     Rectangle().fill(Color.softGray).frame(height: 1)
@@ -59,17 +61,23 @@ struct LoginScreen: View {
                 }
                 Spacer().frame(height: 30)
                 HStack(spacing: 0) {
-                    UnfilledButton(text: "Student")
+                    NavigationLink(destination: GroupPickerScreen().navigationBarBackButtonHidden(true)) {
+                        UnfilledButton(text: "Student")
+                    }
                     Spacer()
-                    UnfilledButton(text: "Teacher")
+                    NavigationLink(destination: TeacherPickerScreen().navigationBarBackButtonHidden(true)) {
+                        UnfilledButton(text: "Teacher")
+                    }
                 }
             }
             Spacer()
             HStack(alignment: .center, spacing: 0) {
                 Text("Don't have an account? ")
                     .foregroundColor(.grayColor)
-                Text("Sign Up")
-                    .foregroundColor(.darkGreenColor)
+                NavigationLink(destination: RegisterScreen(emailText: "", passwordText: "", confirmPassword: "", rememberPassword: true).navigationBarBackButtonHidden(true)) {
+                    Text("Sign Up")
+                        .foregroundColor(.darkGreenColor)
+                }
             }
             .frame(maxWidth: .infinity)
             .font(.custom("Poppins-Regular", size: 14))
