@@ -10,6 +10,7 @@ import SwiftUI
 struct TeacherPickerScreen: View {
     @Environment(\.dismiss) var dismiss
     @State var teacherText: String = ""
+    var goToNextScreen: Bool
     var teachers: [String] = [
         "Усов Никита Евгеньевич",
         "Усов Никита Евгеньевич",
@@ -58,22 +59,13 @@ struct TeacherPickerScreen: View {
                     Spacer().frame(height: 10)
                     ForEach(teacherText.isEmpty ? teachers : teachers.filter {$0.contains(teacherText)}, id: \.self) { group in
                         NavigationLink(destination: MainScreen().navigationBarBackButtonHidden(true)) {
-                            VStack(spacing: 0) {
-                                HStack {
-                                    Text(group)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .padding([.top, .bottom], 12)
-                                        .font(.custom("Poppins-Regular", size: 16))
-                                        .foregroundColor(.dayOfMonthColor)
-                                    Spacer()
-                                    Image(systemName: "chevron.forward")
-                                    
+                            if(goToNextScreen) {
+                                NavigationLink(destination: MainScreen().navigationBarBackButtonHidden()) {
+                                    ListRow(text: group)
                                 }
-    //                                .frame(height: 30)
-                                .padding([.leading, .trailing], 20)
-                                Rectangle().fill(Color.softGray).frame(height: 1)
-                                    .padding(.leading, 20)
-
+                            }
+                            else {
+                                ListRow(text: group)
                             }
                         }
                         

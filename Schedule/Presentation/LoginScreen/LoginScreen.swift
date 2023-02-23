@@ -61,11 +61,11 @@ struct LoginScreen: View {
                 }
                 Spacer().frame(height: 30)
                 HStack(spacing: 0) {
-                    NavigationLink(destination: GroupPickerScreen().navigationBarBackButtonHidden(true)) {
+                    NavigationLink(destination: GroupPickerScreen(goToNextScreen: true).navigationBarBackButtonHidden(true)) {
                         UnfilledButton(text: "Student")
                     }
                     Spacer()
-                    NavigationLink(destination: TeacherPickerScreen().navigationBarBackButtonHidden(true)) {
+                    NavigationLink(destination: TeacherPickerScreen(goToNextScreen: true).navigationBarBackButtonHidden(true)) {
                         UnfilledButton(text: "Teacher")
                     }
                 }

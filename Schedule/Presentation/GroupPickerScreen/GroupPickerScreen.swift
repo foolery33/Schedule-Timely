@@ -10,6 +10,7 @@ import SwiftUI
 struct GroupPickerScreen: View {
     @Environment(\.dismiss) var dismiss
     @State var groupText: String = ""
+    var goToNextScreen: Bool
     var groups: [String] = [
         "972101",
         "132105",
@@ -57,24 +58,13 @@ struct GroupPickerScreen: View {
                 ScrollView(showsIndicators: false) {
                     Spacer().frame(height: 10)
                     ForEach(groupText.isEmpty ? groups : groups.filter {$0.contains(groupText)}, id: \.self) { group in
-                        NavigationLink(destination: MainScreen().navigationBarBackButtonHidden()) {
-                            VStack(spacing: 0) {
-                                HStack {
-                                    Text(group)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .padding([.top, .bottom], 12)
-                                        .font(.custom("Poppins-Regular", size: 16))
-                                        .foregroundColor(.dayOfMonthColor)
-                                    Spacer()
-                                    Image(systemName: "chevron.forward")
-                                    
-                                }
-    //                                .frame(height: 30)
-                                .padding([.leading, .trailing], 20)
-                                Rectangle().fill(Color.softGray).frame(height: 1)
-                                    .padding(.leading, 20)
-
+                        if(goToNextScreen) {
+                            NavigationLink(destination: MainScreen().navigationBarBackButtonHidden()) {
+                                ListRow(text: group)
                             }
+                        }
+                        else {
+                            ListRow(text: group)
                         }
                         
                     }
@@ -90,8 +80,8 @@ struct GroupPickerScreen: View {
     }
 }
 
-//struct GroupPickerScreen_Previews: PreviewProvider {
-//    static var previews: some View {
-//        GroupPickerScreen()
-//    }
-//}
+struct GroupPickerScreen_Previews: PreviewProvider {
+    static var previews: some View {
+        GroupPickerScreen(goToNextScreen: false)
+    }
+}

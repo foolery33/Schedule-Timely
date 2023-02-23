@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RegisterScreen: View {
+//    @State var fullNameText: String
     @State var emailText: String
     @State var passwordText: String
     @State var confirmPassword: String
@@ -25,13 +26,17 @@ struct RegisterScreen: View {
                 .font(.custom("Poppins-regular", size: 14))
                 .foregroundColor(.grayColor)
             Group {
-                Spacer().frame(height: 40)
-                TextFieldView(header: "Email Address", text: emailText, placeholderText: "Enter your email", isSecuredField: false)
-                Spacer().frame(height: 27)
-                TextFieldView(header: "Password", text: passwordText, placeholderText: "Enter your password", isSecuredField: true)
-                Spacer().frame(height: 27)
-                TextFieldView(header: "Confirm Password", text: passwordText, placeholderText: "Confirm your password", isSecuredField: true)
-                Spacer().frame(height: 27)
+                Group {
+                    Spacer().frame(height: 40)
+//                    TextFieldView(header: "Full Name", text: emailText, placeholderText: "Enter your full name", isSecuredField: false)
+//                    Spacer().frame(height: 27)
+                    TextFieldView(header: "Email Address", text: emailText, placeholderText: "Enter your email", isSecuredField: false)
+                    Spacer().frame(height: 27)
+                    TextFieldView(header: "Password", text: passwordText, placeholderText: "Enter your password", isSecuredField: true)
+                    Spacer().frame(height: 27)
+                    TextFieldView(header: "Confirm Password", text: passwordText, placeholderText: "Confirm your password", isSecuredField: true)
+                    Spacer().frame(height: 27)
+                }
                 Group {
                     HStack {
                         Rectangle().fill(Color.softGray).frame(height: 1)
@@ -45,11 +50,11 @@ struct RegisterScreen: View {
                     }
                     Spacer().frame(height: 30)
                     HStack(spacing: 0) {
-                        NavigationLink(destination: GroupPickerScreen().navigationBarBackButtonHidden(true)) {
+                        NavigationLink(destination: GroupPickerScreen(goToNextScreen: false).navigationBarBackButtonHidden(true)) {
                             UnfilledButton(text: "Student")
                         }
                         Spacer()
-                        NavigationLink(destination: TeacherPickerScreen().navigationBarBackButtonHidden(true)) {
+                        NavigationLink(destination: TeacherPickerScreen(goToNextScreen: false).navigationBarBackButtonHidden(true)) {
                             UnfilledButton(text: "Teacher")
                         }
                     }
