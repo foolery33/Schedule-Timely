@@ -9,6 +9,7 @@ import SwiftUI
 
 struct EditProfileScreen: View {
     
+    @EnvironmentObject var viewModel: GeneralViewModel
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -28,8 +29,7 @@ struct EditProfileScreen: View {
             .padding([.leading, .trailing], -20)
             .foregroundColor(.dayOfMonthColor)
             Spacer().frame(height: 0)
-//            LabledTextFieldView(labelText: "Full name", placeholderText: "")
-            LabledTextFieldView(labelText: "E-mail", placeholderText: "")
+            LabledTextFieldView(writtenText: $viewModel.editProfileScreenViewModel.emailText, labelText: "E-mail", placeholderText: "")
             HStack(spacing: 0) {
                 NavigationLink(destination: GroupPickerScreen(goToNextScreen: false).navigationBarBackButtonHidden(true)) {
                     UnfilledButton(text: "Student")
@@ -42,7 +42,10 @@ struct EditProfileScreen: View {
                     print("clicked")
                 }
             }
-            FilledButton(text: "Submit")
+            FilledButton(text: "Submit") {
+                viewModel.profileScreenViewModel.emailText = viewModel.editProfileScreenViewModel.emailText
+                print(viewModel.profileScreenViewModel.emailText)
+            }
             Spacer()
         }
         .padding(20)

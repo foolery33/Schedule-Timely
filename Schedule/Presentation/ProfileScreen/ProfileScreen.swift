@@ -3,13 +3,8 @@ import SwiftUICurvedRectangleShape
 
 struct ProfileScreen: View {
 
+    @EnvironmentObject var viewModel: GeneralViewModel
 
-    var name: String
-    var email: String
-    var role: String
-    @State var showAvatarAlert: Bool
-    @State var avatarLink: String
-    @State var showEditInfo: Bool = false
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
@@ -22,7 +17,7 @@ struct ProfileScreen: View {
                         CurvedRectangle(curveAxis: .vertical, leadingDepthPercentage: 0, trailingDepthPercentage: 12).fill(Color.grayColor.opacity(0.12))
                             .frame(height: 220)
                         ZStack(alignment: .bottomTrailing) {
-                            AsyncImage(url: URL(string: avatarLink)) { image in
+                            AsyncImage(url: URL(string: viewModel.profileScreenViewModel.avatarLinkText)) { image in
                                 image
                                     .resizable()
                                     .scaledToFit()
@@ -43,10 +38,10 @@ struct ProfileScreen: View {
 
                             EditAvatarView()
                                 .onTapGesture {
-                                    showAvatarAlert = true
+                                    viewModel.showAvatarAlert = true
                                 }
-                                .alert("Edit your avatar link", isPresented: $showAvatarAlert, actions: {
-                                    TextField("Avatar link", text: $avatarLink)
+                                .alert("Edit your avatar link", isPresented: $viewModel.showAvatarAlert, actions: {
+                                    TextField("Avatar link", text: $viewModel.profileScreenViewModel.avatarLinkText)
                                     Button("OK", action: {})
                                     Button("Cancel", role: .cancel, action: {})
                                 })
@@ -68,11 +63,11 @@ struct ProfileScreen: View {
                 }
                 VStack {
                     Spacer().frame(height: 5)
-                    Text(name)
+                    Text(viewModel.profileScreenViewModel.role == 1 ? "Teacher" : "Student")
                         .foregroundColor(.dayOfMonthColor)
                         .font(.custom("Poppins-Semibold", size: 22))
                     Spacer().frame(height: 1)
-                    Text(email)
+                    Text(viewModel.profileScreenViewModel.emailText)
                         .foregroundColor(.dayOfMonthColor)
                         .font(.custom("Poppins-Regular", size: 14))
                     Spacer().frame(height: 32)
@@ -80,13 +75,13 @@ struct ProfileScreen: View {
                         ProfileSection(imageName: "newspaper", text: "Edit profile information", paddings: EdgeInsets(top: 16, leading: 16, bottom: 12, trailing: 16))
                             .foregroundColor(.dayOfMonthColor)
                             .onTapGesture {
-                                showEditInfo.toggle()
+                                viewModel.showEditInfo.toggle()
                             }
-                            .sheet(isPresented: $showEditInfo) {
+                            .sheet(isPresented: $viewModel.showEditInfo) {
                                 NavigationStack {
                                     EditProfileScreen()
                                 }
-                                .presentationDetents([.large, .medium])
+                                .presentationDetents([.medium, .medium])
                             }
                         ProfileSection(imageName: "person.2", text: "Groups", paddings: EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
                             .foregroundColor(.dayOfMonthColor)
@@ -104,8 +99,8 @@ struct ProfileScreen: View {
     }
 }
 
-struct ProfileScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileScreen(name: "Nikita Usov", email: "usov107@gmail.com", role: "Student", showAvatarAlert: false, avatarLink: "https://sun9-60.userapi.com/impg/lp3muZxbvoxi6PZOOf7WjxUbfd9W5r7aS3_eFA/TYGK-wiRI3E.jpg?size=1704x1704&quality=96&sign=0da84aed28474606b6877141d50221b1&type=album")
-    }
-}
+//struct ProfileScreen_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProfileScreen(name: "Nikita Usov", email: "usov107@gmail.com", role: "Student", showAvatarAlert: false, avatarLink: "https://sun9-60.userapi.com/impg/lp3muZxbvoxi6PZOOf7WjxUbfd9W5r7aS3_eFA/TYGK-wiRI3E.jpg?size=1704x1704&quality=96&sign=0da84aed28474606b6877141d50221b1&type=album")
+//    }
+//}

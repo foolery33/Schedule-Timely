@@ -10,7 +10,7 @@ import SwiftUI
 struct TextFieldView: View {
     
     var header: String
-    @State var text: String
+    @Binding var text: String
     var placeholderText: String
     var isSecuredField: Bool
     @State var showPassword: Bool = false
@@ -32,14 +32,14 @@ struct TextFieldView: View {
                     RoundedRectangle(cornerRadius: 4).stroke(Color.softGray, lineWidth: 1).padding([.leading, .trailing], 0.3).frame(height: 45)
                     HStack {
                         if(showPassword) {
-                            SecureField("", text: $text)
+                            TextField("", text: $text)
                                 .foregroundColor(.dayOfMonthColor)
                                 .font(.custom("Poppins-Regular", size: 14))
                                 .padding(.leading, 16)
                                 .frame(height: 45)
                         }
                         else {
-                            TextField("", text: $text)
+                            SecureField("", text: $text)
                                 .foregroundColor(.dayOfMonthColor)
                                 .font(.custom("Poppins-Regular", size: 14))
                                 .padding(.leading, 16)
@@ -48,8 +48,7 @@ struct TextFieldView: View {
                         if(isSecuredField) {
                             Spacer()
                             if(showPassword) {
-                                Image(systemName: "eye.slash")
-                                    .padding(.bottom, 0.9)
+                                Image(systemName: "eye")
                                     .foregroundColor(.dayOfMonthColor)
                                     .onTapGesture {
                                         withAnimation(.linear(duration: 0.1)) {
@@ -59,7 +58,8 @@ struct TextFieldView: View {
                                     .imageScale(.small)
                             }
                             else {
-                                Image(systemName: "eye")
+                                Image(systemName: "eye.slash")
+                                    .padding(.bottom, 0.9)
                                     .foregroundColor(.dayOfMonthColor)
                                     .onTapGesture {
                                         withAnimation(.linear(duration: 0.1)) {
@@ -76,9 +76,9 @@ struct TextFieldView: View {
         }
     }
 }
-
-struct TextFieldView_Previews: PreviewProvider {
-    static var previews: some View {
-        TextFieldView(header: "Email Address", text: "", placeholderText: "Enter something", isSecuredField: true)
-    }
-}
+//
+//struct TextFieldView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TextFieldView(header: "Email Address", text: "", placeholderText: "Enter something", isSecuredField: true)
+//    }
+//}

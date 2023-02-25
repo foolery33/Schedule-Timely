@@ -10,6 +10,8 @@ import SwiftUI
 struct FilledButton: View {
     
     var text: String
+    var action: () -> Void
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         Text(text)
@@ -19,12 +21,16 @@ struct FilledButton: View {
             .frame(maxWidth: .infinity)
             .background(RoundedRectangle(cornerRadius: 6).fill(Color.darkGreenColor)
             .frame(height: 40))
+            .onTapGesture {
+                action()
+                dismiss()
+            }
         
     }
 }
 
-struct FilledButton_Previews: PreviewProvider {
-    static var previews: some View {
-        FilledButton(text: "Login")
-    }
-}
+//struct FilledButton_Previews: PreviewProvider {
+//    static var previews: some View {
+//        FilledButton(text: "Login")
+//    }
+//}

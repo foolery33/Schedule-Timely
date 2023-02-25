@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct GroupPickerScreen: View {
+    
+    @EnvironmentObject var viewModel: GeneralViewModel
+    
     @Environment(\.dismiss) var dismiss
-    @State var groupText: String = ""
     var goToNextScreen: Bool
     var groups: [String] = [
         "972101",
@@ -49,7 +51,7 @@ struct GroupPickerScreen: View {
             }
             .foregroundColor(.dayOfMonthColor)
             Spacer().frame(height: 30)
-            SearchingTextField(text: $groupText, header: "Find your group", placeholderText: "Group number")
+            SearchingTextField(text: $viewModel.groupPickerScreenViewModel.groupText, header: "Find your group", placeholderText: "Group number")
                 .padding([.leading, .trailing], 20)
             
             Spacer().frame(height: 20)
@@ -57,11 +59,12 @@ struct GroupPickerScreen: View {
             VStack {
                 ScrollView(showsIndicators: false) {
                     Spacer().frame(height: 10)
-                    ForEach(groupText.isEmpty ? groups : groups.filter {$0.contains(groupText)}, id: \.self) { group in
+                    ForEach(viewModel.groupPickerScreenViewModel.groupText.isEmpty ? groups : groups.filter {$0.contains(viewModel.groupPickerScreenViewModel.groupText)}, id: \.self) { group in
                         if(goToNextScreen) {
                             NavigationLink(destination: MainScreen().navigationBarBackButtonHidden()) {
                                 ListRow(text: group)
                             }
+                            .environmentObject(viewModel)
                         }
                         else {
                             ListRow(text: group)
@@ -83,5 +86,6 @@ struct GroupPickerScreen: View {
 struct GroupPickerScreen_Previews: PreviewProvider {
     static var previews: some View {
         GroupPickerScreen(goToNextScreen: false)
+            .environmentObject(GroupPickerScreenViewModel())
     }
 }

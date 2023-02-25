@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct LoginScreen: View {
-    @State var emailText: String
-    @State var passwordText: String
-    @State var rememberPassword: Bool
+    
+    @EnvironmentObject var viewModel: GeneralViewModel
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Hi, Welcome Back!👋")
@@ -22,20 +22,20 @@ struct LoginScreen: View {
                 .foregroundColor(.grayColor)
             Group {
                 Spacer().frame(height: 40)
-                TextFieldView(header: "Email Address", text: emailText, placeholderText: "Enter your email", isSecuredField: false)
+                TextFieldView(header: "Email Address", text: $viewModel.loginScreenViewModel.emailText, placeholderText: "Enter your email", isSecuredField: false)
                 Spacer().frame(height: 27)
-                TextFieldView(header: "Password", text: passwordText, placeholderText: "Enter your password", isSecuredField: true)
+                TextFieldView(header: "Password", text: $viewModel.loginScreenViewModel.passwordText, placeholderText: "Enter your password", isSecuredField: true)
                 Spacer().frame(height: 22)
                 HStack(spacing: 8) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 4).stroke(Color.grayColor, lineWidth: 1).frame(width: 22, height: 22)
-                        if(rememberPassword) {
+                        if(viewModel.rememberPassword) {
                             Image(systemName: "checkmark").resizable().aspectRatio(CGSize(width: 1.4, height: 1), contentMode: .fill).frame(width: 7, height: 7).foregroundColor(.dayOfMonthColor).font(.system(size: 10, weight: .medium))
                         }
                     }
                     .onTapGesture {
                         withAnimation(.linear(duration: 0.1)) {
-                            rememberPassword.toggle()
+                            viewModel.rememberPassword.toggle()
                         }
                     }
                     Text("Remember Me")
@@ -46,8 +46,9 @@ struct LoginScreen: View {
             }
             Group {
                 NavigationLink(destination: MainScreen().navigationBarBackButtonHidden(true)) {
-                    FilledButton(text: "Login")
+                    FilledButton(text: "Login") {}
                 }
+                .environmentObject(viewModel)
                 Spacer().frame(height: 30)
                 HStack {
                     Rectangle().fill(Color.softGray).frame(height: 1)
@@ -74,10 +75,11 @@ struct LoginScreen: View {
             HStack(alignment: .center, spacing: 0) {
                 Text("Don't have an account? ")
                     .foregroundColor(.grayColor)
-                NavigationLink(destination: RegisterScreen(emailText: "", passwordText: "", confirmPassword: "", rememberPassword: true).navigationBarBackButtonHidden(true)) {
+                NavigationLink(destination: RegisterScreen().navigationBarBackButtonHidden(true)) {
                     Text("Sign Up")
                         .foregroundColor(.darkGreenColor)
                 }
+                .environmentObject(viewModel)
             }
             .frame(maxWidth: .infinity)
             .font(.custom("Poppins-Regular", size: 14))
@@ -89,6 +91,7 @@ struct LoginScreen: View {
 
 struct LoginScreen_Previews: PreviewProvider {
     static var previews: some View {
-        LoginScreen(emailText: "", passwordText: "", rememberPassword: true)
+        LoginScreen()
+            .environmentObject(GeneralViewModel())
     }
 }

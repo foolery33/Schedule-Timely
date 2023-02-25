@@ -8,11 +8,8 @@
 import SwiftUI
 
 struct RegisterScreen: View {
-//    @State var fullNameText: String
-    @State var emailText: String
-    @State var passwordText: String
-    @State var confirmPassword: String
-    @State var rememberPassword: Bool
+
+    @EnvironmentObject var viewModel: GeneralViewModel
     
     @Environment(\.dismiss) var dismiss
     
@@ -28,13 +25,11 @@ struct RegisterScreen: View {
             Group {
                 Group {
                     Spacer().frame(height: 40)
-//                    TextFieldView(header: "Full Name", text: emailText, placeholderText: "Enter your full name", isSecuredField: false)
-//                    Spacer().frame(height: 27)
-                    TextFieldView(header: "Email Address", text: emailText, placeholderText: "Enter your email", isSecuredField: false)
+                    TextFieldView(header: "Email Address", text: $viewModel.registerScreenViewModel.emailText, placeholderText: "Enter your email", isSecuredField: false)
                     Spacer().frame(height: 27)
-                    TextFieldView(header: "Password", text: passwordText, placeholderText: "Enter your password", isSecuredField: true)
+                    TextFieldView(header: "Password", text: $viewModel.registerScreenViewModel.passwordText, placeholderText: "Enter your password", isSecuredField: true)
                     Spacer().frame(height: 27)
-                    TextFieldView(header: "Confirm Password", text: passwordText, placeholderText: "Confirm your password", isSecuredField: true)
+                    TextFieldView(header: "Confirm Password", text: $viewModel.registerScreenViewModel.passwordText, placeholderText: "Confirm your password", isSecuredField: true)
                     Spacer().frame(height: 27)
                 }
                 Group {
@@ -62,7 +57,7 @@ struct RegisterScreen: View {
                 Spacer().frame(height: 40)
             }
             Group {
-                FilledButton(text: "Sign up")
+                FilledButton(text: "Sign up") {}
             }
             Spacer()
             HStack(alignment: .center, spacing: 0) {
@@ -86,6 +81,7 @@ struct RegisterScreen: View {
 
 struct RegisterScreen_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterScreen(emailText: "", passwordText: "", confirmPassword: "", rememberPassword: true)
+        RegisterScreen()
+            .environmentObject(RegisterScreenViewModel())
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LabledTextFieldView: View {
     
-    @State var writtenText: String = ""
+    @Binding var writtenText: String
     var labelText: String
     var placeholderText: String
     
@@ -37,8 +37,8 @@ struct LabledTextFieldView: View {
     }
 }
 
-struct LabledTextField_Previews: PreviewProvider {
-    static var previews: some View {
-        LabledTextFieldView(labelText: "Full name", placeholderText: "")
-    }
-}
+//struct LabledTextField_Previews: PreviewProvider {
+//    static var previews: some View {
+//        LabledTextFieldView(labelText: "Full name", placeholderText: "")
+//    }
+//}

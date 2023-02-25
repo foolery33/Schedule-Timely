@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct TeacherPickerScreen: View {
+    
+    @EnvironmentObject var viewModel: GeneralViewModel
+    
     @Environment(\.dismiss) var dismiss
-    @State var teacherText: String = ""
+
     var goToNextScreen: Bool
     var teachers: [String] = [
         "Усов Никита Евгеньевич",
@@ -49,7 +52,7 @@ struct TeacherPickerScreen: View {
             }
             .foregroundColor(.dayOfMonthColor)
             Spacer().frame(height: 30)
-            SearchingTextField(text: $teacherText, header: "Find a teacher by name", placeholderText: "Teacher name")
+            SearchingTextField(text: $viewModel.teacherPickerScreenViewModel.teacherText, header: "Find a teacher by name", placeholderText: "Teacher name")
                 .padding([.leading, .trailing], 20)
             
             Spacer().frame(height: 20)
@@ -57,16 +60,15 @@ struct TeacherPickerScreen: View {
             VStack {
                 ScrollView(showsIndicators: false) {
                     Spacer().frame(height: 10)
-                    ForEach(teacherText.isEmpty ? teachers : teachers.filter {$0.contains(teacherText)}, id: \.self) { group in
-                        NavigationLink(destination: MainScreen().navigationBarBackButtonHidden(true)) {
-                            if(goToNextScreen) {
-                                NavigationLink(destination: MainScreen().navigationBarBackButtonHidden()) {
-                                    ListRow(text: group)
-                                }
-                            }
-                            else {
+                    ForEach(viewModel.teacherPickerScreenViewModel.teacherText.isEmpty ? teachers : teachers.filter {$0.contains(viewModel.teacherPickerScreenViewModel.teacherText)}, id: \.self) { group in
+                        if(goToNextScreen) {
+                            NavigationLink(destination: MainScreen().navigationBarBackButtonHidden()) {
                                 ListRow(text: group)
                             }
+                            .environmentObject(viewModel)
+                        }
+                        else {
+                            ListRow(text: group)
                         }
                         
                     }

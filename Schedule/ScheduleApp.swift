@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct ScheduleApp: App {
+    
+    @StateObject var viewModel = GeneralViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack {
+                ProfileScreen()
+            }
+            .environmentObject(viewModel)
         }
     }
 }
