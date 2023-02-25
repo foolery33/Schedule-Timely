@@ -23,7 +23,6 @@ struct FilledButton: View {
             .frame(height: 40))
             .onTapGesture {
                 action()
-                dismiss()
             }
         
     }

@@ -15,7 +15,14 @@ struct ScheduleApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                ProfileScreen()
+                if(viewModel.isValidated) {
+                    MainScreen()
+                        .transition(.move(edge: .trailing))
+                }
+                else {
+                    LoginScreen()
+                        .transition(.move(edge: .leading))
+                }
             }
             .environmentObject(viewModel)
         }

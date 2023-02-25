@@ -22,4 +22,5 @@ extension Color {
     public static let softWhite2: Color = Color(UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1.0))
     public static let redColor: Color = Color(UIColor(red: 255/255, green: 82/255, blue: 82/255, alpha: 1.0))
     public static let softBlue: Color = Color(UIColor(red: 243/255, green: 248/255, blue: 255/255, alpha: 1.0))
+    public static let softWhite3: Color = Color(UIColor(red: 230/255, green: 229/255, blue: 226/255, alpha: 1.0))
 }

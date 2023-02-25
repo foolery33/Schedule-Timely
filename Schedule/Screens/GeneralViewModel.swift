@@ -9,6 +9,8 @@ import SwiftUI
 
 class GeneralViewModel: ObservableObject {
     
+    @Published var isValidated: Bool = false
+    
     // MARK: Login Screen
     @Published var loginScreenViewModel: LoginScreenViewModel = LoginScreenViewModel()
     @Published var rememberPassword: Bool = false

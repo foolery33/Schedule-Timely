@@ -45,10 +45,11 @@ struct LoginScreen: View {
                 Spacer().frame(height: 40)
             }
             Group {
-                NavigationLink(destination: MainScreen().navigationBarBackButtonHidden(true)) {
-                    FilledButton(text: "Login") {}
+                FilledButton(text: "Login") {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        viewModel.isValidated = true
+                    }
                 }
-                .environmentObject(viewModel)
                 Spacer().frame(height: 30)
                 HStack {
                     Rectangle().fill(Color.softGray).frame(height: 1)
