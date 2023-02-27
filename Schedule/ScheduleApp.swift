@@ -16,12 +16,10 @@ struct ScheduleApp: App {
         WindowGroup {
             NavigationStack {
                 if(viewModel.isValidated) {
-                    MainScreen()
-                        .transition(.move(edge: .trailing))
+                    MainScreen(viewModel: viewModel.mainScreenViewModel)
                 }
                 else {
-                    LoginScreen()
-                        .transition(.move(edge: .leading))
+                    LoginScreen(viewModel: viewModel.loginScreenViewModel)
                 }
             }
             .environmentObject(viewModel)

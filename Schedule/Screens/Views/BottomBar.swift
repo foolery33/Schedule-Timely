@@ -10,18 +10,22 @@ import SwiftUI
 struct BottomBar: View {
     
     @Binding var refreshCount: Int
+    @Binding var showDatePicker: Bool
     
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 25).fill(Color.softWhite3.opacity(0.8))
                 .frame(height: 70)
             HStack {
-                Spacer().frame(width: 25)
+                Spacer().frame(width: 40)
                 VStack(spacing: 2) {
                     Image(systemName: "calendar")
                         .imageScale(.large)
                     Text("Date")
                         .font(.custom("Poppins-Regular", size: 11))
+                }
+                .onTapGesture {
+                    showDatePicker = true
                 }
                 Spacer()
                 VStack(spacing: 2) {
@@ -42,7 +46,7 @@ struct BottomBar: View {
                             .font(.custom("Poppins-Regular", size: 11))
                     }
                 }
-                Spacer().frame(width: 25)
+                Spacer().frame(width: 40)
             }
             .foregroundColor(.darkGreenColor)
             .padding([.leading, .trailing], 5)

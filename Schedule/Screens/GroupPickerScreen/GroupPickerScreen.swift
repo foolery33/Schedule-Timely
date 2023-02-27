@@ -61,7 +61,7 @@ struct GroupPickerScreen: View {
                     Spacer().frame(height: 10)
                     ForEach(viewModel.groupPickerScreenViewModel.groupText.isEmpty ? groups : groups.filter {$0.contains(viewModel.groupPickerScreenViewModel.groupText)}, id: \.self) { group in
                         if(goToNextScreen) {
-                            NavigationLink(destination: MainScreen().navigationBarBackButtonHidden()) {
+                            NavigationLink(destination: MainScreen(viewModel: viewModel.mainScreenViewModel).navigationBarBackButtonHidden()) {
                                 ListRow(text: group)
                             }
                             .environmentObject(viewModel)

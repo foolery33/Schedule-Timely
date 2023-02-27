@@ -12,8 +12,15 @@ class GeneralViewModel: ObservableObject {
     @Published var isValidated: Bool = false
     
     // MARK: Login Screen
-    @Published var loginScreenViewModel: LoginScreenViewModel = LoginScreenViewModel()
-    @Published var rememberPassword: Bool = false
+    @Published var loginScreenViewModel: LoginScreenViewModel!
+    
+    init() {
+        loginScreenViewModel = .init(
+            toggleValidationStatusClosure: { [weak self] in
+                self?.isValidated.toggle()
+            }
+        )
+    }
     
     // MARK: Register Screen
     @Published var registerScreenViewModel: RegisterScreenViewModel = RegisterScreenViewModel()
@@ -26,15 +33,20 @@ class GeneralViewModel: ObservableObject {
     
     // MARK: Main Screen
     @Published var mainScreenViewModel: MainScreenViewModel = MainScreenViewModel()
-    @Published var isAscendingOrder: Bool = true
-    @Published var currentDayIndex: Int = MainScreenViewModel().weekdayIndex(for: Date())
+//    @Published var currentDayIndex: Int = MainScreenViewModel().weekdayIndex(for: Date())
+//    @Published var daysOfWeek: [Date] = MainScreenViewModel().getDaysOfWeek(for: Date())
     
     // MARK: Profile Screen
     @Published var profileScreenViewModel: ProfileScreenViewModel = ProfileScreenViewModel()
-    @Published var showAvatarAlert: Bool = false
+//    @Published var showAvatarAlert: Bool = false
     @Published var showEditInfo: Bool = false
     
     // MARK: Edit Profile Screen
     @Published var editProfileScreenViewModel: EditProfileScreenViewModel = EditProfileScreenViewModel()
+    
+//    func updateCurrentDayIndex(on newValue: Date) {
+//        self.currentDayIndex = MainScreenViewModel().weekdayIndex(for: newValue)
+//        objectWillChange.send()
+//    }
     
 }

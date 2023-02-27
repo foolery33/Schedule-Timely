@@ -9,33 +9,34 @@ import SwiftUI
 
 struct MainScreen: View {
     
-    @EnvironmentObject var viewModel: GeneralViewModel
+    @EnvironmentObject var generalViewModel: GeneralViewModel
+    @ObservedObject var viewModel: MainScreenViewModel
     @State private var refreshCount: Int = 0
+    @State private var showDatePicker: Bool = false
+    @State private var currentDate: Date = Date()
     
     var body: some View {
+        
         GeometryReader { geo in
             ZStack(alignment: .bottom) {
                 VStack(spacing: 0) {
                     Color.softWhite.frame(height: geo.safeAreaInsets.top)
                     HStack {
-                        Text(viewModel.mainScreenViewModel.getDayOfMonthByDate(date: viewModel.mainScreenViewModel.daysOfWeek[viewModel.currentDayIndex]))
+                        Text(
+                            viewModel.getDayOfMonthByDate(date: viewModel.daysOfWeek[viewModel.currentDayIndex])
+                            )
                             .font(.custom("Poppins-Medium", size: 40))
-                            .onTapGesture {
-                                withAnimation(.easeInOut(duration: 0.3)) {
-                                    viewModel.isValidated = false
-                                }
-                            }
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(viewModel.mainScreenViewModel.getDayOfWeekByDate(date: viewModel.mainScreenViewModel.daysOfWeek[viewModel.currentDayIndex], lettersCount: 3))
+                            Text(viewModel.getDayOfWeekByDate(date: viewModel.daysOfWeek[viewModel.currentDayIndex], lettersCount: 3))
                             Text(
-                                "\(viewModel.mainScreenViewModel.abbreviatedMonthName(date: viewModel.mainScreenViewModel.daysOfWeek[viewModel.currentDayIndex], count: 3)) \(String(viewModel.mainScreenViewModel.getYearFromDate(viewModel.mainScreenViewModel.daysOfWeek[viewModel.currentDayIndex])))"
+                                "\(viewModel.abbreviatedMonthName(date: viewModel.daysOfWeek[viewModel.currentDayIndex], count: 3)) \(String(viewModel.getYearFromDate(viewModel.daysOfWeek[viewModel.currentDayIndex])))"
                             )
                         }
                         .padding(.bottom, 1)
                         .foregroundColor(.softGray)
                         .font(.custom("Poppins-Medium", size: 13))
                         Spacer()
-                        if(viewModel.mainScreenViewModel.weekdayIndex(for: Date()) == viewModel.currentDayIndex) {
+                        if(viewModel.weekdayIndex(for: Date()) == viewModel.currentDayIndex) {
                             Text("Today")
                                 .foregroundColor(.todayTextColor)
                                 .padding([.leading, .trailing], 18)
@@ -52,15 +53,15 @@ struct MainScreen: View {
                             .edgesIgnoringSafeArea(.bottom)
                         VStack(spacing: 0) {
                             HStack(spacing: 0) {
-                                ForEach(viewModel.mainScreenViewModel.daysOfWeek, id: \.self) { day in
+                                ForEach(viewModel.daysOfWeek, id: \.self) { day in
                                     DateView(
-                                        dayOfWeek: viewModel.mainScreenViewModel.getDayOfWeekByDate(date: day, lettersCount: 1),
-                                        dayOfMonth: viewModel.mainScreenViewModel.getDayOfMonthByDate(date: day),
-                                        isPressed: (viewModel.mainScreenViewModel.weekdayIndex(for: day) == viewModel.currentDayIndex)
+                                        dayOfWeek: viewModel.getDayOfWeekByDate(date: day, lettersCount: 1),
+                                        dayOfMonth: viewModel.getDayOfMonthByDate(date: day),
+                                        isPressed: (viewModel.currentDayIndex == viewModel.weekdayIndex(for: day))
                                     )
                                     .onTapGesture {
                                         withAnimation(.linear(duration: 0.2)) {
-                                            viewModel.currentDayIndex = viewModel.mainScreenViewModel.weekdayIndex(for: day)
+                                            viewModel.currentDayIndex = viewModel.weekdayIndex(for: day)
                                         }
                                     }
                                 }
@@ -84,35 +85,58 @@ struct MainScreen: View {
                                             viewModel.isAscendingOrder.toggle()
                                         }
                                     }
+                                    .onChange(of: viewModel.isAscendingOrder) { _ in
+                                        print(viewModel.isAscendingOrder)
+                                    }
                             }
                             .padding([.leading, .trailing], 20)
                             .foregroundColor(.softGray)
                             Spacer().frame(height: 15)
                             TabView(selection: $viewModel.currentDayIndex) {
                                 ForEach(0...6, id: \.self) { day in
+//                                    Text(viewModel.daysOfWeek[day].description)
                                     ScheduleDayView()
+                                        .onTapGesture {
+                                            print("Day is: \(day), and currentDayIndex is: \(viewModel.currentDayIndex)")
+                                        }
                                         .edgesIgnoringSafeArea(.bottom)
                                 }
                             }
                             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                         }
-                        BottomBar(refreshCount: $refreshCount)
+                        BottomBar(refreshCount: $refreshCount, showDatePicker: $showDatePicker)
+                            .environmentObject(viewModel)
                             .padding(20)
                     }
                     .edgesIgnoringSafeArea(.bottom)
                 }
-                .animation(.linear(duration: 0.2), value: viewModel.currentDayIndex)
                 .background(Color.softWhite)
                 .edgesIgnoringSafeArea([.top, .bottom])
                 
             }
             .edgesIgnoringSafeArea(.bottom)
+            .sheet(isPresented: $showDatePicker) {
+                DatePickerView(selectedDate: $currentDate) {
+                    viewModel.daysOfWeek = viewModel.getDaysOfWeek(for: currentDate)
+                }
+                .presentationDetents([.height(350)])
+            }
         }
         .id(refreshCount)
         .onChange(of: refreshCount) { _ in
-            viewModel.currentDayIndex = viewModel.mainScreenViewModel.weekdayIndex(for: Date())
+            viewModel.currentDayIndex = viewModel.weekdayIndex(for: Date())
+        }
+        .onChange(of: viewModel.currentDayIndex) { _ in
+            print(viewModel.currentDayIndex)
+        }
+        .onChange(of: viewModel.isAscendingOrder) { _ in
+            print(viewModel.isAscendingOrder)
+        }
+        .onAppear {
+            print(viewModel.daysOfWeek)
         }
     }
+    
 }
 
 extension String {
@@ -129,11 +153,13 @@ extension String {
         return self[indexPosition]
     }
 }
-
-struct MainScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        MainScreen()
-            .environmentObject(GeneralViewModel())
-    }
-}
+//
+//struct MainScreen_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationStack {
+//            MainScreen()
+//        }
+//        .environmentObject(GeneralViewModel())
+//    }
+//}
 

@@ -31,7 +31,7 @@ struct TextFieldView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 4).stroke(Color.softGray, lineWidth: 1).padding([.leading, .trailing], 0.3).frame(height: 45)
                     HStack {
-                        if(showPassword) {
+                        if(!isSecuredField) {
                             TextField("", text: $text)
                                 .foregroundColor(.dayOfMonthColor)
                                 .font(.custom("Poppins-Regular", size: 14))
@@ -39,11 +39,20 @@ struct TextFieldView: View {
                                 .frame(height: 45)
                         }
                         else {
-                            SecureField("", text: $text)
-                                .foregroundColor(.dayOfMonthColor)
-                                .font(.custom("Poppins-Regular", size: 14))
-                                .padding(.leading, 16)
-                                .frame(height: 45)
+                            if(!showPassword) {
+                                SecureField("", text: $text)
+                                    .foregroundColor(.dayOfMonthColor)
+                                    .font(.custom("Poppins-Regular", size: 14))
+                                    .padding(.leading, 16)
+                                    .frame(height: 45)
+                            }
+                            else {
+                                TextField("", text: $text)
+                                    .foregroundColor(.dayOfMonthColor)
+                                    .font(.custom("Poppins-Regular", size: 14))
+                                    .padding(.leading, 16)
+                                    .frame(height: 45)
+                            }
                         }
                         if(isSecuredField) {
                             Spacer()

@@ -9,7 +9,8 @@ import SwiftUI
 
 struct LoginScreen: View {
     
-    @EnvironmentObject var viewModel: GeneralViewModel
+    @EnvironmentObject var generalViewModel: GeneralViewModel
+    @ObservedObject var viewModel: LoginScreenViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -20,11 +21,15 @@ struct LoginScreen: View {
             Text("Hello again, you've been missed!")
                 .font(.custom("Poppins-regular", size: 14))
                 .foregroundColor(.grayColor)
+                .onTapGesture {
+                    print(viewModel.isValidated)
+                    print(generalViewModel.loginScreenViewModel.isValidated)
+                }
             Group {
                 Spacer().frame(height: 40)
-                TextFieldView(header: "Email Address", text: $viewModel.loginScreenViewModel.emailText, placeholderText: "Enter your email", isSecuredField: false)
+                TextFieldView(header: "Email Address", text: $viewModel.emailText, placeholderText: "Enter your email", isSecuredField: false)
                 Spacer().frame(height: 27)
-                TextFieldView(header: "Password", text: $viewModel.loginScreenViewModel.passwordText, placeholderText: "Enter your password", isSecuredField: true)
+                TextFieldView(header: "Password", text: $viewModel.passwordText, placeholderText: "Enter your password", isSecuredField: true)
                 Spacer().frame(height: 22)
                 HStack(spacing: 8) {
                     ZStack {
@@ -47,7 +52,7 @@ struct LoginScreen: View {
             Group {
                 FilledButton(text: "Login") {
                     withAnimation(.easeInOut(duration: 0.3)) {
-                        viewModel.isValidated = true
+                        viewModel.toggleValidationStatusClosure()
                     }
                 }
                 Spacer().frame(height: 30)
@@ -90,9 +95,9 @@ struct LoginScreen: View {
     }
 }
 
-struct LoginScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginScreen()
-            .environmentObject(GeneralViewModel())
-    }
-}
+//struct LoginScreen_Previews: PreviewProvider {
+//    static var previews: some View {
+//        LoginScreen()
+//            .environmentObject(GeneralViewModel())
+//    }
+//}

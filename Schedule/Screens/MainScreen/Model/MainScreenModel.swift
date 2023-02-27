@@ -9,34 +9,66 @@ import Foundation
 
 struct MainScreenModel {
     
-    var daysOfWeek = getDaysOfWeek()
+    var daysOfWeek = getDaysOfWeek(for: Date())
     var currentDayIndex = weekdayIndex(for: Date())
+    var isAscendingOrder: Bool = true
     
-    static func getDaysOfWeek() -> [Date] {
-        let calendar = Calendar.current
-        let today = Date()
-        let dayOfWeek = calendar.component(.weekday, from: today)
-        let daysInWeek = 7
-        let firstWeekday = 2 // 1 is Sunday, 2 is Monday
-        let offset = firstWeekday - dayOfWeek
-        var dateComponents = DateComponents()
-        dateComponents.day = offset
-        guard let monday = calendar.date(byAdding: dateComponents, to: today) else {
-            return []
-        }
-        var dates: [Date] = []
-        for i in 0..<daysInWeek {
-            let date = calendar.date(byAdding: .day, value: i, to: monday)!
+    func isAscending() -> Bool {
+        self.isAscendingOrder
+    }
+    mutating func changeOrder() -> Void {
+        self.isAscendingOrder.toggle()
+    }
+    
+    func getCurrentDayIndex() -> Int {
+        self.currentDayIndex
+    }
+    mutating func setCurrentDayIndex(index: Int) -> Void {
+        self.currentDayIndex = index
+    }
+    
+    static func getDaysOfWeek(for date: Date) -> [Date] {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.locale = Locale(identifier: "ru_RU") // Установка локали (опционально)
+
+        let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date))!
+
+        var dates = [Date]()
+
+        for day in 0...6 {
+            guard let date = calendar.date(byAdding: .day, value: day, to: startOfWeek) else {
+                continue
+            }
             dates.append(date)
         }
+
         return dates
     }
     
     static func weekdayIndex(for date: Date) -> Int {
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.weekday], from: date)
-        let weekday = (components.weekday! + 5) % 7
-        return weekday
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ru_RU")
+        dateFormatter.dateFormat = "EEEE"
+        let dayOfWeek = dateFormatter.string(from: date).capitalized
+
+        switch dayOfWeek {
+        case "Понедельник":
+            return 0
+        case "Вторник":
+            return 1
+        case "Среда":
+            return 2
+        case "Четверг":
+            return 3
+        case "Пятница":
+            return 4
+        case "Суббота":
+            return 5
+        case "Воскресенье":
+            return 6
+        default:
+            return -1
+        }
     }
     
     func getDayOfMonthByDate(date: Date) -> String {

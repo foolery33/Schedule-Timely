@@ -38,9 +38,9 @@ struct ProfileScreen: View {
 
                             EditAvatarView()
                                 .onTapGesture {
-                                    viewModel.showAvatarAlert = true
+                                    viewModel.profileScreenViewModel.showAvatarAlert = true
                                 }
-                                .alert("Edit your avatar link", isPresented: $viewModel.showAvatarAlert, actions: {
+                                .alert("Edit your avatar link", isPresented: $viewModel.profileScreenViewModel.showAvatarAlert, actions: {
                                     TextField("Avatar link", text: $viewModel.profileScreenViewModel.avatarLinkText)
                                     Button("OK", action: {})
                                     Button("Cancel", role: .cancel, action: {})

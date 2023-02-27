@@ -22,15 +22,38 @@ class MainScreenViewModel: ObservableObject {
     
     var currentDayIndex: Int {
         get {
-            model.currentDayIndex
+            self.getCurrentDayIndex()
         }
         set(newValue) {
-            model.currentDayIndex = newValue
+            self.setCurrentDayIndex(index: newValue)
         }
     }
     
-    func getDaysOfWeek() -> [Date] {
-        return MainScreenModel.getDaysOfWeek()
+    var isAscendingOrder: Bool {
+        get {
+            model.isAscendingOrder
+        }
+        set(newValue) {
+            model.isAscendingOrder = newValue
+        }
+    }
+    
+    func getCurrentDayIndex() -> Int {
+        self.model.getCurrentDayIndex()
+    }
+    func setCurrentDayIndex(index: Int) {
+        self.model.setCurrentDayIndex(index: index)
+    }
+    
+    func isAscending() -> Bool {
+        self.model.isAscending()
+    }
+    func changeOrder() -> Void {
+        self.model.changeOrder()
+    }
+    
+    func getDaysOfWeek(for date: Date) -> [Date] {
+        return MainScreenModel.getDaysOfWeek(for: date)
     }
     
     func weekdayIndex(for date: Date) -> Int {

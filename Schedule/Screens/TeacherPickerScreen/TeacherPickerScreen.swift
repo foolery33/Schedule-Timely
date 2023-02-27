@@ -62,10 +62,9 @@ struct TeacherPickerScreen: View {
                     Spacer().frame(height: 10)
                     ForEach(viewModel.teacherPickerScreenViewModel.teacherText.isEmpty ? teachers : teachers.filter {$0.contains(viewModel.teacherPickerScreenViewModel.teacherText)}, id: \.self) { group in
                         if(goToNextScreen) {
-                            NavigationLink(destination: MainScreen().navigationBarBackButtonHidden()) {
+                            NavigationLink(destination: MainScreen(viewModel: viewModel.mainScreenViewModel).navigationBarBackButtonHidden()) {
                                 ListRow(text: group)
                             }
-                            .environmentObject(viewModel)
                         }
                         else {
                             ListRow(text: group)

@@ -38,4 +38,20 @@ class ProfileScreenViewModel: ObservableObject {
         }
     }
     
+    var showAvatarAlert: Bool {
+        get {
+            model.showAvatarAlert
+        }
+        set(newValue) {
+            model.showAvatarAlert = newValue
+        }
+    }
+    
+    @Published var showEditInfo: Bool = false
+    
+    func toggleEditInfo() -> Void {
+        self.showEditInfo = true
+        objectWillChange.send()
+    }
+    
 }
