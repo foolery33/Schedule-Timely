@@ -65,6 +65,7 @@ struct TeacherPickerScreen: View {
                             NavigationLink(destination: MainScreen(viewModel: viewModel.mainScreenViewModel).navigationBarBackButtonHidden()) {
                                 ListRow(text: group)
                             }
+                            .buttonStyle(NoHighlightButtonStyle())
                         }
                         else {
                             ListRow(text: group)

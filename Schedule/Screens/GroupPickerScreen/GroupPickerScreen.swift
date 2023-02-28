@@ -64,7 +64,7 @@ struct GroupPickerScreen: View {
                             NavigationLink(destination: MainScreen(viewModel: viewModel.mainScreenViewModel).navigationBarBackButtonHidden()) {
                                 ListRow(text: group)
                             }
-                            .environmentObject(viewModel)
+                            .buttonStyle(NoHighlightButtonStyle())
                         }
                         else {
                             ListRow(text: group)

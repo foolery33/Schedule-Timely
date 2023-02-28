@@ -16,8 +16,10 @@ class GeneralViewModel: ObservableObject {
     
     init() {
         loginScreenViewModel = .init(
-            toggleValidationStatusClosure: { [weak self] in
-                self?.isValidated.toggle()
+            toggleValidationStatusClosure: { result in
+                withAnimation(.easeInOut(duration: 1)) {
+                    self.isValidated = result
+                }
             }
         )
     }

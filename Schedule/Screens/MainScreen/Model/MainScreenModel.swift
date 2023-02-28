@@ -97,4 +97,16 @@ struct MainScreenModel {
         return String(weekday[..<index]).capitalized
     }
     
+    func isToday(_ date: Date) -> Bool {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let otherDate = calendar.startOfDay(for: date)
+        return today == otherDate
+    }
+    
+    func getDateWithOffset(from date: Date, byDays days: Int) -> Date {
+        let calendar = Calendar.current
+        return calendar.date(byAdding: .day, value: days, to: date)!
+    }
+    
 }

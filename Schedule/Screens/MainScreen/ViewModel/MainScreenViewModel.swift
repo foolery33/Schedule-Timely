@@ -76,4 +76,12 @@ class MainScreenViewModel: ObservableObject {
         return model.getDayOfWeekByDate(date: date, lettersCount: lettersCount)
     }
     
+    func isToday(_ date: Date) -> Bool {
+        return model.isToday(date)
+    }
+    
+    func getDateWithOffset(from date: Date, byDays days: Int) -> Date {
+        return model.getDateWithOffset(from: date, byDays: days)
+    }
+    
 }

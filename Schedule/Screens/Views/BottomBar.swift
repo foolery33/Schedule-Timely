@@ -35,7 +35,9 @@ struct BottomBar: View {
                         .font(.custom("Poppins-Regular", size: 11))
                 }
                 .onTapGesture {
-                    refreshCount += 1
+                    withAnimation {
+                        refreshCount += 1
+                    }
                 }
                 Spacer()
                 NavigationLink(destination: ProfileScreen().navigationBarBackButtonHidden(true)) {

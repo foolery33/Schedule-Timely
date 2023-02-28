@@ -9,7 +9,8 @@ import SwiftUI
 
 struct RegisterScreen: View {
 
-    @EnvironmentObject var viewModel: GeneralViewModel
+    @EnvironmentObject var generalViewModel: GeneralViewModel
+    @ObservedObject var viewModel: RegisterScreenViewModel
     
     @Environment(\.dismiss) var dismiss
     
@@ -25,11 +26,11 @@ struct RegisterScreen: View {
             Group {
                 Group {
                     Spacer().frame(height: 40)
-                    TextFieldView(header: "Email Address", text: $viewModel.registerScreenViewModel.emailText, placeholderText: "Enter your email", isSecuredField: false)
+                    TextFieldView(header: "Email Address", text: $viewModel.emailText, placeholderText: "Enter your email", isSecuredField: false)
                     Spacer().frame(height: 27)
-                    TextFieldView(header: "Password", text: $viewModel.registerScreenViewModel.passwordText, placeholderText: "Enter your password", isSecuredField: true)
+                    TextFieldView(header: "Password", text: $viewModel.passwordText, placeholderText: "Enter your password", isSecuredField: true)
                     Spacer().frame(height: 27)
-                    TextFieldView(header: "Confirm Password", text: $viewModel.registerScreenViewModel.passwordText, placeholderText: "Confirm your password", isSecuredField: true)
+                    TextFieldView(header: "Confirm Password", text: $viewModel.confirmPasswordText, placeholderText: "Confirm your password", isSecuredField: true)
                     Spacer().frame(height: 27)
                 }
                 Group {
@@ -81,7 +82,7 @@ struct RegisterScreen: View {
 
 struct RegisterScreen_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterScreen()
+        RegisterScreen(viewModel: RegisterScreenViewModel())
             .environmentObject(RegisterScreenViewModel())
     }
 }

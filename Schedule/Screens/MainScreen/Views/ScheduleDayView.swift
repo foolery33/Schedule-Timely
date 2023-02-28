@@ -15,6 +15,7 @@ struct ScheduleDayView: View {
                     NavigationLink(destination: AboutSubjectScreen().navigationBarBackButtonHidden(true)) {
                         SubjectView(isFirstSubjectOfTheDay: true, startTime: "11:35", endTime: "13:05", subjectName: "Mathematics", teacherName: "Brooklyn Williamson", classroom: "Room 6-205", group: "972101", isCurrent: false, subjectNumberInQueue: 1)
                     }
+                    .buttonStyle(NoHighlightButtonStyle())
                 }
             }
             Spacer().frame(height: 106)

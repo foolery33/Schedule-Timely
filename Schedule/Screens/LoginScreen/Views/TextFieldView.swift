@@ -80,6 +80,7 @@ struct TextFieldView: View {
                             Spacer().frame(width: 16)
                         }
                     }
+                    .textInputAutocapitalization(.never)
                 }
             }
         }

@@ -16,19 +16,20 @@ struct DateView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 12).fill(isPressed ? Color.selectedDayColor : Color.white)
-                .frame(width: 45, height: 65)
-            VStack (spacing: 4) {
+                .frame(width: 38, height: 56)
+            VStack (spacing: 3) {
                 Text(dayOfWeek)
                     .foregroundColor(isPressed ? Color.white : Color.softGray)
-                    .font(.custom("Poppins-Medium", size: 14))
+                    .font(.custom("Poppins-Medium", size: 13))
                 Text(String(dayOfMonth))
                     .foregroundColor(isPressed ? Color.white : Color.dayOfMonthColor)
                     .font(.custom("Poppins-Semibold", size: 17))
             }
             .padding([.leading, .trailing], 12)
             .padding([.top, .bottom], 10)
+            .fixedSize()
         }
-        .frame(width: 50, height: 65)
+        .frame(width: 42, height: 60)
     }
 }
 

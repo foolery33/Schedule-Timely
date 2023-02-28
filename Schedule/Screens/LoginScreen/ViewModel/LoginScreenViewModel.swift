@@ -10,12 +10,12 @@ import SwiftUI
 class LoginScreenViewModel: ObservableObject {
     
     @Published private var model: LoginScreenModel = LoginScreenModel()
-//    var rememberPassword: Bool = true
+    //    var rememberPassword: Bool = true
     @Published var isValidated: Bool = false
     
-    let toggleValidationStatusClosure: () -> Void
-
-    init(toggleValidationStatusClosure: @escaping () -> Void) {
+    let toggleValidationStatusClosure: (Bool) -> Void
+    
+    init(toggleValidationStatusClosure: @escaping (Bool) -> Void) {
         self.toggleValidationStatusClosure = toggleValidationStatusClosure
     }
     
@@ -46,21 +46,29 @@ class LoginScreenViewModel: ObservableObject {
         }
     }
     
-    func getRememberPassword() -> Bool {
-        model.rememberPassword
+    @Published var showProgressView = false
+    @Published var error: AuthenticationViewModel.AuthenticationError?
+    
+    var loginDisabled: Bool {
+        emailText.isEmpty || passwordText.isEmpty
     }
     
-    func setValidated() -> Void {
-        model.setValidated()
-        self.isValidated = model.isValidated
-        objectWillChange.send()
+    func login(completion: @escaping (Bool) -> Void) {
+        withAnimation(.linear(duration: 0.1)) {
+            showProgressView = true
+        }
+        AuthenticationViewModel.shared.login(email: emailText, password: passwordText) { [unowned self] (result:Result<Bool, AuthenticationViewModel.AuthenticationError>) in
+            showProgressView = false
+            switch result {
+            case .success:
+                completion(true)
+            case .failure(let authError):
+                self.emailText = ""
+                self.passwordText = ""
+                error = authError
+                completion(false)
+            }
+        }
     }
-    
-    func setRememberPassword() -> Void {
-        model.setRememberPassword()
-        self.rememberPassword = model.rememberPassword
-        objectWillChange.send()
-    }
-    
 }
 

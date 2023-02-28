@@ -12,6 +12,12 @@
 		840A445A29A2471800C519DD /* TeacherPickerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840A445929A2471800C519DD /* TeacherPickerScreen.swift */; };
 		840A445D29A270FC00C519DD /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840A445C29A270FC00C519DD /* ProfileScreen.swift */; };
 		840A446029A274B700C519DD /* SwiftUICurvedRectangleShape in Frameworks */ = {isa = PBXBuildFile; productRef = 840A445F29A274B700C519DD /* SwiftUICurvedRectangleShape */; };
+		8415768029AC77760057D8D1 /* CustomRequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8415767F29AC77760057D8D1 /* CustomRequestInterceptor.swift */; };
+		8415768329AC77A70057D8D1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8415768229AC77A70057D8D1 /* Alamofire */; };
+		8415768529AC77C00057D8D1 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8415768429AC77C00057D8D1 /* TokenManager.swift */; };
+		8415768829AC78000057D8D1 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 8415768729AC78000057D8D1 /* SwiftKeychainWrapper */; };
+		8415768B29AC81270057D8D1 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8415768A29AC81270057D8D1 /* AuthenticationViewModel.swift */; };
+		8415768D29ACA14A0057D8D1 /* NoHighlightButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8415768C29ACA14A0057D8D1 /* NoHighlightButtonStyle.swift */; };
 		846F8F21299E086D00FB3F93 /* SubjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846F8F20299E086D00FB3F93 /* SubjectView.swift */; };
 		846F8F38299E569300FB3F93 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 846F8F23299E547300FB3F93 /* Poppins-Black.ttf */; };
 		846F8F39299E569800FB3F93 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 846F8F24299E547300FB3F93 /* Poppins-Medium.ttf */; };
@@ -63,6 +69,7 @@
 		84C61B3929A138A60024E91C /* RegisterScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C61B3829A138A60024E91C /* RegisterScreen.swift */; };
 		84CC1C06299BE5210075EAFC /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CC1C05299BE5210075EAFC /* MainScreen.swift */; };
 		84CC1C09299BE69C0075EAFC /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CC1C08299BE69C0075EAFC /* Colors.swift */; };
+		84CFDDB029ADEF9700061429 /* TokenResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CFDDAF29ADEF9700061429 /* TokenResponseModel.swift */; };
 		84E72C2D299A86D40060B9D7 /* ScheduleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E72C2C299A86D40060B9D7 /* ScheduleApp.swift */; };
 		84E72C2F299A86D40060B9D7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E72C2E299A86D40060B9D7 /* ContentView.swift */; };
 		84E72C31299A86D60060B9D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84E72C30299A86D60060B9D7 /* Assets.xcassets */; };
@@ -95,6 +102,10 @@
 		840A445629A2025D00C519DD /* SearchingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchingTextField.swift; sourceTree = "<group>"; };
 		840A445929A2471800C519DD /* TeacherPickerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherPickerScreen.swift; sourceTree = "<group>"; };
 		840A445C29A270FC00C519DD /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
+		8415767F29AC77760057D8D1 /* CustomRequestInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRequestInterceptor.swift; sourceTree = "<group>"; };
+		8415768429AC77C00057D8D1 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
+		8415768A29AC81270057D8D1 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
+		8415768C29ACA14A0057D8D1 /* NoHighlightButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoHighlightButtonStyle.swift; sourceTree = "<group>"; };
 		846F8F20299E086D00FB3F93 /* SubjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectView.swift; sourceTree = "<group>"; };
 		846F8F23299E547300FB3F93 /* Poppins-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-Black.ttf"; path = "../../../../Downloads/Poppins/Poppins-Black.ttf"; sourceTree = "<group>"; };
 		846F8F24299E547300FB3F93 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-Medium.ttf"; path = "../../../../Downloads/Poppins/Poppins-Medium.ttf"; sourceTree = "<group>"; };
@@ -147,6 +158,7 @@
 		84C61B3829A138A60024E91C /* RegisterScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreen.swift; sourceTree = "<group>"; };
 		84CC1C05299BE5210075EAFC /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
 		84CC1C08299BE69C0075EAFC /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		84CFDDAF29ADEF9700061429 /* TokenResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenResponseModel.swift; sourceTree = "<group>"; };
 		84E72C29299A86D40060B9D7 /* Schedule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schedule.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84E72C2C299A86D40060B9D7 /* ScheduleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleApp.swift; sourceTree = "<group>"; };
 		84E72C2E299A86D40060B9D7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -166,6 +178,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				840A446029A274B700C519DD /* SwiftUICurvedRectangleShape in Frameworks */,
+				8415768329AC77A70057D8D1 /* Alamofire in Frameworks */,
+				8415768829AC78000057D8D1 /* SwiftKeychainWrapper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,6 +241,25 @@
 			path = ProfileScreen;
 			sourceTree = "<group>";
 		};
+		8415767E29AC77660057D8D1 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				8415768929AC810D0057D8D1 /* Authentication */,
+				8415767F29AC77760057D8D1 /* CustomRequestInterceptor.swift */,
+				8415768429AC77C00057D8D1 /* TokenManager.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		8415768929AC810D0057D8D1 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				84CFDDAE29ADEF8100061429 /* Model */,
+				8415768A29AC81270057D8D1 /* AuthenticationViewModel.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
 		846F8F22299E543700FB3F93 /* Project Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -270,6 +303,7 @@
 				84B494E029A75C2D004D2A75 /* ListRow.swift */,
 				84B6241029AA2B4C00FCDBDA /* BottomBar.swift */,
 				84EC108429AA508000D1E407 /* DatePickerView.swift */,
+				8415768C29ACA14A0057D8D1 /* NoHighlightButtonStyle.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -487,6 +521,14 @@
 			path = Colors;
 			sourceTree = "<group>";
 		};
+		84CFDDAE29ADEF8100061429 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				84CFDDAF29ADEF9700061429 /* TokenResponseModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		84E72C20299A86D40060B9D7 = {
 			isa = PBXGroup;
 			children = (
@@ -510,6 +552,7 @@
 		84E72C2B299A86D40060B9D7 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				8415767E29AC77660057D8D1 /* Network */,
 				846F8F35299E54CD00FB3F93 /* Info.plist */,
 				846F8F22299E543700FB3F93 /* Project Fonts */,
 				84CC1C07299BE6890075EAFC /* Colors */,
@@ -565,6 +608,8 @@
 			name = Schedule;
 			packageProductDependencies = (
 				840A445F29A274B700C519DD /* SwiftUICurvedRectangleShape */,
+				8415768229AC77A70057D8D1 /* Alamofire */,
+				8415768729AC78000057D8D1 /* SwiftKeychainWrapper */,
 			);
 			productName = Schedule;
 			productReference = 84E72C29299A86D40060B9D7 /* Schedule.app */;
@@ -640,6 +685,8 @@
 			mainGroup = 84E72C20299A86D40060B9D7;
 			packageReferences = (
 				840A445E29A274B700C519DD /* XCRemoteSwiftPackageReference "SwiftUICurvedRectangleShape" */,
+				8415768129AC77A70057D8D1 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				8415768629AC78000057D8D1 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */,
 			);
 			productRefGroup = 84E72C2A299A86D40060B9D7 /* Products */;
 			projectDirPath = "";
@@ -706,6 +753,7 @@
 				84CC1C06299BE5210075EAFC /* MainScreen.swift in Sources */,
 				84B494E729A76691004D2A75 /* LoginScreenViewModel.swift in Sources */,
 				840A445429A1E86000C519DD /* GroupPickerScreen.swift in Sources */,
+				8415768B29AC81270057D8D1 /* AuthenticationViewModel.swift in Sources */,
 				84C274B829A8F737001A48ED /* ProfileScreenModel.swift in Sources */,
 				84EC108529AA508000D1E407 /* DatePickerView.swift in Sources */,
 				8470825729A36243000EC745 /* ProfileSection.swift in Sources */,
@@ -713,11 +761,15 @@
 				84C61B3329A1202A0024E91C /* FilledButton.swift in Sources */,
 				84C274A629A8D036001A48ED /* GroupPickerScreenModel.swift in Sources */,
 				84B6240F29A9C1FD00FCDBDA /* AboutSubjectScreen.swift in Sources */,
+				8415768D29ACA14A0057D8D1 /* NoHighlightButtonStyle.swift in Sources */,
 				84BAEE3B29A5198B000D7C5C /* EditProfileScreen.swift in Sources */,
+				8415768529AC77C00057D8D1 /* TokenManager.swift in Sources */,
 				84C274BF29A909DF001A48ED /* EditProfileScreenModel.swift in Sources */,
+				84CFDDB029ADEF9700061429 /* TokenResponseModel.swift in Sources */,
 				84B494E929A76942004D2A75 /* GeneralViewModel.swift in Sources */,
 				84BB084A29A66627008CA1B8 /* LabledTextFieldView.swift in Sources */,
 				840A445729A2025D00C519DD /* SearchingTextField.swift in Sources */,
+				8415768029AC77760057D8D1 /* CustomRequestInterceptor.swift in Sources */,
 				84C274A229A8C939001A48ED /* RegisterScreenModel.swift in Sources */,
 				84B494E129A75C2D004D2A75 /* ListRow.swift in Sources */,
 				84B494E329A765E1004D2A75 /* LoginScreenModel.swift in Sources */,
@@ -1071,6 +1123,22 @@
 				minimumVersion = 0.0.2;
 			};
 		};
+		8415768129AC77A70057D8D1 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		8415768629AC78000057D8D1 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jrendel/SwiftKeychainWrapper.git";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1078,6 +1146,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 840A445E29A274B700C519DD /* XCRemoteSwiftPackageReference "SwiftUICurvedRectangleShape" */;
 			productName = SwiftUICurvedRectangleShape;
+		};
+		8415768229AC77A70057D8D1 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8415768129AC77A70057D8D1 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		8415768729AC78000057D8D1 /* SwiftKeychainWrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8415768629AC78000057D8D1 /* XCRemoteSwiftPackageReference "SwiftKeychainWrapper" */;
+			productName = SwiftKeychainWrapper;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
