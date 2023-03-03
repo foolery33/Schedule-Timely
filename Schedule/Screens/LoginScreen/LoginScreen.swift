@@ -14,11 +14,6 @@ struct LoginScreen: View {
     
     var body: some View {
         ZStack {
-            if(viewModel.showProgressView) {
-                Rectangle().fill(Color.black.opacity(0.2))
-                    .edgesIgnoringSafeArea(.all)
-                ProgressView()
-            }
             VStack(alignment: .leading, spacing: 0) {
                 Text("Hi, Welcome Back!👋")
                     .font(.custom("Poppins-semibold", size: 21))
@@ -97,6 +92,11 @@ struct LoginScreen: View {
             }
             .padding(.top, 20)
             .padding(20)
+            if(viewModel.showProgressView) {
+                    Rectangle().fill(Color.white.opacity(0.5))
+                    .edgesIgnoringSafeArea(.all)
+                ProgressView()
+            }
         }
     }
 }

@@ -14,7 +14,17 @@ class GeneralViewModel: ObservableObject {
     // MARK: Login Screen
     @Published var loginScreenViewModel: LoginScreenViewModel!
     
+    // MARK: Register Screen
+    @Published var registerScreenViewModel: RegisterScreenViewModel!
+    
     init() {
+        registerScreenViewModel = .init(
+            toggleValidationStatusClosure: { result in
+                withAnimation(.easeInOut(duration: 1)) {
+                    self.isValidated = result
+                }
+            }
+        )
         loginScreenViewModel = .init(
             toggleValidationStatusClosure: { result in
                 withAnimation(.easeInOut(duration: 1)) {
@@ -23,9 +33,6 @@ class GeneralViewModel: ObservableObject {
             }
         )
     }
-    
-    // MARK: Register Screen
-    @Published var registerScreenViewModel: RegisterScreenViewModel = RegisterScreenViewModel()
     
     // MARK: Group Picker Screen
     @Published var groupPickerScreenViewModel: GroupPickerScreenViewModel = GroupPickerScreenViewModel()

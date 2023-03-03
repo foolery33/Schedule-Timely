@@ -149,13 +149,18 @@ struct MainScreen: View {
                 .presentationDetents([.height(350)])
             }
         }
-        .id(refreshCount)
+//        .id(refreshCount)
         .onChange(of: refreshCount) { _ in
-            viewModel.daysOfWeek = viewModel.getDaysOfWeek(for: Date())
-            viewModel.currentDayIndex = viewModel.weekdayIndex(for: Date())
+            withAnimation(.easeInOut(duration: 0.3)) {
+                viewModel.daysOfWeek = viewModel.getDaysOfWeek(for: Date())
+                viewModel.currentDayIndex = viewModel.weekdayIndex(for: Date())
+            }
         }
         .onChange(of: viewModel.daysOfWeek) { _ in
             print(viewModel.daysOfWeek)
+        }
+        .onChange(of: viewModel.currentDayIndex) { _ in
+            print(viewModel.currentDayIndex)
         }
         .onAppear {
             print(viewModel.daysOfWeek)

@@ -10,8 +10,6 @@ import SwiftUI
 class LoginScreenViewModel: ObservableObject {
     
     @Published private var model: LoginScreenModel = LoginScreenModel()
-    //    var rememberPassword: Bool = true
-    @Published var isValidated: Bool = false
     
     let toggleValidationStatusClosure: (Bool) -> Void
     
@@ -57,18 +55,17 @@ class LoginScreenViewModel: ObservableObject {
         withAnimation(.linear(duration: 0.1)) {
             showProgressView = true
         }
-        AuthenticationViewModel.shared.login(email: emailText, password: passwordText) { [unowned self] (result:Result<Bool, AuthenticationViewModel.AuthenticationError>) in
+        AuthenticationViewModel.shared.login(email: emailText, password: passwordText) { [unowned self] (result: Result<Bool, AuthenticationViewModel.AuthenticationError>) in
             showProgressView = false
             switch result {
             case .success:
                 completion(true)
             case .failure(let authError):
-                self.emailText = ""
-                self.passwordText = ""
                 error = authError
                 completion(false)
             }
         }
     }
+    
 }
 
