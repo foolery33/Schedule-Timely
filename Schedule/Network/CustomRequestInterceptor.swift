@@ -33,12 +33,12 @@ class CustomRequestInterceptor: RequestInterceptor {
         }
         
         switch statusCode {
-        case 401:
-            refreshToken { [weak self] in
-                guard let self,
-                      request.retryCount < self.retryLimit else { return }
-                completion(.retryWithDelay(self.retryDelay))
-            }
+//        case 401:
+//            refreshToken { [weak self] in
+//                guard let self,
+//                      request.retryCount < self.retryLimit else { return }
+//                completion(.retryWithDelay(self.retryDelay))
+//            }
         case (500...599):
             guard request.retryCount < retryLimit else { return }
             completion(.retryWithDelay(retryDelay))
@@ -47,8 +47,8 @@ class CustomRequestInterceptor: RequestInterceptor {
         }
     }
     
-    private func refreshToken(completion: @escaping (() -> Void)) {
-        print("refresh")
+//    private func refreshToken(completion: @escaping (() -> Void)) {
+//        print("refresh")
 //        let httpParameters: [String: String] = [
 //            "userName": TokenManager.shared.fetchEmail(),
 //            "password": TokenManager.shared.fetchPassword()
@@ -75,5 +75,5 @@ class CustomRequestInterceptor: RequestInterceptor {
 //                return
 //            }
 //        }
-    }
+//    }
 }

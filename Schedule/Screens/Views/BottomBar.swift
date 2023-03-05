@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BottomBar: View {
     
+    @EnvironmentObject var generalViewModel: GeneralViewModel
     @Binding var refreshCount: Int
     @Binding var showDatePicker: Bool
     
@@ -40,7 +41,7 @@ struct BottomBar: View {
                     }
                 }
                 Spacer()
-                NavigationLink(destination: ProfileScreen().navigationBarBackButtonHidden(true)) {
+                NavigationLink(destination: ProfileScreen(viewModel: generalViewModel.profileScreenViewModel).navigationBarBackButtonHidden(true)) {
                     VStack(spacing: 2) {
                         Image(systemName: "person")
                             .imageScale(.large)

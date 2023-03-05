@@ -53,7 +53,7 @@ struct LoginScreen: View {
                         }
                     }
                     .alert(item: $viewModel.error) { error in
-                        Alert(title: Text("Invalid Login"), message: Text(error.localizedDescription))
+                        Alert(title: Text("Invalid Login"), message: Text(error.errorDescription))
                     }
                     Spacer().frame(height: 30)
                     HStack {

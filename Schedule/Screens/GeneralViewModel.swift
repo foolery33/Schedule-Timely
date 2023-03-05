@@ -9,13 +9,16 @@ import SwiftUI
 
 class GeneralViewModel: ObservableObject {
     
-    @Published var isValidated: Bool = false
+    @Published var isValidated: Bool = !TokenManager.shared.fetchAccessToken().isEmpty
     
     // MARK: Login Screen
     @Published var loginScreenViewModel: LoginScreenViewModel!
     
     // MARK: Register Screen
     @Published var registerScreenViewModel: RegisterScreenViewModel!
+    
+    // MARK: Profile Screen
+    @Published var profileScreenViewModel: ProfileScreenViewModel!
     
     init() {
         registerScreenViewModel = .init(
@@ -26,6 +29,13 @@ class GeneralViewModel: ObservableObject {
             }
         )
         loginScreenViewModel = .init(
+            toggleValidationStatusClosure: { result in
+                withAnimation(.easeInOut(duration: 1)) {
+                    self.isValidated = result
+                }
+            }
+        )
+        profileScreenViewModel = .init(
             toggleValidationStatusClosure: { result in
                 withAnimation(.easeInOut(duration: 1)) {
                     self.isValidated = result
@@ -45,9 +55,6 @@ class GeneralViewModel: ObservableObject {
 //    @Published var currentDayIndex: Int = MainScreenViewModel().weekdayIndex(for: Date())
 //    @Published var daysOfWeek: [Date] = MainScreenViewModel().getDaysOfWeek(for: Date())
     
-    // MARK: Profile Screen
-    @Published var profileScreenViewModel: ProfileScreenViewModel = ProfileScreenViewModel()
-//    @Published var showAvatarAlert: Bool = false
     @Published var showEditInfo: Bool = false
     
     // MARK: Edit Profile Screen

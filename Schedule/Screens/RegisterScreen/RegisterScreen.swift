@@ -62,15 +62,23 @@ struct RegisterScreen: View {
                 Group {
                     FilledButton(text: "Sign up") {
                         viewModel.register { success in
-                            if(success) {
-                                presentationMode.wrappedValue.dismiss()
-                            }
                             viewModel.toggleValidationStatusClosure(success)
+                            if(success) {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                        viewModel.showProgressView = false
+                                    }
+                                    presentationMode.wrappedValue.dismiss()
+                                }
+                            }
+                            else {
+                                viewModel.showProgressView = false
+                            }
                         }
                     }
-                        .alert(item: $viewModel.error) { error in
-                            Alert(title: Text("Invalid Registration"), message: Text(error.localizedDescription))
-                        }
+                    .alert(item: $viewModel.error) { error in
+                        Alert(title: Text("Invalid Registration"), message: Text(error.errorDescription))
+                    }
                 }
                 Spacer()
                 HStack(alignment: .center, spacing: 0) {

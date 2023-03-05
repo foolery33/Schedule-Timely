@@ -12,6 +12,11 @@
 		840A445A29A2471800C519DD /* TeacherPickerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840A445929A2471800C519DD /* TeacherPickerScreen.swift */; };
 		840A445D29A270FC00C519DD /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840A445C29A270FC00C519DD /* ProfileScreen.swift */; };
 		840A446029A274B700C519DD /* SwiftUICurvedRectangleShape in Frameworks */ = {isa = PBXBuildFile; productRef = 840A445F29A274B700C519DD /* SwiftUICurvedRectangleShape */; };
+		840DBCE929B348A20062185C /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840DBCE829B348A20062185C /* ResponseModel.swift */; };
+		840DBCEC29B362310062185C /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840DBCEB29B362310062185C /* ProfileViewModel.swift */; };
+		840DBCEF29B36A490062185C /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840DBCEE29B36A490062185C /* ProfileModel.swift */; };
+		840DBCF129B36B950062185C /* GroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840DBCF029B36B950062185C /* GroupModel.swift */; };
+		840DBCF329B36C860062185C /* TeacherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840DBCF229B36C860062185C /* TeacherModel.swift */; };
 		8415768029AC77760057D8D1 /* CustomRequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8415767F29AC77760057D8D1 /* CustomRequestInterceptor.swift */; };
 		8415768329AC77A70057D8D1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8415768229AC77A70057D8D1 /* Alamofire */; };
 		8415768529AC77C00057D8D1 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8415768429AC77C00057D8D1 /* TokenManager.swift */; };
@@ -104,6 +109,11 @@
 		840A445629A2025D00C519DD /* SearchingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchingTextField.swift; sourceTree = "<group>"; };
 		840A445929A2471800C519DD /* TeacherPickerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherPickerScreen.swift; sourceTree = "<group>"; };
 		840A445C29A270FC00C519DD /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
+		840DBCE829B348A20062185C /* ResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModel.swift; sourceTree = "<group>"; };
+		840DBCEB29B362310062185C /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		840DBCEE29B36A490062185C /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
+		840DBCF029B36B950062185C /* GroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupModel.swift; sourceTree = "<group>"; };
+		840DBCF229B36C860062185C /* TeacherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherModel.swift; sourceTree = "<group>"; };
 		8415767F29AC77760057D8D1 /* CustomRequestInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRequestInterceptor.swift; sourceTree = "<group>"; };
 		8415768429AC77C00057D8D1 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		8415768A29AC81270057D8D1 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
@@ -245,9 +255,29 @@
 			path = ProfileScreen;
 			sourceTree = "<group>";
 		};
+		840DBCEA29B361D60062185C /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				840DBCED29B36A3C0062185C /* Model */,
+				840DBCEB29B362310062185C /* ProfileViewModel.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		840DBCED29B36A3C0062185C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				840DBCEE29B36A490062185C /* ProfileModel.swift */,
+				840DBCF029B36B950062185C /* GroupModel.swift */,
+				840DBCF229B36C860062185C /* TeacherModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		8415767E29AC77660057D8D1 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				840DBCEA29B361D60062185C /* Profile */,
 				84F581BC29B0A5CB001A3953 /* Use Cases */,
 				8415768929AC810D0057D8D1 /* Authentication */,
 				8415767F29AC77760057D8D1 /* CustomRequestInterceptor.swift */,
@@ -530,6 +560,7 @@
 			isa = PBXGroup;
 			children = (
 				84CFDDAF29ADEF9700061429 /* TokenResponseModel.swift */,
+				840DBCE829B348A20062185C /* ResponseModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -767,6 +798,7 @@
 				84CC1C06299BE5210075EAFC /* MainScreen.swift in Sources */,
 				84B494E729A76691004D2A75 /* LoginScreenViewModel.swift in Sources */,
 				840A445429A1E86000C519DD /* GroupPickerScreen.swift in Sources */,
+				840DBCEF29B36A490062185C /* ProfileModel.swift in Sources */,
 				8415768B29AC81270057D8D1 /* AuthenticationViewModel.swift in Sources */,
 				84C274B829A8F737001A48ED /* ProfileScreenModel.swift in Sources */,
 				84EC108529AA508000D1E407 /* DatePickerView.swift in Sources */,
@@ -790,6 +822,8 @@
 				84C274BA29A8F77D001A48ED /* ProfileScreenViewModel.swift in Sources */,
 				840A445A29A2471800C519DD /* TeacherPickerScreen.swift in Sources */,
 				846F8F4B299E854800FB3F93 /* AboutSubjectData.swift in Sources */,
+				840DBCF129B36B950062185C /* GroupModel.swift in Sources */,
+				840DBCF329B36C860062185C /* TeacherModel.swift in Sources */,
 				84908730299CF97200D82210 /* DateView.swift in Sources */,
 				84B6241129AA2B4C00FCDBDA /* BottomBar.swift in Sources */,
 				84CC1C09299BE69C0075EAFC /* Colors.swift in Sources */,
@@ -802,6 +836,8 @@
 				84C274A829A8D086001A48ED /* GroupPickerScreenViewModel.swift in Sources */,
 				84C61B2E29A0EE200024E91C /* LoginScreen.swift in Sources */,
 				84E72C2F299A86D40060B9D7 /* ContentView.swift in Sources */,
+				840DBCE929B348A20062185C /* ResponseModel.swift in Sources */,
+				840DBCEC29B362310062185C /* ProfileViewModel.swift in Sources */,
 				84C274AC29A8D4AB001A48ED /* TeacherPickerScreenModel.swift in Sources */,
 				84E72C2D299A86D40060B9D7 /* ScheduleApp.swift in Sources */,
 				84C61B3129A0F1150024E91C /* TextFieldView.swift in Sources */,

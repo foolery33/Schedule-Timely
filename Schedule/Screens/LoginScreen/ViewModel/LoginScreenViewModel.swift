@@ -47,10 +47,6 @@ class LoginScreenViewModel: ObservableObject {
     @Published var showProgressView = false
     @Published var error: AuthenticationViewModel.AuthenticationError?
     
-    var loginDisabled: Bool {
-        emailText.isEmpty || passwordText.isEmpty
-    }
-    
     func login(completion: @escaping (Bool) -> Void) {
         withAnimation(.linear(duration: 0.1)) {
             showProgressView = true
@@ -62,6 +58,7 @@ class LoginScreenViewModel: ObservableObject {
                 completion(true)
             case .failure(let authError):
                 error = authError
+                print("Error: ", error!.localizedDescription)
                 completion(false)
             }
         }

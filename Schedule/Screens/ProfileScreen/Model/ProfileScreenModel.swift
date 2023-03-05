@@ -10,7 +10,7 @@ import Foundation
 struct ProfileScreenModel {
     
     var emailText: String = ""
-    var role: Int = -1
+    var role: String = ""
     var avatarLinkText: String = ""
     var showAvatarAlert: Bool = false
     var showEditInfo: Bool = false

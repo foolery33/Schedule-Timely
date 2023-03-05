@@ -47,17 +47,11 @@ class RegisterScreenViewModel: ObservableObject {
     @Published var showProgressView = false
     @Published var error: AuthenticationViewModel.AuthenticationError?
     
-    var registerDisabled: Bool {
-        emailText.isEmpty || passwordText.isEmpty || confirmPasswordText.isEmpty
-    }
-    
     func register(completion: @escaping (Bool) -> Void) {
         withAnimation(.linear(duration: 0.1)) {
             showProgressView = true
         }
-        
         AuthenticationViewModel.shared.register(email: emailText, password: passwordText, confirmPassword: confirmPasswordText) { [unowned self] (result: Result<Bool, AuthenticationViewModel.AuthenticationError>) in
-            showProgressView = false
             switch result {
             case .success:
                 completion(true)

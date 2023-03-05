@@ -30,12 +30,13 @@ class AuthenticationViewModel {
         case noDigitSymbol
         case differentPasswords
         case emailExists
+        case unauthorized
         
         var id: String {
-            self.localizedDescription
+            self.errorDescription
         }
         
-        var errorDescription: String? {
+        var errorDescription: String {
             switch self {
             case .noCredentials:
                 return NSLocalizedString("Please make sure that you've provided all necessary data", comment: "")
@@ -63,14 +64,14 @@ class AuthenticationViewModel {
                 return NSLocalizedString("Please make sure that 'password' and 'confirm password' fields contain the same values", comment: "")
             case .emailExists:
                 return NSLocalizedString("User with such email already exists", comment: "")
-                
+            case .unauthorized:
+                return NSLocalizedString("Your token is expired. Please login again", comment: "")
             }
         }
     }
     
     func login(email: String, password: String, completion: @escaping (Result<Bool, AuthenticationViewModel.AuthenticationError>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            
+        DispatchQueue.main.async {
             if(email == "" || password == "") {
                 completion(.failure(.noCredentials))
                 return
@@ -81,13 +82,11 @@ class AuthenticationViewModel {
                 "password": password
             ]
             let url = self.baseURL + "/api/account/login"
-            print(url)
             print(email, password)
-            AF.request(url, method: .post, parameters: httpParameters, encoder: JSONParameterEncoder.default, interceptor: self.interceptor).responseData { response in
+            AF.request(url, method: .post, parameters: httpParameters, encoder: JSONParameterEncoder.default, interceptor: self.interceptor).validate(statusCode: 200..<300).responseData { response in
                 switch response.result {
                 case .success(let data):
                     do {
-                        print("Success")
                         let decodedData = try JSONDecoder().decode(TokenResponseModel.self, from: data)
                         TokenManager.shared.saveData(email: email, password: password, accessToken: decodedData.token ?? "")
                         completion(.success(true))
@@ -95,7 +94,17 @@ class AuthenticationViewModel {
                         completion(.failure(.serverError))
                     }
                 case .failure(_):
-                    completion(.failure(.invalidCredentials))
+                    if let requestStatusCode = response.response?.statusCode {
+                        switch requestStatusCode {
+                        case 400, 401:
+                            completion(.failure(.invalidCredentials))
+                        default:
+                            completion(.failure(.serverError))
+                        }
+                    }
+                    else {
+                        completion(.failure(.serverError))
+                    }
                 }
             }
         }
@@ -103,7 +112,7 @@ class AuthenticationViewModel {
     }
     
     func register(email: String, password: String, confirmPassword: String, completion: @escaping (Result<Bool, AuthenticationViewModel.AuthenticationError>) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.async {
             
             if(email == "" || password == "" || confirmPassword == "") {
                 completion(.failure(.noCredentials))
@@ -116,13 +125,11 @@ class AuthenticationViewModel {
             }
             
             let httpParameters: [String: String] = [
-                "fullName": "Some Username", // в мобильной версии не нужно использовать этот параметр, поэтому оно будет стандартно для всех пользователей
+                "fullName": "Some Username", // в мобильной версии не нужно использовать этот параметр, поэтому он будет стандартным для всех пользователей
                 "password": password,
                 "email": email
             ]
-            print(httpParameters)
             let url = self.baseURL + "/api/account/register"
-            print(url)
             print(email, password)
             AF.request(url, method: .post, parameters: httpParameters, encoder: JSONParameterEncoder.default, interceptor: self.interceptor).responseData { response in
                 if let requestStatusCode = response.response?.statusCode {
@@ -131,7 +138,6 @@ class AuthenticationViewModel {
                 switch response.result {
                 case .success(let data):
                     do {
-                        print("Success")
                         let decodedData = try JSONDecoder().decode(TokenResponseModel.self, from: data)
                         TokenManager.shared.saveData(email: email, password: password, accessToken: decodedData.token ?? "")
                         completion(.success(true))
@@ -141,7 +147,6 @@ class AuthenticationViewModel {
                         }
                         else {
                             if let requestStatusCode = response.response?.statusCode {
-                                print(requestStatusCode)
                                 switch requestStatusCode {
                                 case 400:
                                     completion(.failure(.invalidEmail))
@@ -154,6 +159,33 @@ class AuthenticationViewModel {
                         }
                     }
                 case .failure(_):
+                    completion(.failure(.serverError))
+                }
+            }
+        }
+    }
+    
+    func logout(completion: @escaping (Result<Bool, AuthenticationViewModel.AuthenticationError>) -> Void) {
+        let url = self.baseURL + "/api/account/logout"
+        AF.request(url, method: .post, interceptor: self.interceptor).validate(statusCode: 200..<300).responseData { response in
+            if let requestStatusCode = response.response?.statusCode {
+                print(requestStatusCode)
+            }
+            switch response.result {
+            case .success(_):
+                do {
+                    completion(.success(true))
+                }
+            case .failure(_):
+                if let requestStatusCode = response.response?.statusCode {
+                    switch requestStatusCode {
+                    case 401:
+                        completion(.success(true))
+                    default:
+                        completion(.failure(.serverError))
+                    }
+                }
+                else {
                     completion(.failure(.serverError))
                 }
             }
