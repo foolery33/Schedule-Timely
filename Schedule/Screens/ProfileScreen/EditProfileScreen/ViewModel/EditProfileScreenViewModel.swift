@@ -11,6 +11,12 @@ class EditProfileScreenViewModel: ObservableObject {
     
     @Published private var model: EditProfileScreenModel = EditProfileScreenModel()
     
+    let toggleValidationStatusClosure: (Bool) -> Void
+    
+    init(toggleValidationStatusClosure: @escaping (Bool) -> Void) {
+        self.toggleValidationStatusClosure = toggleValidationStatusClosure
+    }
+    
     var emailText: String {
         get {
             model.emailText

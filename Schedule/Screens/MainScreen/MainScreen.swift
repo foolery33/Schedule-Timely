@@ -14,156 +14,172 @@ struct MainScreen: View {
     @State private var refreshCount: Int = 0
     @State private var showDatePicker: Bool = false
     @State private var currentDate: Date = Date()
+    private let animationLength: Double = 0.2
     
     var body: some View {
-        
-        GeometryReader { geo in
-            ZStack(alignment: .bottom) {
-                VStack(spacing: 0) {
-                    Color.softWhite.frame(height: geo.safeAreaInsets.top)
-                    HStack {
-                        Text(
-                            viewModel.getDayOfMonthByDate(date: viewModel.daysOfWeek[viewModel.currentDayIndex])
+        ZStack {
+            GeometryReader { geo in
+                ZStack(alignment: .bottom) {
+                    VStack(spacing: 0) {
+                        Color.softWhite.frame(height: geo.safeAreaInsets.top)
+                        HStack {
+                            Text(
+                                viewModel.getDayOfMonthByDate(date: viewModel.daysOfWeek[viewModel.currentDayIndex])
                             )
                             .font(.custom("Poppins-Medium", size: 40))
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(viewModel.getDayOfWeekByDate(date: viewModel.daysOfWeek[viewModel.currentDayIndex], lettersCount: 3))
-                            Text(
-                                "\(viewModel.abbreviatedMonthName(date: viewModel.daysOfWeek[viewModel.currentDayIndex], count: 3)) \(String(viewModel.getYearFromDate(viewModel.daysOfWeek[viewModel.currentDayIndex])))"
-                            )
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(viewModel.getDayOfWeekByDate(date: viewModel.daysOfWeek[viewModel.currentDayIndex], lettersCount: 3))
+                                Text(
+                                    "\(viewModel.abbreviatedMonthName(date: viewModel.daysOfWeek[viewModel.currentDayIndex], count: 3)) \(String(viewModel.getYearFromDate(viewModel.daysOfWeek[viewModel.currentDayIndex])))"
+                                )
+                            }
+                            .padding(.bottom, 1)
+                            .foregroundColor(.softGray)
+                            .font(.custom("Poppins-Medium", size: 13))
+                            Spacer()
+                            if(viewModel.isToday(viewModel.daysOfWeek[viewModel.currentDayIndex])) {
+                                Text("Today")
+                                    .foregroundColor(.todayTextColor)
+                                    .padding([.leading, .trailing], 18)
+                                    .padding([.top, .bottom], 11)
+                                    .background(RoundedRectangle(cornerRadius: 10).fill(Color.todayTextBackgroundColor))
+                                    .font(.custom("Poppins-Semibold", size: 15))
+                                
+                            }
                         }
-                        .padding(.bottom, 1)
-                        .foregroundColor(.softGray)
-                        .font(.custom("Poppins-Medium", size: 13))
-                        Spacer()
-                        if(viewModel.isToday(viewModel.daysOfWeek[viewModel.currentDayIndex])) {
-                            Text("Today")
-                                .foregroundColor(.todayTextColor)
-                                .padding([.leading, .trailing], 18)
-                                .padding([.top, .bottom], 11)
-                                .background(RoundedRectangle(cornerRadius: 10).fill(Color.todayTextBackgroundColor))
-                                .font(.custom("Poppins-Semibold", size: 15))
-                        }
-                    }
-                    .padding([.leading, .trailing], 20)
-                    .padding(.top, 10)
-                    .padding(.bottom, 20)
-                    ZStack(alignment: .bottom) {
-                        RoundedRectangle(cornerRadius: 30).fill(.white)
-                            .edgesIgnoringSafeArea(.bottom)
-                        VStack(spacing: 0) {
-                            HStack(spacing: 0) {
-                                Image(systemName: "chevron.backward")
-                                    .onTapGesture {
-                                        withAnimation {
-                                            viewModel.daysOfWeek = viewModel.getDaysOfWeek(
-                                                for: viewModel.getDateWithOffset(
-                                                    from: viewModel.daysOfWeek[0], byDays: -1
-                                                )
-                                            )
-                                            viewModel.currentDayIndex = 0
+                        .padding([.leading, .trailing], 20)
+                        .padding(.top, 10)
+                        .padding(.bottom, 20)
+                        .animation(.linear(duration: animationLength), value: viewModel.currentDayIndex)
+                        ZStack(alignment: .bottom) {
+                            RoundedRectangle(cornerRadius: 30).fill(.white)
+                                .edgesIgnoringSafeArea(.bottom)
+                            VStack(spacing: 0) {
+                                HStack(spacing: 0) {
+                                    Image(systemName: "chevron.backward")
+                                        .onTapGesture {
+                                            prepareData(forward: false)
+                                            loadSchedule()
                                         }
-                                    }
-                                Spacer()
-                                ForEach(viewModel.daysOfWeek, id: \.self) { day in
-                                    DateView(
-                                        dayOfWeek: viewModel.getDayOfWeekByDate(date: day, lettersCount: 1),
-                                        dayOfMonth: viewModel.getDayOfMonthByDate(date: day),
-                                        isPressed: (viewModel.currentDayIndex == viewModel.weekdayIndex(for: day))
-                                    )
-                                    .onTapGesture {
-                                        withAnimation(.linear(duration: 0.2)) {
+                                    Spacer()
+                                    ForEach(viewModel.daysOfWeek, id: \.self) { day in
+                                        DateView(
+                                            dayOfWeek: viewModel.getDayOfWeekByDate(date: day, lettersCount: 1),
+                                            dayOfMonth: viewModel.getDayOfMonthByDate(date: day),
+                                            isPressed: (viewModel.currentDayIndex == viewModel.weekdayIndex(for: day))
+                                        )
+                                        .animation(.linear(duration: animationLength), value: viewModel.currentDayIndex)
+                                        .onTapGesture {
                                             viewModel.currentDayIndex = viewModel.weekdayIndex(for: day)
                                         }
                                     }
-                                }
-                                Spacer()
-                                Image(systemName: "chevron.forward")
-                                    .onTapGesture {
-                                        withAnimation {
-                                            viewModel.daysOfWeek = viewModel.getDaysOfWeek(
-                                                for: viewModel.getDateWithOffset(
-                                                    from: viewModel.daysOfWeek[6], byDays: 1
-                                                )
-                                            )
-                                            viewModel.currentDayIndex = 0
-                                        }
-                                    }
-                            }
-                            .padding([.leading, .trailing], 10)
-                            .padding([.top, .bottom] , 10)
-                            Divider().frame(height: 2).overlay(Color.softWhite)
-                            Spacer().frame(height: 10)
-                            HStack(spacing: 0) {
-                                Text("Time")
-                                    .frame(width: 50, alignment: .leading)
-                                    .font(.custom("Poppins-Medium", size: 14))
-                                Text("Course")
-                                    .font(.custom("Poppins-Medium", size: 14))
-                                Spacer()
-                                Image(systemName: "arrow.turn.right.down")
-                                    .imageScale(.medium)
-                                    .rotationEffect(Angle.degrees(viewModel.isAscendingOrder ? 0 : 180))
-                                    .onTapGesture {
-                                        withAnimation {
-                                            viewModel.isAscendingOrder.toggle()
-                                        }
-                                    }
-                                    .onChange(of: viewModel.isAscendingOrder) { _ in
-                                        print(viewModel.isAscendingOrder)
-                                    }
-                            }
-                            .padding([.leading, .trailing], 20)
-                            .foregroundColor(.softGray)
-                            Spacer().frame(height: 15)
-                            TabView(selection: $viewModel.currentDayIndex) {
-                                ForEach(0...6, id: \.self) { day in
-                                    ScheduleDayView()
+                                    Spacer()
+                                    Image(systemName: "chevron.forward")
                                         .onTapGesture {
-                                            print("Day is: \(day), and currentDayIndex is: \(viewModel.currentDayIndex)")
+                                            prepareData(forward: true)
+                                            loadSchedule()
                                         }
-                                        .edgesIgnoringSafeArea(.bottom)
                                 }
+                                .padding([.leading, .trailing], 10)
+                                .padding([.top, .bottom] , 10)
+                                Divider().frame(height: 2).overlay(Color.softWhite)
+                                Spacer().frame(height: 10)
+                                HStack(spacing: 0) {
+                                    Text("Time")
+                                        .frame(width: 50, alignment: .leading)
+                                        .font(.custom("Poppins-Medium", size: 14))
+                                    Text("Course")
+                                        .font(.custom("Poppins-Medium", size: 14))
+                                    Spacer()
+                                    Image(systemName: "arrow.turn.right.up")
+                                        .imageScale(.medium)
+                                        .rotationEffect(Angle.degrees(viewModel.isAscendingOrder ? 0 : -180))
+                                        .onTapGesture {
+                                            withAnimation {
+                                                viewModel.isAscendingOrder.toggle()
+                                            }
+                                        }
+                                        .onChange(of: viewModel.isAscendingOrder) { _ in
+                                            print(viewModel.isAscendingOrder)
+                                        }
+                                }
+                                .padding([.leading, .trailing], 20)
+                                .foregroundColor(.softGray)
+                                Spacer().frame(height: 15)
+                                TabView(selection: $viewModel.currentDayIndex) {
+                                    ForEach(0...6, id: \.self) { day in
+                                        ScheduleDayView(
+                                            lessons: viewModel.isAscendingOrder ?
+                                            viewModel.sortedWeekLessons[day] :
+                                            viewModel.sortedWeekLessons[day].reversed()
+                                        )
+                                        .edgesIgnoringSafeArea(.bottom)
+                                    }
+                                }
+                                .animation(.linear(duration: animationLength), value: viewModel.currentDayIndex)
+                                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                             }
-                            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                            BottomBar(refreshCount: $refreshCount, showDatePicker: $showDatePicker)
+                                .environmentObject(viewModel)
+                                .padding(20)
                         }
-                        BottomBar(refreshCount: $refreshCount, showDatePicker: $showDatePicker)
-                            .environmentObject(viewModel)
-                            .padding(20)
+                        .edgesIgnoringSafeArea(.bottom)
                     }
-                    .edgesIgnoringSafeArea(.bottom)
+                    .background(Color.softWhite)
+                    .edgesIgnoringSafeArea([.top, .bottom])
+                    
                 }
-                .background(Color.softWhite)
-                .edgesIgnoringSafeArea([.top, .bottom])
-                
+                .edgesIgnoringSafeArea(.bottom)
+                .sheet(isPresented: $showDatePicker) {
+                    DatePickerView(selectedDate: $currentDate) {
+                        print("action preformed")
+                        print(currentDate)
+                        viewModel.daysOfWeek = viewModel.getDaysOfWeek(for: currentDate)
+                        viewModel.currentDayIndex = viewModel.weekdayIndex(for: currentDate)
+                        currentDate = Date()
+                        loadSchedule()
+                    }
+                    .presentationDetents([.height(350)])
+                }
             }
-            .edgesIgnoringSafeArea(.bottom)
-            .sheet(isPresented: $showDatePicker) {
-                DatePickerView(selectedDate: $currentDate) {
-                    print("action preformed")
-                    print(currentDate)
-                    viewModel.daysOfWeek = viewModel.getDaysOfWeek(for: currentDate)
-                    viewModel.currentDayIndex = viewModel.weekdayIndex(for: currentDate)
-                    currentDate = Date()
-                }
-                .presentationDetents([.height(350)])
+            if(viewModel.showProgressView) {
+                Rectangle().fill(Color.white.opacity(0.5))
+                .edgesIgnoringSafeArea(.all)
+                ProgressView()
             }
         }
-//        .id(refreshCount)
         .onChange(of: refreshCount) { _ in
-            withAnimation(.easeInOut(duration: 0.3)) {
+            withAnimation(.easeInOut(duration: 0.2)) {
                 viewModel.daysOfWeek = viewModel.getDaysOfWeek(for: Date())
                 viewModel.currentDayIndex = viewModel.weekdayIndex(for: Date())
+                loadSchedule()
             }
         }
-        .onChange(of: viewModel.daysOfWeek) { _ in
-            print(viewModel.daysOfWeek)
-        }
-        .onChange(of: viewModel.currentDayIndex) { _ in
-            print(viewModel.currentDayIndex)
-        }
         .onAppear {
-            print(viewModel.daysOfWeek)
+            loadSchedule()
+        }
+    }
+    
+    func prepareData(forward: Bool) {
+        viewModel.daysOfWeek = viewModel.getDaysOfWeek(
+            for: viewModel.getDateWithOffset(
+                from: viewModel.daysOfWeek[forward ? 6 : 0], byDays: (forward ? 1 : -1)
+            )
+        )
+        viewModel.currentDayIndex = 0
+        viewModel.sortedWeekLessons = [[], [], [], [], [], [], []]
+    }
+    
+    func loadSchedule() {
+        if(!UserStorage.shared.fetchGroupId().isEmpty) {
+            viewModel.getGroupSchedule(date: ConvertDateIntoString().convert(viewModel.daysOfWeek[viewModel.currentDayIndex])) { success in
+                viewModel.showProgressView = false
+                if(success) {
+                    viewModel.sortedWeekLessons = GetWeekSchedule().getWeekSchedule(from: viewModel.weekLessons, dates: viewModel.daysOfWeek)
+                    print(viewModel.sortedWeekLessons)
+                    print(viewModel.sortedWeekLessons.count)
+                }
+            }
         }
     }
     
@@ -184,12 +200,12 @@ extension String {
     }
 }
 
-struct MainScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            MainScreen(viewModel: MainScreenViewModel())
-        }
-        .environmentObject(GeneralViewModel())
-    }
-}
+//struct MainScreen_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationStack {
+//            MainScreen(viewModel: MainScreenViewModel())
+//        }
+//        .environmentObject(GeneralViewModel())
+//    }
+//}
 

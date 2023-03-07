@@ -23,4 +23,19 @@ extension Color {
     public static let redColor: Color = Color(UIColor(red: 255/255, green: 82/255, blue: 82/255, alpha: 1.0))
     public static let softBlue: Color = Color(UIColor(red: 243/255, green: 248/255, blue: 255/255, alpha: 1.0))
     public static let softWhite3: Color = Color(UIColor(red: 230/255, green: 229/255, blue: 226/255, alpha: 1.0))
+    
+    // Цвета типов пар
+    public static let laboratoryColor: Color = Color(UIColor(red: 230/255, green: 246/255, blue: 255/255, alpha: 1.0))
+    public static let lectionColor: Color = Color(UIColor(red: 255/255, green: 240/255, blue: 239/255, alpha: 1.0))
+    public static let practiseColor: Color = Color(UIColor(red: 240/255, green: 245/255, blue: 255/255, alpha: 1.0))
+    public static let seminarColor: Color = Color(UIColor(red: 255/255, green: 247/255, blue: 230/255, alpha: 1.0))
+    public static let examColor: Color = Color(UIColor(red: 248/255, green: 240/255, blue: 255/255, alpha: 1.0))
+    
+    // Цвета текстов на парах различного типа
+    public static let laboratoryTextColor: Color = Color(UIColor(red: 87/255, green: 149/255, blue: 229/255, alpha: 1.0))
+    public static let lectionTextColor: Color = Color(UIColor(red: 223/255, green: 89/255, blue: 92/255, alpha: 1.0))
+    public static let practiseTextColor: Color = Color(UIColor(red: 83/255, green: 103/255, blue: 211/255, alpha: 1.0))
+    public static let seminarTextColor: Color = Color(UIColor(red: 220/255, green: 132/255, blue: 61/255, alpha: 1.0))
+    public static let examTextColor: Color = Color(UIColor(red: 127/255, green: 85/255, blue: 193/255, alpha: 1.0))
+    
 }

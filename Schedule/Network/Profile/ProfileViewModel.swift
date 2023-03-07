@@ -18,6 +18,7 @@ class ProfileViewModel {
     private let baseURL: String = "http://timely.markridge.space"
     
     enum ProfileError: Error, LocalizedError, Identifiable {
+        
         case unauthorized
         case serverError
         
@@ -36,31 +37,23 @@ class ProfileViewModel {
         
     }
     
-    func getProfile(completion: @escaping (Result<ProfileModel, ProfileViewModel.ProfileError>) -> Void) {
-        let url = self.baseURL + "/api/accout/profile"
-        AF.request(url, interceptor: self.interceptor).responseData { response in
+    func getProfile(completion: @escaping (Result<ProfileModel, AppError>) -> Void) {
+        let url = self.baseURL + "/api/account/profile"
+        AF.request(url, interceptor: self.interceptor).validate().responseData { response in
             if let requestStatusCode = response.response?.statusCode {
-                print(requestStatusCode)
+                print("Get Profile Status Code: ", requestStatusCode)
             }
             switch response.result {
             case .success(let data):
                 do {
-                    if let requestStatusCode = response.response?.statusCode {
-                        switch requestStatusCode {
-                        case 200:
-                            let decodedData = try JSONDecoder().decode(ProfileModel.self, from: data)
-                            completion(.success(decodedData))
-                        case 401:
-                            completion(.failure(.unauthorized))
-                        default:
-                            completion(.failure(.serverError))
-                        }
-                    }
+                    let decodedData = try JSONDecoder().decode(ProfileModel.self, from: data)
+                    completion(.success(decodedData))
                 } catch(_) {
-                    completion(.failure(.serverError))
+                    print("Fail")
+                    completion(.failure(.profileError(.serverError)))
                 }
             case .failure(_):
-                completion(.failure(.serverError))
+                completion(.failure(.profileError(.serverError)))
             }
         }
         

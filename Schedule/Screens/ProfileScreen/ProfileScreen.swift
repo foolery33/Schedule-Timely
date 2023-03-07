@@ -6,6 +6,7 @@ struct ProfileScreen: View {
     @EnvironmentObject var generalViewModel: GeneralViewModel
     @ObservedObject var viewModel: ProfileScreenViewModel
     @Environment(\.presentationMode) var presentationMode
+    @State var showContent: Bool = false
 
     @Environment(\.dismiss) var dismiss
 
@@ -23,9 +24,8 @@ struct ProfileScreen: View {
                                 AsyncImage(url: URL(string: viewModel.avatarLinkText)) { image in
                                     image
                                         .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 140, height: 140)
                                         .aspectRatio(contentMode: .fill)
+                                        .frame(width: 140, height: 140)
                                         .clipShape(Circle())
                                 } placeholder: {
                                     ZStack(alignment: .center) {
@@ -66,13 +66,21 @@ struct ProfileScreen: View {
                     }
                     VStack {
                         Spacer().frame(height: 5)
-                        Text(viewModel.role)
-                            .foregroundColor(.dayOfMonthColor)
-                            .font(.custom("Poppins-Semibold", size: 22))
-                        Spacer().frame(height: 1)
-                        Text(viewModel.emailText)
-                            .foregroundColor(.dayOfMonthColor)
-                            .font(.custom("Poppins-Regular", size: 14))
+                        if(!viewModel.role.isEmpty) {
+                            Text(viewModel.role)
+                                .foregroundColor(.dayOfMonthColor)
+                                .font(.custom("Poppins-Semibold", size: 22))
+                        }
+                        if(!viewModel.additionalInfo.isEmpty) {
+                            Text(viewModel.additionalInfo)
+                                .foregroundColor(.dayOfMonthColor)
+                                .font(.custom("Poppins-Regular", size: 14))
+                        }
+                        if(!viewModel.emailText.isEmpty) {
+                            Text(viewModel.emailText)
+                                .foregroundColor(.dayOfMonthColor)
+                                .font(.custom("Poppins-Regular", size: 14))
+                        }
                         Spacer().frame(height: 32)
                         VStack(spacing: 0) {
                             ProfileSection(imageName: "newspaper", text: "Edit profile information", paddings: EdgeInsets(top: 16, leading: 16, bottom: 12, trailing: 16))
@@ -82,7 +90,7 @@ struct ProfileScreen: View {
                                 }
                                 .sheet(isPresented: $viewModel.showEditInfo) {
                                     NavigationStack {
-                                        EditProfileScreen()
+                                        EditProfileScreen(viewModel: generalViewModel.editProfileScreenViewModel)
                                     }
                                     .presentationDetents([.medium, .medium])
                                 }
@@ -97,24 +105,30 @@ struct ProfileScreen: View {
                                         if(success) {
                                             viewModel.toggleValidationStatusClosure(!success)
                                             print("succ")
-                                            TokenManager.shared.clearToken()
+                                            UserStorage.shared.clearAllData()
                                             generalViewModel.loginScreenViewModel = LoginScreenViewModel(toggleValidationStatusClosure: { isValidated in
                                                 generalViewModel.isValidated = isValidated
                                             })
                                             generalViewModel.registerScreenViewModel = RegisterScreenViewModel(toggleValidationStatusClosure: { isValidated in
                                                 generalViewModel.isValidated = isValidated
                                             })
+                                            generalViewModel.clearViewModels()
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                    print("stopped")
                                                     viewModel.showProgressView = false
                                                 }
+                                                print("dismissed")
                                                 presentationMode.wrappedValue.dismiss()
                                             }
+                                        }
+                                        else {
+                                            viewModel.showProgressView = false
                                         }
                                     }
                                 }
                                 .alert(item: $viewModel.error) { error in
-                                    Alert(title: Text("Invalid Logout"), message: Text(error.errorDescription))
+                                    Alert(title: Text("Invalid Request"), message: Text(error.errorDescription))
                                 }
                         }
                         .background(RoundedRectangle(cornerRadius: 10).fill(Color.white).shadow(radius: 2))
@@ -129,13 +143,22 @@ struct ProfileScreen: View {
                 ProgressView()
             }
         }
+        .onAppear {
+            print("appeared")
+            viewModel.getProfile { success in
+                
+            }
+        }
         
     }
 }
 
-//struct ProfileScreen_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ProfileScreen(viewModel: ProfileScreenViewModel(toggleValidationStatusClosure: (Bool) -> Void))
-//            .environmentObject(GeneralViewModel())
-//    }
-//}
+struct ProfileScreen_Previews: PreviewProvider {
+    static var previews: some View {
+        ProfileScreen(viewModel: ProfileScreenViewModel(toggleValidationStatusClosure: { success in
+            GeneralViewModel().isValidated = success
+        })
+                      )
+            .environmentObject(GeneralViewModel())
+    }
+}

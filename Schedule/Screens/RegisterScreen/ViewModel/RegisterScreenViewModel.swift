@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class RegisterScreenViewModel: ObservableObject {
+class RegisterScreenViewModel: LoadingDataClass {
 
     @Published private var model: RegisterScreenModel = RegisterScreenModel()
     
@@ -44,14 +44,70 @@ class RegisterScreenViewModel: ObservableObject {
         }
     }
     
-    @Published var showProgressView = false
-    @Published var error: AuthenticationViewModel.AuthenticationError?
+    var group: GroupListElementModel {
+        get {
+            model.group
+        }
+        set(newValue) {
+            model.group = newValue
+        }
+    }
+    
+    var selectedRole: Int {
+        get {
+            model.selectedRole
+        }
+        set(newValue) {
+            model.selectedRole = newValue
+        }
+    }
+    
+//    var group: GroupListElementModel {
+//        get {
+//            model.group
+//        }
+//        set(newValue) {
+//            model.group = newValue
+//        }
+//    }
     
     func register(completion: @escaping (Bool) -> Void) {
+        
+        if(selectedRole == -1) {
+            error = .authenticationError(.noCredentials)
+            completion(false)
+            return
+        }
+        if(!emailText.contains("@yandex.ru") && selectedRole == 1) {
+            error = .authenticationError(.notTeacherEmail)
+            completion(false)
+            return
+        }
+        if(emailText.contains("@yandex.ru") && selectedRole == 0) {
+            error = .authenticationError(.studentCantBeTeacher)
+            completion(false)
+            return
+        }
+        
         withAnimation(.linear(duration: 0.1)) {
             showProgressView = true
         }
-        AuthenticationViewModel.shared.register(email: emailText, password: passwordText, confirmPassword: confirmPasswordText) { [unowned self] (result: Result<Bool, AuthenticationViewModel.AuthenticationError>) in
+        AuthenticationViewModel.shared.register(email: emailText, password: passwordText, confirmPassword: confirmPasswordText) { [unowned self] (result: Result<Bool, AppError>) in
+            switch result {
+            case .success:
+                completion(true)
+            case .failure(let authError):
+                error = authError
+                completion(false)
+            }
+        }
+    }
+    
+    func setGroup(completion: @escaping (Bool) -> Void) {
+        withAnimation(.linear(duration: 0.1)) {
+            showProgressView = true
+        }
+        AuthenticationViewModel.shared.setGroup(group: self.group.id) { [unowned self] (result: Result<Bool, AppError>) in
             switch result {
             case .success:
                 completion(true)

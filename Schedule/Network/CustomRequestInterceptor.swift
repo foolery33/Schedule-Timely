@@ -9,43 +9,44 @@ import Foundation
 import Alamofire
 
 class CustomRequestInterceptor: RequestInterceptor {
-    private let retryLimit = 5
+    private let retryLimit = 0
     private let retryDelay: TimeInterval = 10
     
     func adapt(_ urlRequest: URLRequest,
                for session: Session,
                completion: @escaping (Result<URLRequest, Error>) -> Void) {
         var urlRequest = urlRequest
-        if !TokenManager.shared.fetchAccessToken().isEmpty {
-            urlRequest.setValue("Bearer \(TokenManager.shared.fetchAccessToken())", forHTTPHeaderField: "Authorization")
+        if !UserStorage.shared.fetchAccessToken().isEmpty {
+            urlRequest.setValue("Bearer \(UserStorage.shared.fetchAccessToken())", forHTTPHeaderField: "Authorization")
         }
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         completion(.success(urlRequest))
     }
     
-    func retry(_ request: Request,
-               for session: Session,
-               dueTo error: Error,
-               completion: @escaping (RetryResult) -> Void) {
-        guard let statusCode = (request.task?.response as? HTTPURLResponse)?.statusCode else {
-            completion(.doNotRetry)
-            return
-        }
-        
-        switch statusCode {
-//        case 401:
-//            refreshToken { [weak self] in
-//                guard let self,
-//                      request.retryCount < self.retryLimit else { return }
-//                completion(.retryWithDelay(self.retryDelay))
-//            }
-        case (500...599):
-            guard request.retryCount < retryLimit else { return }
-            completion(.retryWithDelay(retryDelay))
-        default:
-            completion(.doNotRetry)
-        }
-    }
+//    func retry(_ request: Request,
+//               for session: Session,
+//               dueTo error: Error,
+//               completion: @escaping (RetryResult) -> Void) {
+//        print("retrying")
+//        guard let statusCode = (request.task?.response as? HTTPURLResponse)?.statusCode else {
+//            completion(.doNotRetry)
+//            return
+//        }
+//        
+//        switch statusCode {
+////        case 401:
+////            refreshToken { [weak self] in
+////                guard let self,
+////                      request.retryCount < self.retryLimit else { return }
+////                completion(.retryWithDelay(self.retryDelay))
+////            }
+//        case (500...599):
+//            guard request.retryCount < retryLimit else { return }
+//            completion(.retryWithDelay(retryDelay))
+//        default:
+//            completion(.doNotRetry)
+//        }
+//    }
     
 //    private func refreshToken(completion: @escaping (() -> Void)) {
 //        print("refresh")

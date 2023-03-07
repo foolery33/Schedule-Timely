@@ -9,6 +9,7 @@ import Foundation
 
 struct GroupPickerScreenModel {
     
+    var groupList: [GroupListElementModel] = []
     var groupText: String = ""
     
 }

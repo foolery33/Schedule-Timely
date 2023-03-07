@@ -9,10 +9,10 @@ import SwiftUI
 
 struct SubjectView: View {
     
-    var isFirstSubjectOfTheDay: Bool
     var startTime: String
     var endTime: String
     var subjectName: String
+    var subjectType: String
     var teacherName: String
     var classroom: String
     var group: String
@@ -44,17 +44,18 @@ struct SubjectView: View {
                     Text(subjectName)
                         .font(.custom("Poppins-SemiBold", size: 18))
                     Spacer()
-                    Text(String(subjectNumberInQueue))
+//                    Text(String(subjectNumberInQueue))
                 }
-                Spacer().frame(height: 8)
+                Spacer().frame(height: 0)
                 AboutSubjectData(iconName: "person.2", textInfo: group)
                 AboutSubjectData(iconName: "house", textInfo: classroom)
                 AboutSubjectData(iconName: "graduationcap", textInfo: teacherName)
+                AboutSubjectData(iconName: "questionmark.circle", textInfo: subjectType)
             }
-            .foregroundColor(textColor)
+            .foregroundColor(GetColorBySubjectType().getTextColor(subjectType: subjectType))
             .padding([.leading, .trailing], 20)
-            .padding([.top, .bottom], 20)
-            .background(RoundedRectangle(cornerRadius: 16).fill(backgroundRectangleColor))
+            .padding([.top, .bottom], 15)
+            .background(RoundedRectangle(cornerRadius: 16).fill(GetColorBySubjectType().getBackgroundColor(subjectType: subjectType)))
         }
     }
 }
@@ -62,10 +63,10 @@ struct SubjectView: View {
 struct SubjectView_Previews: PreviewProvider {
     static var previews: some View {
         SubjectView(
-            isFirstSubjectOfTheDay: true,
-            startTime: "11:35",
+            startTime: "09:45",
             endTime: "13:05",
-            subjectName: "Mathematics",
+            subjectName: "Матан",
+            subjectType: "Лекция",
             teacherName: "Brooklyn Williamson",
             classroom: "Room 6-205",
             group: "972101",

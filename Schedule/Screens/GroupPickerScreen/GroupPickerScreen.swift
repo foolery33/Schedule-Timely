@@ -9,83 +9,88 @@ import SwiftUI
 
 struct GroupPickerScreen: View {
     
-    @EnvironmentObject var viewModel: GeneralViewModel
+    @EnvironmentObject var generalViewModel: GeneralViewModel
+    @ObservedObject var viewModel: GroupPickerScreenViewModel
     
     @Environment(\.dismiss) var dismiss
     var goToNextScreen: Bool
-    var groups: [String] = [
-        "972101",
-        "132105",
-        "972003",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101",
-        "972101"
-    ]
     
     var body: some View {
-        VStack(spacing: 0) {
-            ZStack(alignment: .leading) {
-                Image(systemName: "chevron.backward")
-                    .padding(.leading, 10)
-                    .font(.system(size: 16, weight: .medium))
-                    .imageScale(.large)
-                    .onTapGesture {
-                        dismiss()
-                    }
-                Text("Groups")
-                    .frame(maxWidth: .infinity)
-                    .font(.custom("Poppins-Bold", size: 17))
-            }
-            .foregroundColor(.dayOfMonthColor)
-            Spacer().frame(height: 30)
-            SearchingTextField(text: $viewModel.groupPickerScreenViewModel.groupText, header: "Find your group", placeholderText: "Group number")
-                .padding([.leading, .trailing], 20)
-            
-            Spacer().frame(height: 20)
-            
-            VStack {
-                ScrollView(showsIndicators: false) {
-                    Spacer().frame(height: 10)
-                    ForEach(viewModel.groupPickerScreenViewModel.groupText.isEmpty ? groups : groups.filter {$0.contains(viewModel.groupPickerScreenViewModel.groupText)}, id: \.self) { group in
-                        if(goToNextScreen) {
-                            NavigationLink(destination: MainScreen(viewModel: viewModel.mainScreenViewModel).navigationBarBackButtonHidden()) {
-                                ListRow(text: group)
-                            }
-                            .buttonStyle(NoHighlightButtonStyle())
+        ZStack {
+            VStack(spacing: 0) {
+                ZStack(alignment: .leading) {
+                    Image(systemName: "chevron.backward")
+                        .padding(.leading, 10)
+                        .font(.system(size: 16, weight: .medium))
+                        .imageScale(.large)
+                        .onTapGesture {
+                            dismiss()
                         }
-                        else {
-                            ListRow(text: group)
-                        }
-                        
-                    }
-                    Spacer().frame(height: 20)
+                    Text("Groups")
+                        .frame(maxWidth: .infinity)
+                        .font(.custom("Poppins-Bold", size: 17))
                 }
+                .foregroundColor(.dayOfMonthColor)
+                Spacer().frame(height: 30)
+                SearchingTextField(text: $viewModel.groupText, header: "Find your group", placeholderText: "Group number")
+                    .padding([.leading, .trailing], 20)
+                
+                Spacer().frame(height: 20)
+                
+                VStack {
+                    ScrollView(showsIndicators: false) {
+                        Spacer().frame(height: 10)
+                        let groupTextedList = MakeList().makeList(from: viewModel.groupList)
+                        ForEach(viewModel.groupText.isEmpty ? groupTextedList : groupTextedList.filter {$0.contains(viewModel.groupText)}, id: \.self) { group in
+                            if(goToNextScreen) {
+                                NavigationLink(destination: MainScreen(viewModel: generalViewModel.mainScreenViewModel).navigationBarBackButtonHidden()) {
+                                    ListRow(text: group)
+                                }
+                                .buttonStyle(NoHighlightButtonStyle())
+                            }
+                            else {
+                                ListRow(text: group)
+                                    .frame(width: UIScreen.main.bounds.size.width)
+                                    .onTapGesture {
+                                        print("tapped")
+                                        generalViewModel.registerScreenViewModel.selectedRole = 0
+                                        generalViewModel.registerScreenViewModel.group.name = group
+                                        generalViewModel.registerScreenViewModel.group.id = FindGroupIdByName().find(name: group, in: viewModel.groupList)
+                                        dismiss()
+                                    }
+                            }
+                            
+                        }
+                        Spacer().frame(height: 20)
+                    }
+                }
+                .background(Color.softWhite)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                .edgesIgnoringSafeArea(.bottom)
             }
-            .background(Color.softWhite)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .padding([.top, .bottom], 20)
             .edgesIgnoringSafeArea(.bottom)
+            .opacity(viewModel.showContent ? 1 : 0)
+            if(viewModel.showProgressView) {
+                Rectangle().fill(Color.white.opacity(0.5))
+                .edgesIgnoringSafeArea(.all)
+                ProgressView()
+            }
         }
-        .padding([.top, .bottom], 20)
-        .edgesIgnoringSafeArea(.bottom)
+        .onAppear {
+            viewModel.getGroupList { success in
+                
+            }
+        }
+        .alert(item: $viewModel.error) { error in
+            Alert(title: Text("Invalid Loading"), message: Text(error.errorDescription))
+        }
     }
 }
 
-struct GroupPickerScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        GroupPickerScreen(goToNextScreen: false)
-            .environmentObject(GroupPickerScreenViewModel())
-    }
-}
+//struct GroupPickerScreen_Previews: PreviewProvider {
+//    static var previews: some View {
+//        GroupPickerScreen(viewModel: GroupPickerScreenViewModel(), goToNextScreen: false)
+//            .environmentObject(GeneralViewModel())
+//    }
+//}

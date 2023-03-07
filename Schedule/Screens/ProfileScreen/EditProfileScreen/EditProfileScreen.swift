@@ -9,7 +9,8 @@ import SwiftUI
 
 struct EditProfileScreen: View {
     
-    @EnvironmentObject var viewModel: GeneralViewModel
+    @EnvironmentObject var generalViewModel: GeneralViewModel
+    @ObservedObject var viewModel: EditProfileScreenViewModel
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -30,18 +31,17 @@ struct EditProfileScreen: View {
             .foregroundColor(.dayOfMonthColor)
             Spacer().frame(height: 50)
             VStack(alignment: .leading, spacing: 24) {
-                LabledTextFieldView(writtenText: $viewModel.editProfileScreenViewModel.emailText, labelText: "E-mail", placeholderText: "")
+                LabledTextFieldView(writtenText: $viewModel.emailText, labelText: "E-mail", placeholderText: "")
                 HStack(spacing: 0) {
-                    NavigationLink(destination: GroupPickerScreen(goToNextScreen: false).navigationBarBackButtonHidden(true)) {
+                    NavigationLink(destination: GroupPickerScreen(viewModel: generalViewModel.groupPickerScreenViewModel, goToNextScreen: false).navigationBarBackButtonHidden(true)) {
                         UnfilledButton(text: "Student")
                     }
                     Spacer()
-                    NavigationLink(destination: TeacherPickerScreen(goToNextScreen: false).navigationBarBackButtonHidden(true)) {
+                    NavigationLink(destination: TeacherPickerScreen(viewModel: generalViewModel.teacherPickerScreenViewModel, goToNextScreen: false).navigationBarBackButtonHidden(true)) {
                         UnfilledButton(text: "Teacher")
                     }
                 }
                 FilledButton(text: "Submit") {
-                    viewModel.profileScreenViewModel.emailText = viewModel.editProfileScreenViewModel.emailText
                     dismiss()
                 }
             }
@@ -51,9 +51,9 @@ struct EditProfileScreen: View {
     }
 }
 
-struct EditProfileScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        EditProfileScreen()
-            .environmentObject(GeneralViewModel())
-    }
-}
+//struct EditProfileScreen_Previews: PreviewProvider {
+//    static var previews: some View {
+//        EditProfileScreen()
+//            .environmentObject(GeneralViewModel())
+//    }
+//}

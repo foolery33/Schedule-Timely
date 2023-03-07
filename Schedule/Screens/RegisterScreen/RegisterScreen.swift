@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RegisterScreen: View {
-
+    
     @EnvironmentObject var generalViewModel: GeneralViewModel
     @ObservedObject var viewModel: RegisterScreenViewModel
     @Environment(\.presentationMode) var presentationMode
@@ -48,16 +48,36 @@ struct RegisterScreen: View {
                         }
                         Spacer().frame(height: 30)
                         HStack(spacing: 0) {
-                            NavigationLink(destination: GroupPickerScreen(goToNextScreen: false).navigationBarBackButtonHidden(true)) {
+                            NavigationLink(destination: GroupPickerScreen(viewModel: generalViewModel.groupPickerScreenViewModel, goToNextScreen: false).navigationBarBackButtonHidden(true)) {
                                 UnfilledButton(text: "Student")
+                                    .background(viewModel.selectedRole == 0 ? Color.todayTextBackgroundColor : Color.white)
                             }
                             Spacer()
-                            NavigationLink(destination: TeacherPickerScreen(goToNextScreen: false).navigationBarBackButtonHidden(true)) {
-                                UnfilledButton(text: "Teacher")
-                            }
+                            UnfilledButton(text: "Teacher")
+                                .background(viewModel.selectedRole == 1 ? Color.todayTextBackgroundColor : Color.white)
+                                .onTapGesture {
+                                    withAnimation(.easeInOut(duration: 0.1)) {
+                                        viewModel.selectedRole = 1
+                                    }
+                                }
                         }
                     }
-                    Spacer().frame(height: 40)
+                    Spacer().frame(height: 10)
+                    switch viewModel.selectedRole {
+                    case 0:
+                        Text("Group: \(viewModel.group.name ?? "")")
+                            .foregroundColor(.dayOfMonthColor)
+                            .font(.custom("Poppins-Medium", size: 14))
+                            .frame(height: 40)
+                    case 1:
+                        Text("*Your email domain must be yandex.ru to be a teacher")
+                            .foregroundColor(.dayOfMonthColor)
+                            .font(.custom("Poppins-Medium", size: 14))
+                            .frame(height: 40)
+                    default:
+                        Spacer().frame(height: 40)
+                    }
+                    Spacer().frame(height: 10)
                 }
                 Group {
                     FilledButton(text: "Sign up") {
@@ -65,13 +85,26 @@ struct RegisterScreen: View {
                             viewModel.toggleValidationStatusClosure(success)
                             if(success) {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                        viewModel.showProgressView = false
+                                    if(!(viewModel.group.name?.isEmpty ?? true)) {
+                                        viewModel.setGroup { success in
+                                            if(success) {
+                                                presentationMode.wrappedValue.dismiss()
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                    viewModel.showProgressView = false
+                                                }
+                                            }
+                                        }
                                     }
-                                    presentationMode.wrappedValue.dismiss()
+                                    else {
+                                        presentationMode.wrappedValue.dismiss()
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                            viewModel.showProgressView = false
+                                        }
+                                    }
                                 }
                             }
                             else {
+                                print("Error")
                                 viewModel.showProgressView = false
                             }
                         }
@@ -97,18 +130,20 @@ struct RegisterScreen: View {
             .padding(.top, 20)
             .padding(20)
             if(viewModel.showProgressView) {
-                    Rectangle().fill(Color.white.opacity(0.5))
+                Rectangle().fill(Color.white.opacity(0.5))
                     .edgesIgnoringSafeArea(.all)
                 ProgressView()
             }
         }
     }
-
+    
 }
 
-//struct RegisterScreen_Previews: PreviewProvider {
-//    static var previews: some View {
-//        RegisterScreen(viewModel: RegisterScreenViewModel())
-//            .environmentObject(RegisterScreenViewModel(toggleValidationStatusClosure: <#(Bool) -> Void#>))
-//    }
-//}
+struct RegisterScreen_Previews: PreviewProvider {
+    static var previews: some View {
+        RegisterScreen(viewModel: RegisterScreenViewModel(toggleValidationStatusClosure: { success in
+            GeneralViewModel().isValidated = success
+        }))
+        .environmentObject(GeneralViewModel())
+    }
+}

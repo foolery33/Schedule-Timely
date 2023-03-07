@@ -12,5 +12,8 @@ struct RegisterScreenModel {
     var emailText: String = ""
     var passwordText: String = ""
     var confirmPasswordText: String = ""
+    var group: GroupListElementModel = GroupListElementModel(id: "")
+    var selectedRole: Int = -1
+    var teacher: TeacherListElementModel = TeacherListElementModel(id: "")
     
 }

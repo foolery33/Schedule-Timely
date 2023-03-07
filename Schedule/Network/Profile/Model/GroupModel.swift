@@ -12,17 +12,14 @@ struct GroupModel: Decodable {
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case name = "name"
-        case isDeleted = "isDeleted"
     }
     
-    init(id: String, name: String? = nil, isDeleted: Bool) {
+    init(id: String? = nil, name: String) {
         self.id = id
         self.name = name
-        self.isDeleted = isDeleted
     }
     
-    let id: String
-    let name: String?
-    let isDeleted: Bool
+    let id: String?
+    let name: String
     
 }

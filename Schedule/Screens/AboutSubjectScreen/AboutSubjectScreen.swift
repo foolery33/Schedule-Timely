@@ -10,12 +10,13 @@ import SwiftUI
 struct AboutSubjectScreen: View {
     
     @Environment(\.dismiss) var dismiss
-    var subjectName: String = "Тестирование программного обеспечения"
-    var startTime: String = "12:25"
-    var endTime: String = "14:00"
-    var teacherName: String = "Волков Максим Николаевич"
-    var roomName: String = "Онлайн"
-    var groupName: String = "972101"
+    let subjectName: String
+    let subjectType: String
+    let startTime: String
+    let endTime: String
+    let teacherName: String
+    let roomName: String
+    let groupName: String
     
     var body: some View {
         VStack(spacing: 0) {
@@ -36,10 +37,18 @@ struct AboutSubjectScreen: View {
             .foregroundColor(.dayOfMonthColor)
             Spacer().frame(height: 50)
             VStack(alignment: .leading, spacing: 6) {
-                Text(subjectName)
-                    .foregroundColor(.dayOfMonthColor)
-                    .font(.custom("Poppins-Bold", size: 23))
-                Text("Лекция")
+                HStack {
+                    Text(subjectName)
+                        .foregroundColor(.dayOfMonthColor)
+                        .font(.custom("Poppins-Bold", size: 23))
+                    Spacer()
+                }
+                Text(subjectType)
+                    .font(.custom("Poppins-Semibold", size: 15))
+                    .foregroundColor(GetColorBySubjectType().getTextColor(subjectType: subjectType))
+                    .padding([.leading, .trailing], 16)
+                    .padding([.top, .bottom], 5)
+                    .background(RoundedRectangle(cornerRadius: 4).fill(GetColorBySubjectType().getBackgroundColor(subjectType: subjectType)))
             }
             .padding([.leading, .trailing], 20)
             VStack(alignment: .leading, spacing: 0) {
@@ -104,6 +113,13 @@ struct AboutSubjectScreen: View {
 
 struct AboutSubjectScreen_Previews: PreviewProvider {
     static var previews: some View {
-        AboutSubjectScreen()
+        AboutSubjectScreen(
+            subjectName: "Математика",
+            subjectType: "Лекция",
+            startTime: "11:00",
+            endTime: "12:00",
+            teacherName: "Даммер Диана Дамировна",
+            roomName: "Online",
+            groupName: "972101")
     }
 }

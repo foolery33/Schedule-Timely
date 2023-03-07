@@ -9,6 +9,7 @@ import Foundation
 
 struct TeacherPickerScreenModel {
     
+    var teacherList: [TeacherListElementModel] = []
     var teacherText: String = ""
     
 }

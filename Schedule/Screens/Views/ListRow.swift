@@ -22,12 +22,11 @@ struct ListRow: View {
                 Spacer()
                 Image(systemName: "chevron.forward")
             }
-//                                .frame(height: 30)
             .padding([.leading, .trailing], 20)
             Rectangle().fill(Color.softGray).frame(height: 1)
                 .padding(.leading, 20)
-
         }
+        .background(Color.white)
     }
 }
 

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class ProfileScreenViewModel: ObservableObject {
+class ProfileScreenViewModel: LoadingDataClass {
     
     @Published private var model: ProfileScreenModel = ProfileScreenModel()
     
@@ -35,6 +35,15 @@ class ProfileScreenViewModel: ObservableObject {
         }
     }
     
+    var additionalInfo: String {
+        get {
+            model.additionalInfo
+        }
+        set(newValue) {
+            model.additionalInfo = newValue
+        }
+    }
+    
     var avatarLinkText: String {
         get {
             model.avatarLinkText
@@ -55,28 +64,31 @@ class ProfileScreenViewModel: ObservableObject {
     
     @Published var showEditInfo: Bool = false
     
-    @Published var showProgressView = false
-    @Published var error: AuthenticationViewModel.AuthenticationError?
-    
-//    func getProfile(completion: @escaping (Bool) -> Void) {
-//        withAnimation(.linear(duration: 0.1)) {
-//            showProgressView = true
-//        }
-//        ProfileViewModel.shared.getProfile() { [unowned self] (result: Result<ProfileModel, ProfileViewModel.ProfileError>) in
-//            showProgressView = false
-//            switch result {
-//            case .success(let profile):
-//                emailText = profile.email ?? ""
-//                role = profile.role[0] ?? "Student"
-//            }
-//        }
-//    }
+    func getProfile(completion: @escaping (Bool) -> Void) {
+        withAnimation(.linear(duration: 0.1)) {
+            showProgressView = true
+        }
+        ProfileViewModel.shared.getProfile() { [unowned self] (result: Result<ProfileModel, AppError>) in
+            showProgressView = false
+            showContent = true
+            switch result {
+            case .success(let profile):
+                emailText = profile.email ?? ""
+                role = (profile.roles?.contains("Teacher") ?? false ? "Teacher" : "Student")
+                additionalInfo = (role == "Teacher") ? (profile.teacher?.name ?? "") : ((role == "Student") ? (profile.group?.name ?? "") : "")
+                completion(true)
+            case .failure(let error):
+                self.error = error
+                completion(false)
+            }
+        }
+    }
     
     func logout(completion: @escaping (Bool) -> Void) {
         withAnimation(.linear(duration: 0.1)) {
             showProgressView = true
         }
-        AuthenticationViewModel.shared.logout() { [unowned self] (result: Result<Bool, AuthenticationViewModel.AuthenticationError>) in
+        AuthenticationViewModel.shared.logout() { [unowned self] (result: Result<Bool, AppError>) in
             switch result {
             case .success:
                 completion(true)
@@ -84,8 +96,7 @@ class ProfileScreenViewModel: ObservableObject {
                 print("failure")
                 print(authError)
                 error = authError
-                if(authError == AuthenticationViewModel.AuthenticationError.unauthorized) {
-                    print("YES")
+                if(authError == AppError.authenticationError(.unauthorized)) {
                     completion(true)
                 }
                 else {

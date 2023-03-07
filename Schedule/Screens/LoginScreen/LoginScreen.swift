@@ -49,7 +49,18 @@ struct LoginScreen: View {
                 Group {
                     FilledButton(text: "Login") {
                         viewModel.login { success in
-                            viewModel.toggleValidationStatusClosure(success)
+                            if(!success.1.isEmpty) {
+                                viewModel.toggleValidationStatusClosure(true)
+                                switch(success.0) {
+                                case "teacher":
+                                    generalViewModel.mainScreenViewModel.teacherId = success.1
+                                case "group":
+                                    generalViewModel.mainScreenViewModel.groupId = success.1
+                                    UserStorage.shared.saveGroupId(groupId: success.1)
+                                default:
+                                    break
+                                }
+                            }
                         }
                     }
                     .alert(item: $viewModel.error) { error in
@@ -68,11 +79,11 @@ struct LoginScreen: View {
                     }
                     Spacer().frame(height: 30)
                     HStack(spacing: 0) {
-                        NavigationLink(destination: GroupPickerScreen(goToNextScreen: true).navigationBarBackButtonHidden(true)) {
+                        NavigationLink(destination: GroupPickerScreen(viewModel: generalViewModel.groupPickerScreenViewModel, goToNextScreen: true).navigationBarBackButtonHidden(true)) {
                             UnfilledButton(text: "Student")
                         }
                         Spacer()
-                        NavigationLink(destination: TeacherPickerScreen(goToNextScreen: true).navigationBarBackButtonHidden(true)) {
+                        NavigationLink(destination: TeacherPickerScreen(viewModel: generalViewModel.teacherPickerScreenViewModel, goToNextScreen: true).navigationBarBackButtonHidden(true)) {
                             UnfilledButton(text: "Teacher")
                         }
                     }
@@ -93,8 +104,8 @@ struct LoginScreen: View {
             .padding(.top, 20)
             .padding(20)
             if(viewModel.showProgressView) {
-                    Rectangle().fill(Color.white.opacity(0.5))
-                    .edgesIgnoringSafeArea(.all)
+                Rectangle().fill(Color.white.opacity(0.5))
+                .edgesIgnoringSafeArea(.all)
                 ProgressView()
             }
         }

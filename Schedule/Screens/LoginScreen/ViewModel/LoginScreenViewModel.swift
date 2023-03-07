@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class LoginScreenViewModel: ObservableObject {
+class LoginScreenViewModel: LoadingDataClass {
     
     @Published private var model: LoginScreenModel = LoginScreenModel()
     
@@ -44,22 +44,26 @@ class LoginScreenViewModel: ObservableObject {
         }
     }
     
-    @Published var showProgressView = false
-    @Published var error: AuthenticationViewModel.AuthenticationError?
-    
-    func login(completion: @escaping (Bool) -> Void) {
+    func login(completion: @escaping ((String, String)) -> Void) {
         withAnimation(.linear(duration: 0.1)) {
             showProgressView = true
         }
-        AuthenticationViewModel.shared.login(email: emailText, password: passwordText) { [unowned self] (result: Result<Bool, AuthenticationViewModel.AuthenticationError>) in
+        AuthenticationViewModel.shared.login(email: emailText, password: passwordText) { [unowned self] (result: Result<TokenResponseModel, AppError>) in
             showProgressView = false
             switch result {
-            case .success:
-                completion(true)
+            case .success(let data):
+                if let teacherId = data.teacher?.id {
+                    completion(("teacher", teacherId))
+                    return
+                }
+                if let groupId = data.group?.id {
+                    completion(("group", groupId))
+                    return
+                }
             case .failure(let authError):
                 error = authError
                 print("Error: ", error!.localizedDescription)
-                completion(false)
+                completion(("", ""))
             }
         }
     }

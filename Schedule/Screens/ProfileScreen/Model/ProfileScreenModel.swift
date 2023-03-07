@@ -11,6 +11,7 @@ struct ProfileScreenModel {
     
     var emailText: String = ""
     var role: String = ""
+    var additionalInfo: String = ""
     var avatarLinkText: String = ""
     var showAvatarAlert: Bool = false
     var showEditInfo: Bool = false
