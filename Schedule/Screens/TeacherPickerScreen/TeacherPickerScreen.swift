@@ -42,12 +42,27 @@ struct TeacherPickerScreen: View {
                     ScrollView(showsIndicators: false) {
                         Spacer().frame(height: 10)
                         let teacherTextedList = MakeList().makeList(from: viewModel.teacherList)
-                        ForEach(viewModel.teacherText.isEmpty ? teacherTextedList : teacherTextedList.filter {$0.contains(viewModel.teacherText)}, id: \.self) { group in
-                            NavigationLink(destination: MainScreen(viewModel: generalViewModel.mainScreenViewModel).navigationBarBackButtonHidden()) {
-                                ListRow(text: group)
+                        ForEach(viewModel.teacherText.isEmpty ? teacherTextedList : teacherTextedList.filter {$0.contains(viewModel.teacherText)}, id: \.self) { teacher in
+                            if(goToNextScreen) {
+                                NavigationLink(destination: MainScreen(viewModel: generalViewModel.mainScreenViewModel).navigationBarBackButtonHidden()) {
+                                    ListRow(text: teacher)
+                                }
+                                .buttonStyle(NoHighlightButtonStyle())
                             }
-                            .disabled(goToNextScreen)
-                            .buttonStyle(NoHighlightButtonStyle())
+                            else {
+                                ListRow(text: teacher)
+                                    .frame(width: UIScreen.main.bounds.size.width)
+                                    .onTapGesture {
+                                        print("tapped")
+                                        generalViewModel.registerScreenViewModel.selectedRole = 1
+                                        generalViewModel.registerScreenViewModel.teacher.name = teacher
+                                        generalViewModel.registerScreenViewModel.group = GroupListElementModel(id: "")
+                                        generalViewModel.registerScreenViewModel.teacher.id = FindTeacherIdByName().find(name: teacher, in: viewModel.teacherList)
+                                        generalViewModel.registerScreenViewModel.fullName = teacher
+                                        print(generalViewModel.registerScreenViewModel.fullName)
+                                        dismiss()
+                                    }
+                            }
                             
                         }
                         Spacer().frame(height: 20)

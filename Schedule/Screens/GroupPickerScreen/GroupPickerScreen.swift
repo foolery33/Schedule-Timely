@@ -55,6 +55,7 @@ struct GroupPickerScreen: View {
                                         print("tapped")
                                         generalViewModel.registerScreenViewModel.selectedRole = 0
                                         generalViewModel.registerScreenViewModel.group.name = group
+                                        generalViewModel.registerScreenViewModel.teacher = TeacherListElementModel(id: "")
                                         generalViewModel.registerScreenViewModel.group.id = FindGroupIdByName().find(name: group, in: viewModel.groupList)
                                         dismiss()
                                     }

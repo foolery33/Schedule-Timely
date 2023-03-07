@@ -20,6 +20,6 @@ struct TeacherListElementModel: Decodable {
     }
     
     var id: String
-    let name: String?
+    var name: String?
     
 }

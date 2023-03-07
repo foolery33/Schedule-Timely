@@ -175,9 +175,23 @@ struct MainScreen: View {
             viewModel.getGroupSchedule(date: ConvertDateIntoString().convert(viewModel.daysOfWeek[viewModel.currentDayIndex])) { success in
                 viewModel.showProgressView = false
                 if(success) {
-                    viewModel.sortedWeekLessons = GetWeekSchedule().getWeekSchedule(from: viewModel.weekLessons, dates: viewModel.daysOfWeek)
-                    print(viewModel.sortedWeekLessons)
-                    print(viewModel.sortedWeekLessons.count)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + animationLength) {
+                        viewModel.sortedWeekLessons = GetWeekSchedule().getWeekSchedule(from: viewModel.weekLessons, dates: viewModel.daysOfWeek)
+                        print(viewModel.sortedWeekLessons)
+                        print(viewModel.sortedWeekLessons.count)
+                    }
+                }
+            }
+        }
+        else if(!UserStorage.shared.fetchTeacherId().isEmpty) {
+            viewModel.getTeacherSchedule(date: ConvertDateIntoString().convert(viewModel.daysOfWeek[viewModel.currentDayIndex])) { success in
+                viewModel.showProgressView = false
+                if(success) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + animationLength) {
+                        viewModel.sortedWeekLessons = GetWeekSchedule().getWeekSchedule(from: viewModel.weekLessons, dates: viewModel.daysOfWeek)
+                        print(viewModel.sortedWeekLessons)
+                        print(viewModel.sortedWeekLessons.count)
+                    }
                 }
             }
         }

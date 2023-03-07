@@ -28,12 +28,15 @@ struct RegisterScreen: View {
                 Group {
                     Group {
                         Spacer().frame(height: 40)
+                        TextFieldView(header: "Full Name", text: $viewModel.fullName, placeholderText: "Enter your full name", isSecuredField: false)
+                            .disabled(viewModel.teacher.name != nil)
+                        Spacer().frame(height: 20)
                         TextFieldView(header: "Email Address", text: $viewModel.emailText, placeholderText: "Enter your email", isSecuredField: false)
-                        Spacer().frame(height: 27)
+                        Spacer().frame(height: 20)
                         TextFieldView(header: "Password", text: $viewModel.passwordText, placeholderText: "Enter your password", isSecuredField: true)
-                        Spacer().frame(height: 27)
+                        Spacer().frame(height: 20)
                         TextFieldView(header: "Confirm Password", text: $viewModel.confirmPasswordText, placeholderText: "Confirm your password", isSecuredField: true)
-                        Spacer().frame(height: 27)
+                        Spacer().frame(height: 20)
                     }
                     Group {
                         HStack {
@@ -53,13 +56,10 @@ struct RegisterScreen: View {
                                     .background(viewModel.selectedRole == 0 ? Color.todayTextBackgroundColor : Color.white)
                             }
                             Spacer()
-                            UnfilledButton(text: "Teacher")
-                                .background(viewModel.selectedRole == 1 ? Color.todayTextBackgroundColor : Color.white)
-                                .onTapGesture {
-                                    withAnimation(.easeInOut(duration: 0.1)) {
-                                        viewModel.selectedRole = 1
-                                    }
-                                }
+                            NavigationLink(destination: TeacherPickerScreen(viewModel: generalViewModel.teacherPickerScreenViewModel, goToNextScreen: false).navigationBarBackButtonHidden(true)) {
+                                UnfilledButton(text: "Teacher")
+                                    .background(viewModel.selectedRole == 1 ? Color.todayTextBackgroundColor : Color.white)
+                            }
                         }
                     }
                     Spacer().frame(height: 10)
@@ -88,6 +88,7 @@ struct RegisterScreen: View {
                                     if(!(viewModel.group.name?.isEmpty ?? true)) {
                                         viewModel.setGroup { success in
                                             if(success) {
+                                                UserStorage.shared.saveGroupId(groupId: viewModel.group.id)
                                                 presentationMode.wrappedValue.dismiss()
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                                     viewModel.showProgressView = false
@@ -96,6 +97,7 @@ struct RegisterScreen: View {
                                         }
                                     }
                                     else {
+                                        UserStorage.shared.saveTeacherId(teacherId: viewModel.teacher.id)
                                         presentationMode.wrappedValue.dismiss()
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                             viewModel.showProgressView = false

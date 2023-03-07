@@ -21,7 +21,7 @@ struct ProfileScreen: View {
                             CurvedRectangle(curveAxis: .vertical, leadingDepthPercentage: 0, trailingDepthPercentage: 12).fill(Color.grayColor.opacity(0.12))
                                 .frame(height: 220)
                             ZStack(alignment: .bottomTrailing) {
-                                AsyncImage(url: URL(string: viewModel.avatarLinkText)) { image in
+                                AsyncImage(url: URL(string: UserStorage.shared.fetchAvatarLink())) { image in
                                     image
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
@@ -42,11 +42,20 @@ struct ProfileScreen: View {
                                 EditAvatarView()
                                     .onTapGesture {
                                         viewModel.showAvatarAlert = true
+                                        print(UserStorage.shared.fetchAvatarLink())
                                     }
                                     .alert("Edit your avatar link", isPresented: $viewModel.showAvatarAlert, actions: {
-                                        TextField("Avatar link", text: $viewModel.avatarLinkText)
-                                        Button("OK", action: {})
-                                        Button("Cancel", role: .cancel, action: {})
+                                        TextField("Avatar link", text: $viewModel.avatarLink)
+                                        Button("OK", action: {
+                                            viewModel.setAvatar { success in
+                                                if(success) {
+                                                    UserStorage.shared.saveAvatarLink(avatarLink: viewModel.avatarLink)
+                                                }
+                                            }
+                                        })
+                                        Button("Cancel", role: .cancel, action: {
+                                            viewModel.avatarLink = UserStorage.shared.fetchAvatarLink()
+                                        })
                                     })
                             }
                         }
@@ -66,8 +75,8 @@ struct ProfileScreen: View {
                     }
                     VStack {
                         Spacer().frame(height: 5)
-                        if(!viewModel.role.isEmpty) {
-                            Text(viewModel.role)
+                        if(!viewModel.fullName.isEmpty) {
+                            Text(viewModel.fullName)
                                 .foregroundColor(.dayOfMonthColor)
                                 .font(.custom("Poppins-Semibold", size: 22))
                         }
@@ -146,7 +155,9 @@ struct ProfileScreen: View {
         .onAppear {
             print("appeared")
             viewModel.getProfile { success in
-                
+                UserStorage.shared.saveAvatarLink(avatarLink: viewModel.avatarLink)
+                print("Avatar1: ", viewModel.avatarLink)
+                print("Avatar2: ", UserStorage.shared.fetchAvatarLink())
             }
         }
         

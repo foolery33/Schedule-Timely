@@ -54,6 +54,7 @@ struct LoginScreen: View {
                                 switch(success.0) {
                                 case "teacher":
                                     generalViewModel.mainScreenViewModel.teacherId = success.1
+                                    UserStorage.shared.saveTeacherId(teacherId: success.1)
                                 case "group":
                                     generalViewModel.mainScreenViewModel.groupId = success.1
                                     UserStorage.shared.saveGroupId(groupId: success.1)

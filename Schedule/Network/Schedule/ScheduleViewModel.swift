@@ -80,4 +80,41 @@ class ScheduleViewModel: LoadingDataClass {
         }
     }
     
+    func getTeacherSchedule(date: String, teacherId: String, completion: @escaping (Result<[LessonModel], AppError>) -> Void) {
+        DispatchQueue.main.async {
+            let url = self.baseURL + "/api/schedule/teacher/\(teacherId)"
+            let httpParameters: [String: String] = [
+                "date": date
+            ]
+            AF.request(url, parameters: httpParameters, encoding: URLEncoding.queryString, interceptor: self.interceptor).validate().responseData { response in
+                if let requestStatusCode = response.response?.statusCode {
+                    print("Get Schedule Status Code: ", requestStatusCode)
+                }
+                switch response.result {
+                case .success(let data):
+                    do {
+                        let decodedData = try JSONDecoder().decode([LessonModel].self, from: data)
+                        completion(.success(decodedData))
+                    } catch (_) {
+                        completion(.failure(.scheduleError(.contactDeveloper)))
+                    }
+                case .failure(_):
+                    if let requestStatusCode = response.response?.statusCode {
+                        switch requestStatusCode {
+                        case 400:
+                            completion(.failure(.scheduleError(.invalidDate)))
+                        case 404:
+                            completion(.failure(.scheduleError(.invalidGroupId)))
+                        default:
+                            completion(.failure(.scheduleError(.serverError)))
+                        }
+                    }
+                    else {
+                        completion(.failure(.scheduleError(.serverError)))
+                    }
+                }
+            }
+        }
+    }
+    
 }

@@ -143,4 +143,21 @@ class MainScreenViewModel: LoadingDataClass {
         }
     }
     
+    func getTeacherSchedule(date: String, completion: @escaping (Bool) -> Void) {
+        withAnimation(.linear(duration: 0.1)) {
+            showProgressView = true
+        }
+        ScheduleViewModel.shared.getTeacherSchedule(date: date, teacherId: UserStorage.shared.fetchTeacherId()) { [unowned self] (result: Result<[LessonModel], AppError>) in
+            switch result {
+            case .success(let lessons):
+                self.weekLessons = lessons
+                completion(true)
+            case .failure(let error):
+                self.error = error
+                completion(false)
+            }
+            
+        }
+    }
+    
 }

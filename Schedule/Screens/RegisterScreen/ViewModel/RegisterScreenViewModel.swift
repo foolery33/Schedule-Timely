@@ -17,6 +17,15 @@ class RegisterScreenViewModel: LoadingDataClass {
         self.toggleValidationStatusClosure = toggleValidationStatusClosure
     }
     
+    var fullName: String {
+        get {
+            model.fullName
+        }
+        set(newValue) {
+            model.fullName = newValue
+        }
+    }
+    
     var emailText: String {
         get {
             model.emailText
@@ -62,14 +71,14 @@ class RegisterScreenViewModel: LoadingDataClass {
         }
     }
     
-//    var group: GroupListElementModel {
-//        get {
-//            model.group
-//        }
-//        set(newValue) {
-//            model.group = newValue
-//        }
-//    }
+    var teacher: TeacherListElementModel {
+        get {
+            model.teacher
+        }
+        set(newValue) {
+            model.teacher = newValue
+        }
+    }
     
     func register(completion: @escaping (Bool) -> Void) {
         
@@ -92,7 +101,7 @@ class RegisterScreenViewModel: LoadingDataClass {
         withAnimation(.linear(duration: 0.1)) {
             showProgressView = true
         }
-        AuthenticationViewModel.shared.register(email: emailText, password: passwordText, confirmPassword: confirmPasswordText) { [unowned self] (result: Result<Bool, AppError>) in
+        AuthenticationViewModel.shared.register(fullName: fullName, email: emailText, password: passwordText, confirmPassword: confirmPasswordText) { [unowned self] (result: Result<Bool, AppError>) in
             switch result {
             case .success:
                 completion(true)

@@ -56,7 +56,31 @@ class ProfileViewModel {
                 completion(.failure(.profileError(.serverError)))
             }
         }
-        
+    }
+    
+    func setAvatar(avatarLink: String, completion: @escaping (Result<String, AppError>) -> Void) {
+        let url = self.baseURL + "/api/account/avatar/set"
+        let httpParameters: [String: String] = [
+            "avatarLink": avatarLink
+        ]
+        AF.request(url, method: .put, parameters: httpParameters, encoder: JSONParameterEncoder.default, interceptor: self.interceptor).validate().responseData { response in
+            if let requestStatusCode = response.response?.statusCode {
+                print("Set Avatar Status Code: ", requestStatusCode)
+            }
+            switch response.result {
+            case .success(_):
+                completion(.success(avatarLink))
+            case .failure(_):
+                if let requestStatusCode = response.response?.statusCode {
+                    switch requestStatusCode {
+                    case 401:
+                        completion(.failure(.profileError(.unauthorized)))
+                    default:
+                        completion(.failure(.profileError(.serverError)))
+                    }
+                }
+            }
+        }
     }
     
 }

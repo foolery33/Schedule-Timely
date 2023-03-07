@@ -17,6 +17,15 @@ class ProfileScreenViewModel: LoadingDataClass {
         self.toggleValidationStatusClosure = toggleValidationStatusClosure
     }
     
+    var fullName: String {
+        get {
+            model.fullName
+        }
+        set(newValue) {
+            model.fullName = newValue
+        }
+    }
+    
     var emailText: String {
         get {
             model.emailText
@@ -44,12 +53,12 @@ class ProfileScreenViewModel: LoadingDataClass {
         }
     }
     
-    var avatarLinkText: String {
+    var avatarLink: String {
         get {
-            model.avatarLinkText
+            model.avatarLink
         }
         set(newValue) {
-            model.avatarLinkText = newValue
+            model.avatarLink = newValue
         }
     }
     
@@ -73,12 +82,30 @@ class ProfileScreenViewModel: LoadingDataClass {
             showContent = true
             switch result {
             case .success(let profile):
+                avatarLink = profile.avatarLink ?? ""
+                fullName = profile.fullName ?? ""
                 emailText = profile.email ?? ""
                 role = (profile.roles?.contains("Teacher") ?? false ? "Teacher" : "Student")
-                additionalInfo = (role == "Teacher") ? (profile.teacher?.name ?? "") : ((role == "Student") ? (profile.group?.name ?? "") : "")
+                additionalInfo = (role == "Teacher") ? "Teacher" : ((role == "Student") ? ("Group: \(profile.group?.name ?? "")") : "")
                 completion(true)
             case .failure(let error):
                 self.error = error
+                completion(false)
+            }
+        }
+    }
+    
+    func setAvatar(completion: @escaping (Bool) -> Void) {
+        withAnimation(.linear(duration: 0.1)) {
+            showProgressView = true
+        }
+        ProfileViewModel.shared.setAvatar(avatarLink: self.avatarLink) { [unowned self] (result: Result<String, AppError>) in
+            showProgressView = false
+            switch result {
+            case .success:
+                completion(true)
+            case .failure(let authError):
+                error = authError
                 completion(false)
             }
         }

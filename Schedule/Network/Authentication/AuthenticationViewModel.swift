@@ -120,7 +120,7 @@ class AuthenticationViewModel {
         
     }
     
-    func register(email: String, password: String, confirmPassword: String, completion: @escaping (Result<Bool, AppError>) -> Void) {
+    func register(fullName: String, email: String, password: String, confirmPassword: String, completion: @escaping (Result<Bool, AppError>) -> Void) {
         DispatchQueue.main.async {
             
             if(email == "" || password == "" || confirmPassword == "") {
@@ -134,7 +134,7 @@ class AuthenticationViewModel {
             }
             
             let httpParameters: [String: String] = [
-                "fullName": "Some Username", // в мобильной версии не нужно использовать этот параметр, поэтому он будет стандартным для всех пользователей
+                "fullName": fullName,
                 "password": password,
                 "email": email
             ]

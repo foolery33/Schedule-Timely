@@ -55,6 +55,7 @@
 		84AD329D29B6EB3F00174285 /* GetWeekSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AD329C29B6EB3F00174285 /* GetWeekSchedule.swift */; };
 		84AD329F29B6FC1D00174285 /* ConvertDateToHourMinute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AD329E29B6FC1D00174285 /* ConvertDateToHourMinute.swift */; };
 		84AD32A129B72D7300174285 /* GetColorBySubjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AD32A029B72D7300174285 /* GetColorBySubjectType.swift */; };
+		84AD32A329B785BA00174285 /* FindTeacherIdByName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AD32A229B785BA00174285 /* FindTeacherIdByName.swift */; };
 		84B494E129A75C2D004D2A75 /* ListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B494E029A75C2D004D2A75 /* ListRow.swift */; };
 		84B494E329A765E1004D2A75 /* LoginScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B494E229A765E1004D2A75 /* LoginScreenModel.swift */; };
 		84B494E729A76691004D2A75 /* LoginScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B494E629A76691004D2A75 /* LoginScreenViewModel.swift */; };
@@ -169,6 +170,7 @@
 		84AD329C29B6EB3F00174285 /* GetWeekSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetWeekSchedule.swift; sourceTree = "<group>"; };
 		84AD329E29B6FC1D00174285 /* ConvertDateToHourMinute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertDateToHourMinute.swift; sourceTree = "<group>"; };
 		84AD32A029B72D7300174285 /* GetColorBySubjectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetColorBySubjectType.swift; sourceTree = "<group>"; };
+		84AD32A229B785BA00174285 /* FindTeacherIdByName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindTeacherIdByName.swift; sourceTree = "<group>"; };
 		84B494E029A75C2D004D2A75 /* ListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRow.swift; sourceTree = "<group>"; };
 		84B494E229A765E1004D2A75 /* LoginScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenModel.swift; sourceTree = "<group>"; };
 		84B494E629A76691004D2A75 /* LoginScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenViewModel.swift; sourceTree = "<group>"; };
@@ -639,6 +641,7 @@
 			children = (
 				84CC5BDE29B47E8400567F4F /* MakeList.swift */,
 				84CC5BE529B4CD4D00567F4F /* FindGroupIdByName.swift */,
+				84AD32A229B785BA00174285 /* FindTeacherIdByName.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -940,6 +943,7 @@
 				840A445A29A2471800C519DD /* TeacherPickerScreen.swift in Sources */,
 				846F8F4B299E854800FB3F93 /* AboutSubjectData.swift in Sources */,
 				840DBCF129B36B950062185C /* GroupModel.swift in Sources */,
+				84AD32A329B785BA00174285 /* FindTeacherIdByName.swift in Sources */,
 				840DBCF329B36C860062185C /* TeacherModel.swift in Sources */,
 				84908730299CF97200D82210 /* DateView.swift in Sources */,
 				84B6241129AA2B4C00FCDBDA /* BottomBar.swift in Sources */,

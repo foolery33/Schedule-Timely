@@ -9,6 +9,7 @@ import Foundation
 
 struct RegisterScreenModel {
     
+    var fullName: String = ""
     var emailText: String = ""
     var passwordText: String = ""
     var confirmPasswordText: String = ""
