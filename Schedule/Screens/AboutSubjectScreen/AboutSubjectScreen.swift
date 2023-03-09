@@ -9,6 +9,8 @@ import SwiftUI
 
 struct AboutSubjectScreen: View {
     
+    @EnvironmentObject var generalViewModel: GeneralViewModel
+    @ObservedObject var viewModel: AboutSubjectScrenViewModel
     @Environment(\.dismiss) var dismiss
     let subjectName: String
     let subjectType: String
@@ -29,7 +31,7 @@ struct AboutSubjectScreen: View {
                     .onTapGesture {
                         dismiss()
                     }
-                Text("About subject")
+                Text("About the subject")
                     .frame(maxWidth: .infinity)
                     .font(.custom("Poppins-Bold", size: 17))
             }
@@ -89,6 +91,11 @@ struct AboutSubjectScreen: View {
                         .font(.custom("Poppins-Regular", size: 16))
                         .foregroundColor(.dayOfMonthColor)
                     Spacer()
+                    Image(systemName: "chevron.forward")
+                        .foregroundColor(.dayOfMonthColor)
+                }
+                .onTapGesture {
+                    loadClassroomList()
                 }
                 Rectangle()
                     .stroke(style: StrokeStyle(lineWidth: 0.6, dash: [1, 1]))
@@ -103,17 +110,74 @@ struct AboutSubjectScreen: View {
                         .font(.custom("Poppins-Regular", size: 16))
                         .foregroundColor(.dayOfMonthColor)
                     Spacer()
+                    Image(systemName: "chevron.forward")
+                        .foregroundColor(.dayOfMonthColor)
+                }
+                .onTapGesture {
+                    loadTeacherList()
                 }
             }
             .padding([.leading, .trailing], 20)
             Spacer()
         }
+        .alert(item: $viewModel.error) { error in
+            Alert(title: Text("Invalid Data Loading"), message: Text(error.errorDescription))
+        }
     }
+    
+    func loadClassroomList() {
+        if(generalViewModel.classroomPickerScreenViewModel.classroomList.isEmpty) {
+            generalViewModel.classroomPickerScreenViewModel.getClassroomList { success in
+                if(success) {
+                    generalViewModel.scheduleType = .classroom
+                    generalViewModel.mainScreenViewModel = generalViewModel.getMainScreenViewModel()
+                    generalViewModel.mainScreenId += 1
+                    generalViewModel.mainScreenViewModel.showContent = false
+                    generalViewModel.classroomId = FindClassroomIdByName().find(name: roomName, in: generalViewModel.classroomPickerScreenViewModel.classroomList)
+                    print(generalViewModel.classroomId)
+                }
+            }
+        }
+        else {
+            generalViewModel.scheduleType = .classroom
+            generalViewModel.mainScreenViewModel = generalViewModel.getMainScreenViewModel()
+            generalViewModel.mainScreenId += 1
+            generalViewModel.mainScreenViewModel.showContent = false
+            generalViewModel.classroomId = FindClassroomIdByName().find(name: roomName, in: generalViewModel.classroomPickerScreenViewModel.classroomList)
+            print(generalViewModel.classroomId)
+        }
+    }
+    
+    func loadTeacherList() {
+        if(generalViewModel.teacherPickerScreenViewModel.teacherList.isEmpty) {
+            generalViewModel.teacherPickerScreenViewModel.getTeacherList { success in
+                if(success) {
+                    print("teacher transition")
+                    generalViewModel.scheduleType = .teacher
+                    generalViewModel.mainScreenViewModel = generalViewModel.getMainScreenViewModel()
+                    generalViewModel.mainScreenId += 1
+                    generalViewModel.mainScreenViewModel.showContent = false
+                    generalViewModel.teacherId = FindTeacherIdByName().find(name: teacherName, in: generalViewModel.teacherPickerScreenViewModel.teacherList)
+                    print(generalViewModel.teacherId)
+                }
+            }
+        }
+        else {
+            generalViewModel.scheduleType = .teacher
+            generalViewModel.mainScreenViewModel = generalViewModel.getMainScreenViewModel()
+            generalViewModel.mainScreenId += 1
+            generalViewModel.mainScreenViewModel.showContent = false
+            generalViewModel.teacherId = FindTeacherIdByName().find(name: teacherName, in: generalViewModel.teacherPickerScreenViewModel.teacherList)
+            print(generalViewModel.teacherId)
+        }
+    }
+    
 }
 
 struct AboutSubjectScreen_Previews: PreviewProvider {
     static var previews: some View {
         AboutSubjectScreen(
+            viewModel: AboutSubjectScrenViewModel(),
             subjectName: "Математика",
             subjectType: "Лекция",
             startTime: "11:00",

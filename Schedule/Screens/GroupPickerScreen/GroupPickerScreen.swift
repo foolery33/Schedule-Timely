@@ -11,9 +11,12 @@ struct GroupPickerScreen: View {
     
     @EnvironmentObject var generalViewModel: GeneralViewModel
     @ObservedObject var viewModel: GroupPickerScreenViewModel
-    
+    @Environment(\.presentationMode) var presentationMode
+    var editingProfileMode: Bool
     @Environment(\.dismiss) var dismiss
+    
     var goToNextScreen: Bool
+    var isGuest: Bool
     
     var body: some View {
         ZStack {
@@ -43,20 +46,61 @@ struct GroupPickerScreen: View {
                         let groupTextedList = MakeList().makeList(from: viewModel.groupList)
                         ForEach(viewModel.groupText.isEmpty ? groupTextedList : groupTextedList.filter {$0.contains(viewModel.groupText)}, id: \.self) { group in
                             if(goToNextScreen) {
-                                NavigationLink(destination: MainScreen(viewModel: generalViewModel.mainScreenViewModel).navigationBarBackButtonHidden()) {
-                                    ListRow(text: group)
-                                }
-                                .buttonStyle(NoHighlightButtonStyle())
+                                
+                                ListRow(text: group)
+                                    .onTapGesture {
+                                        if(isGuest) {
+                                            viewModel.toggleValidationStatusClosure(true)
+                                        }
+                                        generalViewModel.scheduleType = .group
+                                        generalViewModel.mainScreenViewModel = generalViewModel.getMainScreenViewModel()
+                                        generalViewModel.mainScreenId += 1
+                                        generalViewModel.mainScreenViewModel.showContent = false
+                                        generalViewModel.groupId = FindGroupIdByName().find(name: group, in: viewModel.groupList)
+                                    }
+//                                if(isGuest) {
+//                                    NavigationLink(destination: MainScreen(viewModel: generalViewModel.mainScreenViewModel).onAppear {
+//                                        generalViewModel.mainScreenId += 1
+//                                        generalViewModel.mainScreenViewModel.groupId = FindGroupIdByName().find(name: group, in: viewModel.groupList)
+//                                        generalViewModel.mainScreenViewModel.showContent = false
+//                                        generalViewModel.scheduleType = .group
+//                                        generalViewModel.resetMainScreenViewModel()
+//                                    }.navigationBarBackButtonHidden()) {
+//                                        ListRow(text: group)
+//                                    }
+//                                    .buttonStyle(NoHighlightButtonStyle())
+//                                }
+//                                else {
+//                                    ListRow(text: group)
+//                                        .onTapGesture {
+//                                            generalViewModel.scheduleType = .group
+//                                            generalViewModel.mainScreenViewModel = generalViewModel.getMainScreenViewModel()
+//                                            generalViewModel.mainScreenId += 1
+//                                            generalViewModel.mainScreenViewModel.showContent = false
+//                                            generalViewModel.mainScreenViewModel.groupId = FindGroupIdByName().find(name: group, in: viewModel.groupList)
+//                                            print(generalViewModel.mainScreenViewModel.groupId)
+//                                        }
+//                                }
+                                
                             }
                             else {
                                 ListRow(text: group)
                                     .frame(width: UIScreen.main.bounds.size.width)
                                     .onTapGesture {
-                                        print("tapped")
-                                        generalViewModel.registerScreenViewModel.selectedRole = 0
-                                        generalViewModel.registerScreenViewModel.group.name = group
-                                        generalViewModel.registerScreenViewModel.teacher = TeacherListElementModel(id: "")
-                                        generalViewModel.registerScreenViewModel.group.id = FindGroupIdByName().find(name: group, in: viewModel.groupList)
+                                        if(editingProfileMode) {
+                                            // На экран зашли с экрана редактирования профиля
+                                            generalViewModel.editProfileScreenViewModel.selectedRole = 0
+                                            generalViewModel.editProfileScreenViewModel.group.name = group
+                                            generalViewModel.editProfileScreenViewModel.group.id = FindGroupIdByName().find(name: group, in: viewModel.groupList)
+                                        }
+                                        else {
+                                            // На экран зашли с экрана регистрации
+                                            print("tapped")
+                                            generalViewModel.registerScreenViewModel.selectedRole = 0
+                                            generalViewModel.registerScreenViewModel.group.name = group
+                                            generalViewModel.registerScreenViewModel.teacher = TeacherListElementModel(id: "")
+                                            generalViewModel.registerScreenViewModel.group.id = FindGroupIdByName().find(name: group, in: viewModel.groupList)
+                                        }
                                         dismiss()
                                     }
                             }

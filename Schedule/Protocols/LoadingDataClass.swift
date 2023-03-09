@@ -12,4 +12,6 @@ class LoadingDataClass: ObservableObject {
     @Published var error: AppError?
     @Published var showContent: Bool = false
     @Published var showProgressView: Bool = false
+    @Published var showMessageAlert: Bool = false    
+    @Published var isUnauthorized: Bool = false
 }

@@ -2,14 +2,15 @@ import SwiftUI
 import SwiftUICurvedRectangleShape
 
 struct ProfileScreen: View {
-
+    
     @EnvironmentObject var generalViewModel: GeneralViewModel
     @ObservedObject var viewModel: ProfileScreenViewModel
     @Environment(\.presentationMode) var presentationMode
     @State var showContent: Bool = false
-
+    var isGuest: Bool
+    
     @Environment(\.dismiss) var dismiss
-
+    
     var body: some View {
         ZStack {
             GeometryReader { geo in
@@ -38,7 +39,7 @@ struct ProfileScreen: View {
                                 }
                                 .frame(width: 140, height: 140)
                                 .clipShape(Circle())
-
+                                
                                 EditAvatarView()
                                     .onTapGesture {
                                         viewModel.showAvatarAlert = true
@@ -51,6 +52,9 @@ struct ProfileScreen: View {
                                                 if(success) {
                                                     UserStorage.shared.saveAvatarLink(avatarLink: viewModel.avatarLink)
                                                 }
+                                                else {
+                                                    viewModel.avatarLink = UserStorage.shared.fetchAvatarLink()
+                                                }
                                             }
                                         })
                                         Button("Cancel", role: .cancel, action: {
@@ -58,6 +62,7 @@ struct ProfileScreen: View {
                                         })
                                     })
                             }
+                            .opacity(isGuest ? 0 : 1)
                         }
                         ZStack(alignment: .leading) {
                             Image(systemName: "chevron.backward")
@@ -67,7 +72,7 @@ struct ProfileScreen: View {
                                 .onTapGesture {
                                     dismiss()
                                 }
-                            Text("Profile")
+                            Text(isGuest ? "Schedule" : "Profile")
                                 .frame(maxWidth: .infinity)
                                 .font(.custom("Poppins-Bold", size: 17))
                         }
@@ -92,75 +97,95 @@ struct ProfileScreen: View {
                         }
                         Spacer().frame(height: 32)
                         VStack(spacing: 0) {
-                            ProfileSection(imageName: "newspaper", text: "Edit profile information", paddings: EdgeInsets(top: 16, leading: 16, bottom: 12, trailing: 16))
-                                .foregroundColor(.dayOfMonthColor)
-                                .onTapGesture {
-                                    viewModel.showEditInfo.toggle()
-                                }
-                                .sheet(isPresented: $viewModel.showEditInfo) {
-                                    NavigationStack {
-                                        EditProfileScreen(viewModel: generalViewModel.editProfileScreenViewModel)
+                            if(!isGuest) {
+                                ProfileSection(imageName: "newspaper", text: "Edit profile information", paddings: EdgeInsets(top: 16, leading: 16, bottom: 12, trailing: 16))
+                                    .foregroundColor(.dayOfMonthColor)
+                                    .onTapGesture {
+                                        viewModel.showEditInfo.toggle()
                                     }
-                                    .presentationDetents([.medium, .medium])
-                                }
-                            ProfileSection(imageName: "person.2", text: "Groups", paddings: EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
-                                .foregroundColor(.dayOfMonthColor)
-                            ProfileSection(imageName: "graduationcap", text: "Teachers", paddings: EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
-                                .foregroundColor(.dayOfMonthColor)
-                            ProfileSection(imageName: "door.right.hand.open", text: "Log out the account", paddings: EdgeInsets(top: 12, leading: 16, bottom: 16, trailing: 16))
+                                    .sheet(isPresented: $viewModel.showEditInfo) {
+                                        NavigationStack {
+                                            EditProfileScreen(viewModel: generalViewModel.editProfileScreenViewModel, selectedRole: viewModel.role == "Student" ? 0 : 1, additionalInfo: viewModel.role == "Student" ? viewModel.additionalInfo.components(separatedBy: " ")[1] : "Teacher")
+                                        }
+                                        .presentationDetents([.medium, .medium])
+                                    }
+                            }
+                            NavigationLink(destination: GroupPickerScreen(viewModel: generalViewModel.groupPickerScreenViewModel, editingProfileMode: false, goToNextScreen: true, isGuest: isGuest).navigationBarBackButtonHidden(true)) {
+                                ProfileSection(imageName: "person.2", text: "Groups", paddings: EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
+                                    .foregroundColor(.dayOfMonthColor)
+                            }
+                            NavigationLink(destination: TeacherPickerScreen(viewModel: generalViewModel.teacherPickerScreenViewModel, editingProfileMode: false, isGuest: isGuest, goToNextScreen: true).navigationBarBackButtonHidden(true)) {
+                                ProfileSection(imageName: "graduationcap", text: "Teachers", paddings: EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
+                                    .foregroundColor(.dayOfMonthColor)
+                            }
+                            NavigationLink(destination: ClassroomPickerScreen(viewModel: generalViewModel.classroomPickerScreenViewModel, isGuest: isGuest).navigationBarBackButtonHidden(true)) {
+                                ProfileSection(imageName: "house", text: "Classrooms", paddings: EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
+                                    .foregroundColor(.dayOfMonthColor)
+                            }
+                            ProfileSection(imageName: "door.right.hand.open", text: isGuest ? "Back to login screen" : "Log out the account", paddings: EdgeInsets(top: 12, leading: 16, bottom: 16, trailing: 16))
                                 .foregroundColor(.redColor)
                                 .onTapGesture {
-                                    viewModel.logout { success in
-                                        if(success) {
-                                            viewModel.toggleValidationStatusClosure(!success)
-                                            print("succ")
-                                            UserStorage.shared.clearAllData()
-                                            generalViewModel.loginScreenViewModel = LoginScreenViewModel(toggleValidationStatusClosure: { isValidated in
-                                                generalViewModel.isValidated = isValidated
-                                            })
-                                            generalViewModel.registerScreenViewModel = RegisterScreenViewModel(toggleValidationStatusClosure: { isValidated in
-                                                generalViewModel.isValidated = isValidated
-                                            })
-                                            generalViewModel.clearViewModels()
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    if(isGuest) {
+                                        print("Guest is logged out")
+                                        viewModel.toggleValidationStatusClosure(false)
+                                        generalViewModel.rootId = UUID()
+                                        UserStorage.shared.clearAllData()
+                                        generalViewModel.clearViewModels()
+                                    }
+                                    else {
+                                        viewModel.logout { success in
+                                            if(success) {
+                                                viewModel.toggleValidationStatusClosure(false)
+                                                generalViewModel.clearViewModels()
+                                                UserStorage.shared.clearAllData()
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                    print("stopped")
+                                                    presentationMode.wrappedValue.dismiss()
                                                     viewModel.showProgressView = false
                                                 }
-                                                print("dismissed")
-                                                presentationMode.wrappedValue.dismiss()
+                                            }
+                                            else {
+                                                viewModel.showProgressView = false
                                             }
                                         }
-                                        else {
-                                            viewModel.showProgressView = false
-                                        }
                                     }
-                                }
-                                .alert(item: $viewModel.error) { error in
-                                    Alert(title: Text("Invalid Request"), message: Text(error.errorDescription))
                                 }
                         }
                         .background(RoundedRectangle(cornerRadius: 10).fill(Color.white).shadow(radius: 2))
-                        .padding([.leading, .trailing], 20)
                     }
+                    .padding([.leading, .trailing], 20)
                 }
                 .edgesIgnoringSafeArea(.top)
             }
             if(viewModel.showProgressView) {
-                    Rectangle().fill(Color.white.opacity(0.5))
+                Rectangle().fill(Color.white.opacity(0.5))
                     .edgesIgnoringSafeArea(.all)
                 ProgressView()
             }
         }
         .onAppear {
+            if(!isGuest) {
+                print("Not a guest")
+                viewModel.getProfile { success in
+                    UserStorage.shared.saveAvatarLink(avatarLink: viewModel.avatarLink)
+                }
+            }
+            print(viewModel.additionalInfo)
             print("appeared")
-            viewModel.getProfile { success in
-                UserStorage.shared.saveAvatarLink(avatarLink: viewModel.avatarLink)
-                print("Avatar1: ", viewModel.avatarLink)
-                print("Avatar2: ", UserStorage.shared.fetchAvatarLink())
+        }
+        .alert(item: $viewModel.error) { error in
+            Alert(title: Text("Invalid Request"), message: Text(error.errorDescription), dismissButton: .default(Text("OK")) {
+                if(viewModel.error == AppError.profileError(.unauthorized)) {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            })
+        }
+        .onChange(of: viewModel.error) { _ in
+            if(viewModel.error == AppError.profileError(.unauthorized) || viewModel.error == AppError.authenticationError(.unauthorized)) {
+                generalViewModel.clearViewModels()
+                UserStorage.shared.clearAllData()
+                viewModel.toggleValidationStatusClosure(false)
             }
         }
-        
     }
 }
 
@@ -168,8 +193,8 @@ struct ProfileScreen_Previews: PreviewProvider {
     static var previews: some View {
         ProfileScreen(viewModel: ProfileScreenViewModel(toggleValidationStatusClosure: { success in
             GeneralViewModel().isValidated = success
-        })
-                      )
-            .environmentObject(GeneralViewModel())
+        }), isGuest: false
+        )
+        .environmentObject(GeneralViewModel())
     }
 }

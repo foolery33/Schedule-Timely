@@ -12,6 +12,8 @@ struct BottomBar: View {
     @EnvironmentObject var generalViewModel: GeneralViewModel
     @Binding var refreshCount: Int
     @Binding var showDatePicker: Bool
+    var isGuest: Bool
+    var notTheFirstScreen: Bool
     
     var body: some View {
         ZStack {
@@ -41,12 +43,27 @@ struct BottomBar: View {
                     }
                 }
                 Spacer()
-                NavigationLink(destination: ProfileScreen(viewModel: generalViewModel.profileScreenViewModel).navigationBarBackButtonHidden(true)) {
+                if(notTheFirstScreen) {
                     VStack(spacing: 2) {
-                        Image(systemName: "person")
+                        Image(systemName: "house")
                             .imageScale(.large)
-                        Text("Profile")
+                        Text("Home")
                             .font(.custom("Poppins-Regular", size: 11))
+                    }
+                    .onTapGesture {
+                        generalViewModel.mainScreenViewModel.daysOfWeek = generalViewModel.mainScreenViewModel.getDaysOfWeek(for: Date())
+                        generalViewModel.mainScreenViewModel.currentDayIndex = generalViewModel.mainScreenViewModel.weekdayIndex(for: Date())
+                        generalViewModel.mainScreenId = 0
+                    }
+                }
+                else {
+                    NavigationLink(destination: ProfileScreen(viewModel: generalViewModel.profileScreenViewModel, isGuest: isGuest).navigationBarBackButtonHidden(true)) {
+                        VStack(spacing: 2) {
+                            Image(systemName: isGuest ? "list.bullet" : "person")
+                                .imageScale(.large)
+                            Text(isGuest ? "Schedule" : "Profile")
+                                .font(.custom("Poppins-Regular", size: 11))
+                        }
                     }
                 }
                 Spacer().frame(width: 40)

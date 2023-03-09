@@ -14,10 +14,11 @@ class AuthenticationViewModel {
     
     private let interceptor: CustomRequestInterceptor = CustomRequestInterceptor()
     
-    private let baseURL: String = "http://timely.markridge.space"
+    private let baseURL: String = "https://timely.markridge.space"
     
     enum AuthenticationError: Error, LocalizedError, Identifiable {
         case noCredentials
+        case wrongPassword
         case invalidCredentials
         case serverError
         case invalidName
@@ -42,12 +43,14 @@ class AuthenticationViewModel {
             switch self {
             case .noCredentials:
                 return NSLocalizedString("Please make sure that you've provided all necessary data", comment: "")
+            case .wrongPassword:
+                return NSLocalizedString("The field password must match the regular expression '^[a-zA-Z0-9\\-_!@#№$%^&?*+=(){}[\\]<>~]+$'.", comment: "")
             case .invalidCredentials:
                 return NSLocalizedString("Either your email or password are incorrect. Please try again", comment: "")
             case .serverError:
                 return NSLocalizedString("Some server error occured. Please try again or contact developer", comment: "")
             case .invalidName:
-                return NSLocalizedString("Full name must consist of 2-3 words with at least 2 symbols in them. Words should contain only lati or cyrillic symbols and start with a capital letter", comment: "")
+                return NSLocalizedString("Full name must consist of 2-3 words with at least 2 symbols in them. Words should contain only latin or cyrillic symbols and start with a capital letter", comment: "")
             case .invalidEmail:
                 return NSLocalizedString("Such email does not exist. Please make sure you entered a correct email", comment: "")
             case .notTeacherEmail:
@@ -77,43 +80,49 @@ class AuthenticationViewModel {
     }
     
     func login(email: String, password: String, completion: @escaping (Result<TokenResponseModel, AppError>) -> Void) {
-        DispatchQueue.main.async {
-            if(email == "" || password == "") {
-                completion(.failure(.authenticationError(.noCredentials)))
-                return
+        if(email == "" || password == "") {
+            completion(.failure(.authenticationError(.noCredentials)))
+            return
+        }
+        
+        let httpParameters: [String: String] = [
+            "email": email,
+            "password": password
+        ]
+        print(httpParameters)
+        let url = self.baseURL + "/api/account/login"
+        AF.request(url, method: .post, parameters: httpParameters, encoder: JSONParameterEncoder.default, interceptor: self.interceptor).validate().responseData { response in
+            if let requestStatusCode = response.response?.statusCode {
+                print("Login Status Code: ", requestStatusCode)
             }
-            
-            let httpParameters: [String: String] = [
-                "email": email,
-                "password": password
-            ]
-            let url = self.baseURL + "/api/account/login"
-            print(email, password)
-            AF.request(url, method: .post, parameters: httpParameters, encoder: JSONParameterEncoder.default, interceptor: self.interceptor).validate(statusCode: 200..<300).responseData { response in
-                if let requestStatusCode = response.response?.statusCode {
-                    print("Login Status Code: ", requestStatusCode)
+            switch response.result {
+            case .success(let data):
+                print("Succ")
+                do {
+                    let decodedData = try JSONDecoder().decode(TokenResponseModel.self, from: data)
+                    UserStorage.shared.saveProfileData(email: email, password: password, accessToken: decodedData.token ?? "")
+                    if let groupId = decodedData.group?.id {
+                        UserStorage.shared.saveGroupId(groupId: groupId)
+                    }
+                    if let teacherId = decodedData.teacher?.id {
+                        UserStorage.shared.saveTeacherId(teacherId: teacherId)
+                    }
+                    completion(.success(decodedData))
+                } catch(_) {
+                    completion(.failure(.authenticationError(.serverError)))
                 }
-                switch response.result {
-                case .success(let data):
-                    do {
-                        let decodedData = try JSONDecoder().decode(TokenResponseModel.self, from: data)
-                        UserStorage.shared.saveProfileData(email: email, password: password, accessToken: decodedData.token ?? "")
-                        completion(.success(decodedData))
-                    } catch(_) {
+            case .failure(_):
+                print("Fail")
+                if let requestStatusCode = response.response?.statusCode {
+                    switch requestStatusCode {
+                    case 400, 401:
+                        completion(.failure(.authenticationError(.invalidCredentials)))
+                    default:
                         completion(.failure(.authenticationError(.serverError)))
                     }
-                case .failure(_):
-                    if let requestStatusCode = response.response?.statusCode {
-                        switch requestStatusCode {
-                        case 400, 401:
-                            completion(.failure(.authenticationError(.invalidCredentials)))
-                        default:
-                            completion(.failure(.authenticationError(.serverError)))
-                        }
-                    }
-                    else {
-                        completion(.failure(.authenticationError(.serverError)))
-                    }
+                }
+                else {
+                    completion(.failure(.authenticationError(.serverError)))
                 }
             }
         }
@@ -121,53 +130,54 @@ class AuthenticationViewModel {
     }
     
     func register(fullName: String, email: String, password: String, confirmPassword: String, completion: @escaping (Result<Bool, AppError>) -> Void) {
-        DispatchQueue.main.async {
-            
-            if(email == "" || password == "" || confirmPassword == "") {
-                completion(.failure(.authenticationError(.noCredentials)))
-                return
+        if(email == "" || password == "" || confirmPassword == "") {
+            completion(.failure(.authenticationError(.noCredentials)))
+            return
+        }
+        
+        if(password != confirmPassword) {
+            completion(.failure(.authenticationError(.differentPasswords)))
+            return
+        }
+        
+        let httpParameters: [String: String] = [
+            "fullName": fullName,
+            "password": password,
+            "email": email
+        ]
+        let url = self.baseURL + "/api/account/register"
+        print(email, password)
+        AF.request(url, method: .post, parameters: httpParameters, encoder: JSONParameterEncoder.default, interceptor: self.interceptor).validate().responseData { response in
+            if let requestStatusCode = response.response?.statusCode {
+                print("requestStatusCode: ", requestStatusCode)
             }
-            
-            if(password != confirmPassword) {
-                completion(.failure(.authenticationError(.differentPasswords)))
-                return
-            }
-            
-            let httpParameters: [String: String] = [
-                "fullName": fullName,
-                "password": password,
-                "email": email
-            ]
-            let url = self.baseURL + "/api/account/register"
-            print(email, password)
-            AF.request(url, method: .post, parameters: httpParameters, encoder: JSONParameterEncoder.default, interceptor: self.interceptor).responseData { response in
-                if let requestStatusCode = response.response?.statusCode {
-                    print("requestStatusCode: ", requestStatusCode)
+            switch response.result {
+            case .success(let data):
+                do {
+                    let decodedData = try JSONDecoder().decode(TokenResponseModel.self, from: data)
+                    UserStorage.shared.saveProfileData(email: email, password: password, accessToken: decodedData.token ?? "")
+                    completion(.success(true))
+                } catch(_) {
+                    completion(.failure(.authenticationError(.serverError)))
                 }
-                switch response.result {
-                case .success(let data):
-                    do {
-                        let decodedData = try JSONDecoder().decode(TokenResponseModel.self, from: data)
-                        UserStorage.shared.saveProfileData(email: email, password: password, accessToken: decodedData.token ?? "")
-                        completion(.success(true))
-                    } catch(_) {
+            case .failure(_):
+                
+                if let requestStatusCode = response.response?.statusCode {
+                    switch requestStatusCode {
+                    case 400:
                         if let passwordValidationResult = PasswordValidation().isValidPassword(password) {
                             completion(.failure(.authenticationError(passwordValidationResult)))
                         }
                         else {
-                            if let requestStatusCode = response.response?.statusCode {
-                                switch requestStatusCode {
-                                case 400:
-                                    completion(.failure(.authenticationError(.invalidEmail)))
-                                case 409:
-                                    completion(.failure(.authenticationError(.emailExists)))
-                                default:
-                                    completion(.failure(.authenticationError(.serverError)))
-                                }
-                            }
+                            completion(.failure(.authenticationError(.wrongPassword)))
                         }
+                    case 409:
+                        completion(.failure(.authenticationError(.emailExists)))
+                    default:
+                        completion(.failure(.authenticationError(.serverError)))
                     }
-                case .failure(_):
+                }
+                else {
                     completion(.failure(.authenticationError(.serverError)))
                 }
             }
@@ -188,14 +198,16 @@ class AuthenticationViewModel {
             case .failure(_):
                 if let requestStatusCode = response.response?.statusCode {
                     switch requestStatusCode {
-                    case 401, 500:
-                        completion(.success(true))
+                    case 401:
+                        completion(.failure(.authenticationError(.unauthorized)))
+                    case 500:
+                        completion(.failure(.authenticationError(.serverError)))
                     default:
-                        completion(.failure(.profileError(.serverError)))
+                        completion(.failure(.authenticationError(.unauthorized)))
                     }
                 }
                 else {
-                    completion(.failure(.profileError(.serverError)))
+                    completion(.failure(.authenticationError(.serverError)))
                 }
             }
         }

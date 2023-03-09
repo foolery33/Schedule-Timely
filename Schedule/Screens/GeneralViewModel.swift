@@ -30,10 +30,16 @@ class GeneralViewModel: ObservableObject {
     // MARK: Teacher Picker Screen
     @Published var teacherPickerScreenViewModel: TeacherPickerScreenViewModel!
     
+    // MARK: Classroom Picker Screen
+    @Published var classroomPickerScreenViewModel: ClassroomPickerScreenViewModel!
+    
     // MARK: Main Screen
     @Published var mainScreenViewModel: MainScreenViewModel!
 //    @Published var currentDayIndex: Int = MainScreenViewModel().weekdayIndex(for: Date())
 //    @Published var daysOfWeek: [Date] = MainScreenViewModel().getDaysOfWeek(for: Date())
+    
+    // MARK: About Subject Screen
+    @Published var aboutSubjectScreenViewModel: AboutSubjectScrenViewModel!
     
     @Published var showEditInfo: Bool = false
     
@@ -44,6 +50,21 @@ class GeneralViewModel: ObservableObject {
 //        self.currentDayIndex = MainScreenViewModel().weekdayIndex(for: newValue)
 //        objectWillChange.send()
 //    }
+    
+    @Published var rootId: UUID = UUID()
+    
+    // Если пользователь уже зашёл в аккаунт, то для него id у MainScreen == 0
+    @Published var mainScreenId: Int = UserStorage.shared.fetchAccessToken().isEmpty ? -1 : 0
+    
+    // Взависимости от id экрана будет даваться кортеж из типа расписания и id расписания. Эти данные нужны, чтобы отправлять запросы на сервер на получение расписания
+    var path: [Int: (ScheduleType, String)] = [:]
+    
+    @Published var scheduleType: ScheduleType = GetScheduleType().getScheduleType()
+    
+    @Published var groupId: String = UserStorage.shared.fetchGroupId()
+    @Published var teacherId: String = UserStorage.shared.fetchTeacherId()
+    @Published var classroomId: String = UserStorage.shared.fetchClassroomId()
+    @Published var changedProfile: Bool = false
     
     func clearViewModels() {
         self.loginScreenViewModel = LoginScreenViewModel(toggleValidationStatusClosure: { success in
@@ -67,65 +88,70 @@ class GeneralViewModel: ObservableObject {
         self.teacherPickerScreenViewModel = TeacherPickerScreenViewModel(toggleValidationStatusClosure: { success in
             self.isValidated = success
         })
+        self.classroomPickerScreenViewModel = ClassroomPickerScreenViewModel(toggleValidationStatusClosure: { success in
+            self.isValidated = success
+        })
+        self.aboutSubjectScreenViewModel = AboutSubjectScrenViewModel()
+        self.teacherId = ""
+        self.groupId = ""
+        self.showEditInfo = false
+        self.mainScreenId = -1
+        self.path = [:]
+    }
+    
+    func getMainScreenViewModel() -> MainScreenViewModel {
+        return MainScreenViewModel(toggleValidationStatusClosure: { result in
+            self.isValidated = result
+        })
     }
     
     func initViewModels() {
         loginScreenViewModel = .init(
             toggleValidationStatusClosure: { result in
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    self.isValidated = result
-                }
+                self.isValidated = result
             }
         )
         registerScreenViewModel = .init(
             toggleValidationStatusClosure: { result in
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    self.isValidated = result
-                }
+                self.isValidated = result
             }
         )
         mainScreenViewModel = .init(
             toggleValidationStatusClosure: { result in
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    self.isValidated = result
-                }
+                self.isValidated = result
             }
         )
         loginScreenViewModel = .init(
             toggleValidationStatusClosure: { result in
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    self.isValidated = result
-                }
+                self.isValidated = result
             }
         )
         profileScreenViewModel = .init(
             toggleValidationStatusClosure: { result in
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    self.isValidated = result
-                }
+                self.isValidated = result
             }
         )
         editProfileScreenViewModel = .init(
             toggleValidationStatusClosure: { result in
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    self.isValidated = result
-                }
+                self.isValidated = result
             }
         )
         groupPickerScreenViewModel = .init(
             toggleValidationStatusClosure: { result in
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    self.isValidated = result
-                }
+                self.isValidated = result
             }
         )
         teacherPickerScreenViewModel = .init(
             toggleValidationStatusClosure: { result in
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    self.isValidated = result
-                }
+                self.isValidated = result
             }
         )
+        classroomPickerScreenViewModel = .init(
+            toggleValidationStatusClosure: { result in
+                self.isValidated = result
+            }
+        )
+        aboutSubjectScreenViewModel = AboutSubjectScrenViewModel()
     }
     
 }

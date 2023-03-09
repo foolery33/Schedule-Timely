@@ -17,7 +17,7 @@ struct TokenResponseModel: Decodable {
         case teacher = "teacher"
     }
     
-    init (token: String? = nil, email: String? = nil, role: [String]? = nil, group: GroupListElementModel? = nil, teacher: TeacherListElementModel? = nil) {
+    init (token: String? = nil, email: String? = nil, role: [String]? = nil, group: GroupModel? = nil, teacher: TeacherModel? = nil) {
         self.token = token
         self.email = email
         self.role = role
@@ -28,7 +28,7 @@ struct TokenResponseModel: Decodable {
     let token: String?
     let email: String?
     let role: [String]?
-    let group: GroupListElementModel?
-    let teacher: TeacherListElementModel?
+    let group: GroupModel?
+    let teacher: TeacherModel?
     
 }

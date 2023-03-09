@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class EditProfileScreenViewModel: ObservableObject {
+class EditProfileScreenViewModel: LoadingDataClass {
     
     @Published private var model: EditProfileScreenModel = EditProfileScreenModel()
     
@@ -17,21 +17,52 @@ class EditProfileScreenViewModel: ObservableObject {
         self.toggleValidationStatusClosure = toggleValidationStatusClosure
     }
     
-    var emailText: String {
+    var fullNameText: String {
         get {
-            model.emailText
+            model.fullNameText
         }
         set(newValue) {
-            model.emailText = newValue
+            model.fullNameText = newValue
         }
     }
     
-    var role: Int {
+    var selectedRole: Int {
         get {
-            model.role
+            model.selectedRole
         }
         set(newValue) {
-            model.role = newValue
+            model.selectedRole = newValue
+        }
+    }
+    
+    var group: GroupListElementModel {
+        get {
+            model.group
+        }
+        set(newValue) {
+            model.group = newValue
+        }
+    }
+    
+    var teacher: TeacherListElementModel {
+        get {
+            model.teacher
+        }
+        set(newValue) {
+            model.teacher = newValue
+        }
+    }
+    
+    func changeProfile(fullName: String, completion: @escaping (Bool) -> Void) {
+        withAnimation(.linear(duration: 0.1)) {
+        }
+        ProfileViewModel.shared.changeProfile(fullName: fullNameText) { (result: Result<Bool, AppError>) in
+            switch result {
+            case .success:
+                completion(true)
+            case .failure:
+                completion(false)
+            }
         }
     }
     

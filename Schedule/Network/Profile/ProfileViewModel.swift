@@ -15,12 +15,15 @@ class ProfileViewModel {
     
     private let interceptor: CustomRequestInterceptor = CustomRequestInterceptor()
     
-    private let baseURL: String = "http://timely.markridge.space"
+    private let baseURL: String = "https://timely.markridge.space"
     
     enum ProfileError: Error, LocalizedError, Identifiable {
         
         case unauthorized
         case serverError
+        case contactDeveloper
+        case invalidName
+        case invalidAvatar
         
         var id: String {
             self.errorDescription
@@ -32,6 +35,12 @@ class ProfileViewModel {
                 return NSLocalizedString("Your token is expired. Please login again", comment: "")
             case .serverError:
                 return NSLocalizedString("Some server error occured. Please try again or contact developer", comment: "")
+            case .contactDeveloper:
+                return NSLocalizedString("Some programming problem. Please contact developer", comment: "")
+            case .invalidName:
+                return NSLocalizedString("Full name must consist of 2-3 words with at least 2 symbols in them. Words should contain only latin or cyrillic symbols and start with a capital letter", comment: "")
+            case .invalidAvatar:
+                return NSLocalizedString("Your avatar link is corrupted. Please enter the correct one", comment: "")
             }
         }
         
@@ -49,11 +58,49 @@ class ProfileViewModel {
                     let decodedData = try JSONDecoder().decode(ProfileModel.self, from: data)
                     completion(.success(decodedData))
                 } catch(_) {
-                    print("Fail")
-                    completion(.failure(.profileError(.serverError)))
+                    completion(.failure(.profileError(.contactDeveloper)))
                 }
             case .failure(_):
-                completion(.failure(.profileError(.serverError)))
+                if let requestStatusCode = response.response?.statusCode {
+                    switch requestStatusCode {
+                    case 401:
+                        completion(.failure(.profileError(.unauthorized)))
+                    case 500:
+                        completion(.failure(.profileError(.serverError)))
+                    default:
+                        completion(.failure(.profileError(.serverError)))
+                    }
+                }
+                else {
+                    completion(.failure(.profileError(.serverError)))
+                }
+            }
+        }
+    }
+    
+    func changeProfile(fullName: String, completion: @escaping (Result<Bool, AppError>) -> Void) {
+        let url = self.baseURL + "/api/account/profile"
+        let httpParameters: [String: String] = [
+            "fullName": fullName
+        ]
+        AF.request(url, method: .put, parameters: httpParameters, encoder: JSONParameterEncoder.default, interceptor: self.interceptor).validate().responseData { response in
+            if let requestStatusCode = response.response?.statusCode {
+                print("Set Profile Status Code: ", requestStatusCode)
+            }
+            switch response.result {
+            case .success(_):
+                completion(.success(true))
+            case .failure(_):
+                if let requestStatusCode = response.response?.statusCode {
+                    switch requestStatusCode {
+                    case 400:
+                        completion(.failure(.profileError(.invalidName)))
+                    case 401:
+                        completion(.failure(.profileError(.unauthorized)))
+                    default:
+                        completion(.failure(.profileError(.serverError)))
+                    }
+                }
             }
         }
     }
@@ -73,6 +120,8 @@ class ProfileViewModel {
             case .failure(_):
                 if let requestStatusCode = response.response?.statusCode {
                     switch requestStatusCode {
+                    case 400:
+                        completion(.failure(.profileError(.invalidAvatar)))
                     case 401:
                         completion(.failure(.profileError(.unauthorized)))
                     default:

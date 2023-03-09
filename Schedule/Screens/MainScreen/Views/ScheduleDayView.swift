@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ScheduleDayView: View {
     
+    @EnvironmentObject var generalViewModel: GeneralViewModel
     var lessons: [LessonModel]
     
     var body: some View {
@@ -35,6 +36,7 @@ struct ScheduleDayView: View {
                 LazyVStack(alignment: .center, spacing: 16) {
                     ForEach(0..<lessons.count, id: \.self) { index in
                         NavigationLink(destination: AboutSubjectScreen(
+                            viewModel: generalViewModel.aboutSubjectScreenViewModel,
                             subjectName: lessons[index].name.name,
                             subjectType: lessons[index].tag.name,
                             startTime: ConvertDateToHourMinute().convert(lessons[index].timeInterval.startTime),

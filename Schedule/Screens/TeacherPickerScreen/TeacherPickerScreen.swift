@@ -11,8 +11,9 @@ struct TeacherPickerScreen: View {
     
     @EnvironmentObject var generalViewModel: GeneralViewModel
     @ObservedObject var viewModel: TeacherPickerScreenViewModel
-    
+    var editingProfileMode: Bool
     @Environment(\.dismiss) var dismiss
+    var isGuest: Bool
 
     var goToNextScreen: Bool
     
@@ -44,22 +45,62 @@ struct TeacherPickerScreen: View {
                         let teacherTextedList = MakeList().makeList(from: viewModel.teacherList)
                         ForEach(viewModel.teacherText.isEmpty ? teacherTextedList : teacherTextedList.filter {$0.contains(viewModel.teacherText)}, id: \.self) { teacher in
                             if(goToNextScreen) {
-                                NavigationLink(destination: MainScreen(viewModel: generalViewModel.mainScreenViewModel).navigationBarBackButtonHidden()) {
-                                    ListRow(text: teacher)
-                                }
-                                .buttonStyle(NoHighlightButtonStyle())
+                                ListRow(text: teacher)
+                                    .onTapGesture {
+                                        if(isGuest) {
+                                            viewModel.toggleValidationStatusClosure(true)
+                                        }
+                                        generalViewModel.scheduleType = .teacher
+                                        generalViewModel.mainScreenViewModel = generalViewModel.getMainScreenViewModel()
+                                        generalViewModel.mainScreenId += 1
+                                        generalViewModel.mainScreenViewModel.showContent = false
+                                        generalViewModel.teacherId = FindTeacherIdByName().find(name: teacher, in: viewModel.teacherList)
+                                        print(generalViewModel.teacherId)
+                                    }
+//                                if(isGuest) {
+//                                    NavigationLink(destination: MainScreen(viewModel: generalViewModel.mainScreenViewModel).onAppear {
+//                                        generalViewModel.mainScreenId += 1
+//                                        generalViewModel.mainScreenViewModel.teacherId = FindTeacherIdByName().find(name: teacher, in: viewModel.teacherList)
+//                                        generalViewModel.mainScreenViewModel.showContent = false
+//                                        generalViewModel.scheduleType = .teacher
+//                                        generalViewModel.resetMainScreenViewModel()
+//                                    }.navigationBarBackButtonHidden()) {
+//                                        ListRow(text: teacher)
+//                                    }
+//                                    .buttonStyle(NoHighlightButtonStyle())
+//                                }
+//                                else {
+//                                    ListRow(text: teacher)
+//                                        .onTapGesture {
+//                                            generalViewModel.scheduleType = .teacher
+//                                            generalViewModel.mainScreenViewModel = generalViewModel.getMainScreenViewModel()
+//                                            generalViewModel.mainScreenId += 1
+//                                            generalViewModel.mainScreenViewModel.showContent = false
+//                                            generalViewModel.mainScreenViewModel.teacherId = FindTeacherIdByName().find(name: teacher, in: viewModel.teacherList)
+//                                            print(generalViewModel.mainScreenViewModel.teacherId)
+//                                        }
+//                                }
                             }
                             else {
                                 ListRow(text: teacher)
                                     .frame(width: UIScreen.main.bounds.size.width)
                                     .onTapGesture {
-                                        print("tapped")
-                                        generalViewModel.registerScreenViewModel.selectedRole = 1
-                                        generalViewModel.registerScreenViewModel.teacher.name = teacher
-                                        generalViewModel.registerScreenViewModel.group = GroupListElementModel(id: "")
-                                        generalViewModel.registerScreenViewModel.teacher.id = FindTeacherIdByName().find(name: teacher, in: viewModel.teacherList)
-                                        generalViewModel.registerScreenViewModel.fullName = teacher
-                                        print(generalViewModel.registerScreenViewModel.fullName)
+                                        if(editingProfileMode) {
+                                            // На экран зашли с экрана редактирования профиля
+                                            generalViewModel.editProfileScreenViewModel.selectedRole = 1
+                                            generalViewModel.editProfileScreenViewModel.teacher.name = teacher
+                                            generalViewModel.editProfileScreenViewModel.teacher.id = FindTeacherIdByName().find(name: teacher, in: viewModel.teacherList)
+                                            generalViewModel.editProfileScreenViewModel.fullNameText = teacher
+                                            print(generalViewModel.editProfileScreenViewModel.fullNameText)
+                                        }
+                                        else {
+                                            // На экран зашли с экрана регистрации
+                                            generalViewModel.registerScreenViewModel.selectedRole = 1
+                                            generalViewModel.registerScreenViewModel.teacher.name = teacher
+                                            generalViewModel.registerScreenViewModel.group = GroupListElementModel(id: "")
+                                            generalViewModel.registerScreenViewModel.teacher.id = FindTeacherIdByName().find(name: teacher, in: viewModel.teacherList)
+                                            generalViewModel.registerScreenViewModel.fullName = teacher
+                                        }
                                         dismiss()
                                     }
                             }

@@ -51,12 +51,12 @@ struct RegisterScreen: View {
                         }
                         Spacer().frame(height: 30)
                         HStack(spacing: 0) {
-                            NavigationLink(destination: GroupPickerScreen(viewModel: generalViewModel.groupPickerScreenViewModel, goToNextScreen: false).navigationBarBackButtonHidden(true)) {
+                            NavigationLink(destination: GroupPickerScreen(viewModel: generalViewModel.groupPickerScreenViewModel, editingProfileMode: false, goToNextScreen: false, isGuest: false).navigationBarBackButtonHidden(true)) {
                                 UnfilledButton(text: "Student")
                                     .background(viewModel.selectedRole == 0 ? Color.todayTextBackgroundColor : Color.white)
                             }
                             Spacer()
-                            NavigationLink(destination: TeacherPickerScreen(viewModel: generalViewModel.teacherPickerScreenViewModel, goToNextScreen: false).navigationBarBackButtonHidden(true)) {
+                            NavigationLink(destination: TeacherPickerScreen(viewModel: generalViewModel.teacherPickerScreenViewModel, editingProfileMode: false, isGuest: false, goToNextScreen: false).navigationBarBackButtonHidden(true)) {
                                 UnfilledButton(text: "Teacher")
                                     .background(viewModel.selectedRole == 1 ? Color.todayTextBackgroundColor : Color.white)
                             }
@@ -86,8 +86,10 @@ struct RegisterScreen: View {
                             if(success) {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                     if(!(viewModel.group.name?.isEmpty ?? true)) {
-                                        viewModel.setGroup { success in
+                                        viewModel.setGroup(group: viewModel.group.id) { success in
                                             if(success) {
+                                                generalViewModel.mainScreenId += 1
+                                                generalViewModel.scheduleType = .group
                                                 UserStorage.shared.saveGroupId(groupId: viewModel.group.id)
                                                 presentationMode.wrappedValue.dismiss()
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -97,6 +99,7 @@ struct RegisterScreen: View {
                                         }
                                     }
                                     else {
+                                        generalViewModel.scheduleType = .teacher
                                         UserStorage.shared.saveTeacherId(teacherId: viewModel.teacher.id)
                                         presentationMode.wrappedValue.dismiss()
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

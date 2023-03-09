@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainScreen: View {
     
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var generalViewModel: GeneralViewModel
     @ObservedObject var viewModel: MainScreenViewModel
     @State private var refreshCount: Int = 0
@@ -22,11 +23,31 @@ struct MainScreen: View {
                 ZStack(alignment: .bottom) {
                     VStack(spacing: 0) {
                         Color.softWhite.frame(height: geo.safeAreaInsets.top)
+                        if(generalViewModel.mainScreenId > 0) {
+                            // Просмотр не своего основного расписания
+                            Spacer().frame(height: 20)
+                            HStack {
+                                Image(systemName: "chevron.backward")
+                                    .padding(.leading, 10)
+                                    .font(.system(size: 16, weight: .medium))
+                                    .imageScale(.large)
+                                    .onTapGesture {
+                                        viewModel.daysOfWeek = viewModel.getDaysOfWeek(for: Date())
+                                        viewModel.currentDayIndex = viewModel.weekdayIndex(for: Date())
+                                        generalViewModel.mainScreenId -= 1
+                                    }
+                                Spacer()
+                            }
+                            
+                        }
                         HStack {
                             Text(
                                 viewModel.getDayOfMonthByDate(date: viewModel.daysOfWeek[viewModel.currentDayIndex])
                             )
                             .font(.custom("Poppins-Medium", size: 40))
+                            .onTapGesture {
+                                print(generalViewModel.mainScreenId)
+                            }
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(viewModel.getDayOfWeekByDate(date: viewModel.daysOfWeek[viewModel.currentDayIndex], lettersCount: 3))
                                 Text(
@@ -44,7 +65,6 @@ struct MainScreen: View {
                                     .padding([.top, .bottom], 11)
                                     .background(RoundedRectangle(cornerRadius: 10).fill(Color.todayTextBackgroundColor))
                                     .font(.custom("Poppins-Semibold", size: 15))
-                                
                             }
                         }
                         .padding([.leading, .trailing], 20)
@@ -118,8 +138,9 @@ struct MainScreen: View {
                                 }
                                 .animation(.linear(duration: animationLength), value: viewModel.currentDayIndex)
                                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                                .opacity(viewModel.showContent ? 1 : 0)
                             }
-                            BottomBar(refreshCount: $refreshCount, showDatePicker: $showDatePicker)
+                            BottomBar(refreshCount: $refreshCount, showDatePicker: $showDatePicker, isGuest: UserStorage.shared.fetchAccessToken().isEmpty, notTheFirstScreen: generalViewModel.mainScreenId != 0)
                                 .environmentObject(viewModel)
                                 .padding(20)
                         }
@@ -132,8 +153,6 @@ struct MainScreen: View {
                 .edgesIgnoringSafeArea(.bottom)
                 .sheet(isPresented: $showDatePicker) {
                     DatePickerView(selectedDate: $currentDate) {
-                        print("action preformed")
-                        print(currentDate)
                         viewModel.daysOfWeek = viewModel.getDaysOfWeek(for: currentDate)
                         viewModel.currentDayIndex = viewModel.weekdayIndex(for: currentDate)
                         currentDate = Date()
@@ -143,21 +162,50 @@ struct MainScreen: View {
                 }
             }
             if(viewModel.showProgressView) {
-                Rectangle().fill(Color.white.opacity(0.5))
-                .edgesIgnoringSafeArea(.all)
                 ProgressView()
             }
         }
-        .onChange(of: refreshCount) { _ in
-            withAnimation(.easeInOut(duration: 0.2)) {
-                viewModel.daysOfWeek = viewModel.getDaysOfWeek(for: Date())
-                viewModel.currentDayIndex = viewModel.weekdayIndex(for: Date())
+        .alert(item: $viewModel.error) { error in
+            Alert(title: Text("Invalid Shedule Loading"), message: Text(error.errorDescription))
+        }
+        .onAppear {
+            viewModel.showProgressView = true
+            viewModel.showContent = false
+            DispatchQueue.main.async {
+                if let requestInfo = generalViewModel.path[generalViewModel.mainScreenId] {
+                    generalViewModel.path[generalViewModel.mainScreenId + 1] = nil
+                    generalViewModel.scheduleType = requestInfo.0
+                    switch requestInfo.0 {
+                    case .group:
+                        if(generalViewModel.changedProfile && generalViewModel.mainScreenId == 0) {
+                            generalViewModel.path[generalViewModel.mainScreenId] = (.group, generalViewModel.groupId)
+                            generalViewModel.changedProfile = false
+                        }
+                        else {
+                            generalViewModel.groupId = requestInfo.1
+                        }
+                    case .teacher:
+                        if(generalViewModel.changedProfile && generalViewModel.mainScreenId == 0) {
+                            generalViewModel.path[generalViewModel.mainScreenId] = (.teacher, generalViewModel.teacherId)
+                            generalViewModel.changedProfile = false
+                        }
+                        else {
+                            generalViewModel.teacherId = requestInfo.1
+                        }
+                    case .classroom:
+                        generalViewModel.classroomId = requestInfo.1
+                    }
+                }
                 loadSchedule()
             }
         }
-        .onAppear {
+        .onChange(of: refreshCount) { _ in
+            viewModel.showContent = false
+            viewModel.daysOfWeek = viewModel.getDaysOfWeek(for: Date())
+            viewModel.currentDayIndex = viewModel.weekdayIndex(for: Date())
             loadSchedule()
         }
+        .id(generalViewModel.mainScreenId)
     }
     
     func prepareData(forward: Bool) {
@@ -166,31 +214,58 @@ struct MainScreen: View {
                 from: viewModel.daysOfWeek[forward ? 6 : 0], byDays: (forward ? 1 : -1)
             )
         )
+        viewModel.showContent = false
         viewModel.currentDayIndex = 0
-        viewModel.sortedWeekLessons = [[], [], [], [], [], [], []]
     }
     
     func loadSchedule() {
-        if(!UserStorage.shared.fetchGroupId().isEmpty) {
-            viewModel.getGroupSchedule(date: ConvertDateIntoString().convert(viewModel.daysOfWeek[viewModel.currentDayIndex])) { success in
-                viewModel.showProgressView = false
-                if(success) {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + animationLength) {
-                        viewModel.sortedWeekLessons = GetWeekSchedule().getWeekSchedule(from: viewModel.weekLessons, dates: viewModel.daysOfWeek)
-                        print(viewModel.sortedWeekLessons)
-                        print(viewModel.sortedWeekLessons.count)
+        switch generalViewModel.scheduleType {
+        case .group:
+            print("Group: ", generalViewModel.groupId)
+            print("FetchGroup: ", UserStorage.shared.fetchGroupId())
+            var group = generalViewModel.groupId
+            group = group.isEmpty ? UserStorage.shared.fetchGroupId() : group
+            print("FinalDecision: ", group)
+            if(!group.isEmpty) {
+                viewModel.getGroupSchedule(date: ConvertDateIntoString().convert(viewModel.daysOfWeek[viewModel.currentDayIndex]), groupId: group) { success in
+                    if(success) {
+                        generalViewModel.path[generalViewModel.mainScreenId] = (ScheduleType.group, group)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + animationLength + 0.1) {
+                            viewModel.showProgressView = false
+                            viewModel.showContent = true
+                        }
                     }
                 }
             }
-        }
-        else if(!UserStorage.shared.fetchTeacherId().isEmpty) {
-            viewModel.getTeacherSchedule(date: ConvertDateIntoString().convert(viewModel.daysOfWeek[viewModel.currentDayIndex])) { success in
-                viewModel.showProgressView = false
-                if(success) {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + animationLength) {
-                        viewModel.sortedWeekLessons = GetWeekSchedule().getWeekSchedule(from: viewModel.weekLessons, dates: viewModel.daysOfWeek)
-                        print(viewModel.sortedWeekLessons)
-                        print(viewModel.sortedWeekLessons.count)
+        case .teacher:
+            print("Teacher: ", generalViewModel.teacherId)
+            print("FetchTeacher: ", UserStorage.shared.fetchTeacherId())
+            var teacher = generalViewModel.teacherId
+            teacher = teacher.isEmpty ? UserStorage.shared.fetchTeacherId() : teacher
+            if(!teacher.isEmpty) {
+                viewModel.getTeacherSchedule(date: ConvertDateIntoString().convert(viewModel.daysOfWeek[viewModel.currentDayIndex]), teacherId: teacher) { success in
+                    if(success) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + animationLength + 0.1) {
+                            generalViewModel.path[generalViewModel.mainScreenId] = (ScheduleType.teacher, teacher)
+                            viewModel.showProgressView = false
+                            viewModel.showContent = true
+                        }
+                    }
+                }
+            }
+        case .classroom:
+            print("Classroom: ", generalViewModel.classroomId)
+            print("FetchClassroom: ", UserStorage.shared.fetchClassroomId())
+            var classroom = generalViewModel.classroomId
+            classroom = classroom.isEmpty ? UserStorage.shared.fetchClassroomId() : classroom
+            if(!classroom.isEmpty) {
+                viewModel.getClassroomSchedule(date: ConvertDateIntoString().convert(viewModel.daysOfWeek[viewModel.currentDayIndex]), classroomId: classroom) { success in
+                    if(success) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + animationLength + 0.1) {
+                            generalViewModel.path[generalViewModel.mainScreenId] = (ScheduleType.classroom, classroom)
+                            viewModel.showProgressView = false
+                            viewModel.showContent = true
+                        }
                     }
                 }
             }

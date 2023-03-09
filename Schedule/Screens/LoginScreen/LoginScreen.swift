@@ -50,17 +50,25 @@ struct LoginScreen: View {
                     FilledButton(text: "Login") {
                         viewModel.login { success in
                             if(!success.1.isEmpty) {
-                                viewModel.toggleValidationStatusClosure(true)
                                 switch(success.0) {
                                 case "teacher":
-                                    generalViewModel.mainScreenViewModel.teacherId = success.1
+                                    generalViewModel.teacherId = success.1
                                     UserStorage.shared.saveTeacherId(teacherId: success.1)
+                                    generalViewModel.scheduleType = .teacher
                                 case "group":
-                                    generalViewModel.mainScreenViewModel.groupId = success.1
                                     UserStorage.shared.saveGroupId(groupId: success.1)
+                                    generalViewModel.groupId = success.1
+                                    generalViewModel.scheduleType = .group
                                 default:
                                     break
                                 }
+                                generalViewModel.mainScreenId += 1
+                                viewModel.showProgressView = false
+                                print("toMainScreenTrue")
+                                viewModel.toggleValidationStatusClosure(true)
+                            }
+                            else {
+                                print("Empty")
                             }
                         }
                     }
@@ -80,13 +88,18 @@ struct LoginScreen: View {
                     }
                     Spacer().frame(height: 30)
                     HStack(spacing: 0) {
-                        NavigationLink(destination: GroupPickerScreen(viewModel: generalViewModel.groupPickerScreenViewModel, goToNextScreen: true).navigationBarBackButtonHidden(true)) {
+                        NavigationLink(destination: GroupPickerScreen(viewModel: generalViewModel.groupPickerScreenViewModel, editingProfileMode: false, goToNextScreen: true, isGuest: true).navigationBarBackButtonHidden(true)) {
                             UnfilledButton(text: "Student")
                         }
                         Spacer()
-                        NavigationLink(destination: TeacherPickerScreen(viewModel: generalViewModel.teacherPickerScreenViewModel, goToNextScreen: true).navigationBarBackButtonHidden(true)) {
+                        NavigationLink(destination: TeacherPickerScreen(viewModel: generalViewModel.teacherPickerScreenViewModel, editingProfileMode: false, isGuest: true, goToNextScreen: true).navigationBarBackButtonHidden(true)) {
                             UnfilledButton(text: "Teacher")
                         }
+                        Spacer()
+                        NavigationLink(destination: ClassroomPickerScreen(viewModel: generalViewModel.classroomPickerScreenViewModel, isGuest: true).navigationBarBackButtonHidden(true)) {
+                            UnfilledButton(text: "Classroom")
+                        }
+
                     }
                 }
                 Spacer()
@@ -110,6 +123,7 @@ struct LoginScreen: View {
                 ProgressView()
             }
         }
+        .id(generalViewModel.rootId)
     }
 }
 

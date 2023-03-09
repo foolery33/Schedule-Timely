@@ -9,7 +9,9 @@ import Foundation
 
 struct EditProfileScreenModel {
     
-    var emailText: String = ""
-    var role: Int = -1
+    var fullNameText: String = ""
+    var selectedRole: Int = -1
+    var group: GroupListElementModel = GroupListElementModel(id: "")
+    var teacher: TeacherListElementModel = TeacherListElementModel(id: "")
     
 }

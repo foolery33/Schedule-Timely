@@ -71,6 +71,24 @@ class ProfileScreenViewModel: LoadingDataClass {
         }
     }
     
+    var group: GroupModel {
+        get {
+            model.group
+        }
+        set(newValue) {
+            model.group = newValue
+        }
+    }
+    
+    var teacher: TeacherModel {
+        get {
+            model.teacher
+        }
+        set(newValue) {
+            model.teacher = newValue
+        }
+    }
+    
     @Published var showEditInfo: Bool = false
     
     func getProfile(completion: @escaping (Bool) -> Void) {
@@ -82,6 +100,8 @@ class ProfileScreenViewModel: LoadingDataClass {
             showContent = true
             switch result {
             case .success(let profile):
+                group = profile.group ?? GroupModel(name: "")
+                teacher = profile.teacher ?? TeacherModel(name: "")
                 avatarLink = profile.avatarLink ?? ""
                 fullName = profile.fullName ?? ""
                 emailText = profile.email ?? ""
@@ -89,7 +109,11 @@ class ProfileScreenViewModel: LoadingDataClass {
                 additionalInfo = (role == "Teacher") ? "Teacher" : ((role == "Student") ? ("Group: \(profile.group?.name ?? "")") : "")
                 completion(true)
             case .failure(let error):
+                self.showMessageAlert = true
                 self.error = error
+                if(self.error == AppError.profileError(.unauthorized)) {
+                    self.isUnauthorized = true
+                }
                 completion(false)
             }
         }
@@ -104,8 +128,12 @@ class ProfileScreenViewModel: LoadingDataClass {
             switch result {
             case .success:
                 completion(true)
-            case .failure(let authError):
-                error = authError
+            case .failure(let error):
+                self.showMessageAlert = true
+                self.error = error
+                if(self.error == AppError.profileError(.unauthorized)) {
+                    self.isUnauthorized = true
+                }
                 completion(false)
             }
         }
@@ -119,16 +147,13 @@ class ProfileScreenViewModel: LoadingDataClass {
             switch result {
             case .success:
                 completion(true)
-            case .failure(let authError):
-                print("failure")
-                print(authError)
-                error = authError
-                if(authError == AppError.authenticationError(.unauthorized)) {
-                    completion(true)
+            case .failure(let error):
+                self.showMessageAlert = true
+                self.error = error
+                if(self.error == AppError.authenticationError(.unauthorized)) {
+                    self.isUnauthorized = true
                 }
-                else {
-                    completion(false)
-                }
+                completion(false)
             }
         }
     }

@@ -12,8 +12,6 @@ struct MainScreenModel {
     var daysOfWeek = getDaysOfWeek(for: Date())
     var currentDayIndex = weekdayIndex(for: Date())
     var isAscendingOrder: Bool = true
-    var groupId: String = ""
-    var teacherId: String = ""
     var weekLessons: [LessonModel] = []
     var sortedWeekLessons: [[LessonModel]] = [[], [], [], [], [], [], []]
     

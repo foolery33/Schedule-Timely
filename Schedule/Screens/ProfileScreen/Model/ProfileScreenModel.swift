@@ -16,5 +16,7 @@ struct ProfileScreenModel {
     var avatarLink: String = ""
     var showAvatarAlert: Bool = false
     var showEditInfo: Bool = false
+    var group: GroupModel = GroupModel(name: "")
+    var teacher: TeacherModel = TeacherModel(name: "")
     
 }

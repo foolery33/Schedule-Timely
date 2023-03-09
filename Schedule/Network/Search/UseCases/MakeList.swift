@@ -15,5 +15,8 @@ class MakeList {
     func makeList(from list: [TeacherListElementModel]) -> [String] {
         return list.map { $0.name ?? "" }.sorted(by: { $0 < $1 })
     }
+    func makeList(from list: [ClassroomModel]) -> [String] {
+        return list.map { $0.name }.sorted(by: { $0 < $1 })
+    }
     
 }

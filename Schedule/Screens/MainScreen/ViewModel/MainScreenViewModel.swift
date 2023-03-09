@@ -44,24 +44,6 @@ class MainScreenViewModel: LoadingDataClass {
         }
     }
     
-    var groupId: String {
-        get {
-            model.groupId
-        }
-        set(newValue) {
-            model.groupId = newValue
-        }
-    }
-    
-    var teacherId: String {
-        get {
-            model.teacherId
-        }
-        set(newValue) {
-            model.teacherId = newValue
-        }
-    }
-    
     var weekLessons: [LessonModel] {
         get {
             model.weekLessons
@@ -126,14 +108,13 @@ class MainScreenViewModel: LoadingDataClass {
         return model.getDateWithOffset(from: date, byDays: days)
     }
     
-    func getGroupSchedule(date: String, completion: @escaping (Bool) -> Void) {
-        withAnimation(.linear(duration: 0.1)) {
-            showProgressView = true
-        }
-        ScheduleViewModel.shared.getGroupSchedule(date: date, groupId: UserStorage.shared.fetchGroupId()) { [unowned self] (result: Result<[LessonModel], AppError>) in
+    func getGroupSchedule(date: String, groupId: String, completion: @escaping (Bool) -> Void) {
+        showProgressView = true
+        ScheduleViewModel.shared.getGroupSchedule(date: date, groupId: groupId) { [unowned self] (result: Result<[LessonModel], AppError>) in
             switch result {
             case .success(let lessons):
                 self.weekLessons = lessons
+                self.sortedWeekLessons = GetWeekSchedule().getWeekSchedule(from: self.weekLessons, dates: self.daysOfWeek)
                 completion(true)
             case .failure(let error):
                 self.error = error
@@ -143,14 +124,13 @@ class MainScreenViewModel: LoadingDataClass {
         }
     }
     
-    func getTeacherSchedule(date: String, completion: @escaping (Bool) -> Void) {
-        withAnimation(.linear(duration: 0.1)) {
-            showProgressView = true
-        }
-        ScheduleViewModel.shared.getTeacherSchedule(date: date, teacherId: UserStorage.shared.fetchTeacherId()) { [unowned self] (result: Result<[LessonModel], AppError>) in
+    func getTeacherSchedule(date: String, teacherId: String, completion: @escaping (Bool) -> Void) {
+        showProgressView = true
+        ScheduleViewModel.shared.getTeacherSchedule(date: date, teacherId: teacherId) { [unowned self] (result: Result<[LessonModel], AppError>) in
             switch result {
             case .success(let lessons):
                 self.weekLessons = lessons
+                self.sortedWeekLessons = GetWeekSchedule().getWeekSchedule(from: self.weekLessons, dates: self.daysOfWeek)
                 completion(true)
             case .failure(let error):
                 self.error = error
@@ -160,4 +140,19 @@ class MainScreenViewModel: LoadingDataClass {
         }
     }
     
+    func getClassroomSchedule(date: String, classroomId: String, completion: @escaping (Bool) -> Void) {
+        showProgressView = true
+        ScheduleViewModel.shared.getClassroomSchedule(date: date, classroomId: classroomId) { [unowned self] (result: Result<[LessonModel], AppError>) in
+            switch result {
+            case .success(let lessons):
+                self.weekLessons = lessons
+                self.sortedWeekLessons = GetWeekSchedule().getWeekSchedule(from: self.weekLessons, dates: self.daysOfWeek)
+                completion(true)
+            case .failure(let error):
+                self.error = error
+                completion(false)
+            }
+            
+        }
+    }
 }

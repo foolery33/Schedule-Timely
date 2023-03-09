@@ -112,13 +112,14 @@ class RegisterScreenViewModel: LoadingDataClass {
         }
     }
     
-    func setGroup(completion: @escaping (Bool) -> Void) {
+    func setGroup(group: String, completion: @escaping (Bool) -> Void) {
         withAnimation(.linear(duration: 0.1)) {
             showProgressView = true
         }
-        AuthenticationViewModel.shared.setGroup(group: self.group.id) { [unowned self] (result: Result<Bool, AppError>) in
+        AuthenticationViewModel.shared.setGroup(group: group) { [unowned self] (result: Result<Bool, AppError>) in
             switch result {
             case .success:
+                UserStorage.shared.saveGroupId(groupId: group)
                 completion(true)
             case .failure(let authError):
                 error = authError
