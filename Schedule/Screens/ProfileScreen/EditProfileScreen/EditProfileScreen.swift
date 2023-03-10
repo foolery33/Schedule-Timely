@@ -60,9 +60,9 @@ struct EditProfileScreen: View {
                 .font(.custom("Poppins-Medium", size: 16))
                 Spacer().frame(height: 24)
                 FilledButton(text: "Submit") {
+                    UserStorage.shared.saveAccessToken(accessToken:  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidXNvdkB5YW5kZXgucnUiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJUZWFjaGVyIiwibmJmIjoxNjc4MjA3OTE3LCJleHAiOjE2NzgyMjU5MTcsImlzcyI6IlRlc3RJc3N1ZXIiLCJhdWQiOiJUZXN0Q2xpZW50In0.9tchbLm39JJXzTagtfttCyVPpf1hdmfu_LGqloxh")
                     print(viewModel.group.id)
                     viewModel.changeProfile(fullName: viewModel.fullNameText) { success in
-                        dismiss()
                         generalViewModel.profileScreenViewModel.showProgressView = true
                         if(success) {
                             generalViewModel.changedProfile = true
@@ -99,9 +99,7 @@ struct EditProfileScreen: View {
             Spacer()
         }
         .onAppear {
-            if(viewModel.fullNameText.isEmpty) {
-                viewModel.fullNameText = generalViewModel.profileScreenViewModel.fullName
-            }
+            viewModel.fullNameText = generalViewModel.profileScreenViewModel.fullName
             if(viewModel.group.id.isEmpty) {
                 viewModel.group.id = generalViewModel.profileScreenViewModel.group.id ?? ""
             }
@@ -113,18 +111,24 @@ struct EditProfileScreen: View {
         }
         .alert(item: $viewModel.error) { error in
             Alert(title: Text("Invalid Login"), message: Text(error.errorDescription), dismissButton: .default(Text("OK")) {
-                if(viewModel.error == AppError.profileError(.unauthorized)) {
+                if(viewModel.isUnauthorized) {
+                    print("Unauth")
                     presentationMode.wrappedValue.dismiss()
+                    generalViewModel.profileScreenViewModel.getProfile { _ in
+                    }
+                }
+                else {
+                    print("NO")
                 }
             })
         }
-        .onChange(of: viewModel.error) { _ in
-            if(viewModel.error == AppError.profileError(.unauthorized)) {
-                generalViewModel.clearViewModels()
-                UserStorage.shared.clearAllData()
-                viewModel.toggleValidationStatusClosure(false)
-            }
-        }
+//        .onChange(of: viewModel.isUnauthorized) { _ in
+//            if(!viewModel.isUnauthorized) {
+//                generalViewModel.clearViewModels()
+//                UserStorage.shared.clearAllData()
+//                viewModel.toggleValidationStatusClosure(false)
+//            }
+//        }
     }
 }
 

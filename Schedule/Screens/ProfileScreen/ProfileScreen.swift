@@ -135,13 +135,7 @@ struct ProfileScreen: View {
                                     else {
                                         viewModel.logout { success in
                                             if(success) {
-                                                viewModel.toggleValidationStatusClosure(false)
-                                                generalViewModel.clearViewModels()
-                                                UserStorage.shared.clearAllData()
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                    presentationMode.wrappedValue.dismiss()
-                                                    viewModel.showProgressView = false
-                                                }
+                                                goToLoginScreen()
                                             }
                                             else {
                                                 viewModel.showProgressView = false
@@ -166,7 +160,13 @@ struct ProfileScreen: View {
             if(!isGuest) {
                 print("Not a guest")
                 viewModel.getProfile { success in
-                    UserStorage.shared.saveAvatarLink(avatarLink: viewModel.avatarLink)
+                    if(success) {
+                        UserStorage.shared.saveAvatarLink(avatarLink: viewModel.avatarLink)
+                    }
+                    else {
+                        
+                        print("Una")
+                    }
                 }
             }
             print(viewModel.additionalInfo)
@@ -174,19 +174,31 @@ struct ProfileScreen: View {
         }
         .alert(item: $viewModel.error) { error in
             Alert(title: Text("Invalid Request"), message: Text(error.errorDescription), dismissButton: .default(Text("OK")) {
-                if(viewModel.error == AppError.profileError(.unauthorized)) {
-                    presentationMode.wrappedValue.dismiss()
+                if(viewModel.isUnauthorized) {
+                    print("Una")
+                    goToLoginScreen()
                 }
             })
         }
-        .onChange(of: viewModel.error) { _ in
-            if(viewModel.error == AppError.profileError(.unauthorized) || viewModel.error == AppError.authenticationError(.unauthorized)) {
-                generalViewModel.clearViewModels()
-                UserStorage.shared.clearAllData()
-                viewModel.toggleValidationStatusClosure(false)
-            }
+//        .onChange(of: viewModel.error) { _ in
+//            if(viewModel.error == AppError.profileError(.unauthorized) || viewModel.error == AppError.authenticationError(.unauthorized)) {
+//                generalViewModel.clearViewModels()
+//                UserStorage.shared.clearAllData()
+//                viewModel.toggleValidationStatusClosure(false)
+//            }
+//        }
+    }
+    
+    func goToLoginScreen() {
+        viewModel.toggleValidationStatusClosure(false)
+        UserStorage.shared.clearAllData()
+        generalViewModel.clearViewModels()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            presentationMode.wrappedValue.dismiss()
+            viewModel.showProgressView = false
         }
     }
+    
 }
 
 struct ProfileScreen_Previews: PreviewProvider {

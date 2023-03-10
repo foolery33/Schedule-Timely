@@ -56,11 +56,16 @@ class EditProfileScreenViewModel: LoadingDataClass {
     func changeProfile(fullName: String, completion: @escaping (Bool) -> Void) {
         withAnimation(.linear(duration: 0.1)) {
         }
-        ProfileViewModel.shared.changeProfile(fullName: fullNameText) { (result: Result<Bool, AppError>) in
+        ProfileViewModel.shared.changeProfile(fullName: fullNameText) { [unowned self] (result: Result<Bool, AppError>) in
             switch result {
             case .success:
                 completion(true)
-            case .failure:
+            case .failure(let error):
+                self.error = error
+                if(self.error == AppError.profileError(.unauthorized)) {
+                    self.isUnauthorized = true
+                }
+                print(self.error)
                 completion(false)
             }
         }
