@@ -84,6 +84,7 @@ struct RegisterScreen: View {
                         viewModel.register { success in
                             viewModel.toggleValidationStatusClosure(success)
                             if(success) {
+                                print("Succ register")
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                     if(!(viewModel.group.name?.isEmpty ?? true)) {
                                         viewModel.setGroup(group: viewModel.group.id) { success in

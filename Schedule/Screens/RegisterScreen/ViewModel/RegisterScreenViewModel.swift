@@ -104,6 +104,7 @@ class RegisterScreenViewModel: LoadingDataClass {
         AuthenticationViewModel.shared.register(fullName: fullName, email: emailText, password: passwordText, confirmPassword: confirmPasswordText) { [unowned self] (result: Result<Bool, AppError>) in
             switch result {
             case .success:
+                print("Succ register")
                 completion(true)
             case .failure(let authError):
                 error = authError

@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct LessonModel: Decodable {
+struct LessonModel: Decodable, Equatable {
+    static func == (lhs: LessonModel, rhs: LessonModel) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     
     enum CodingKeys: String, CodingKey {
         case id = "id"

@@ -66,6 +66,7 @@
 		84B4BE1329BB47AE001A97BA /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84B4BE0029BB47AE001A97BA /* Poppins-MediumItalic.ttf */; };
 		84B4BE1429BB47AE001A97BA /* Poppins-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84B4BE0129BB47AE001A97BA /* Poppins-ExtraLightItalic.ttf */; };
 		84B4BE1529BB47AE001A97BA /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84B4BE0229BB47AE001A97BA /* Poppins-Light.ttf */; };
+		84B4BE1729BB4938001A97BA /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84B4BE1629BB4938001A97BA /* Launch Screen.storyboard */; };
 		84B6240F29A9C1FD00FCDBDA /* AboutSubjectScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B6240E29A9C1FD00FCDBDA /* AboutSubjectScreen.swift */; };
 		84B6241129AA2B4C00FCDBDA /* BottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B6241029AA2B4C00FCDBDA /* BottomBar.swift */; };
 		84BAEE3529A4BB2B000D7C5C /* ScheduleDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BAEE3429A4BB2B000D7C5C /* ScheduleDayView.swift */; };
@@ -99,7 +100,7 @@
 		84CC5BDF29B47E8400567F4F /* MakeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CC5BDE29B47E8400567F4F /* MakeList.swift */; };
 		84CC5BE329B4903200567F4F /* ScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CC5BE229B4903200567F4F /* ScheduleViewModel.swift */; };
 		84CC5BE629B4CD4D00567F4F /* FindGroupIdByName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CC5BE529B4CD4D00567F4F /* FindGroupIdByName.swift */; };
-		84CCA8F129B1AA49008A147F /* UsernameValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CCA8F029B1AA49008A147F /* UsernameValidation.swift */; };
+		84CCA8F129B1AA49008A147F /* FullNameValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CCA8F029B1AA49008A147F /* FullNameValidation.swift */; };
 		84CFDDB029ADEF9700061429 /* TokenResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CFDDAF29ADEF9700061429 /* TokenResponseModel.swift */; };
 		84E72C2D299A86D40060B9D7 /* ScheduleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E72C2C299A86D40060B9D7 /* ScheduleApp.swift */; };
 		84E72C2F299A86D40060B9D7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E72C2E299A86D40060B9D7 /* ContentView.swift */; };
@@ -187,6 +188,7 @@
 		84B4BE0029BB47AE001A97BA /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-MediumItalic.ttf"; path = "../../../../Downloads/Poppins/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
 		84B4BE0129BB47AE001A97BA /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-ExtraLightItalic.ttf"; path = "../../../../Downloads/Poppins/Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		84B4BE0229BB47AE001A97BA /* Poppins-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-Light.ttf"; path = "../../../../Downloads/Poppins/Poppins-Light.ttf"; sourceTree = "<group>"; };
+		84B4BE1629BB4938001A97BA /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		84B6240E29A9C1FD00FCDBDA /* AboutSubjectScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSubjectScreen.swift; sourceTree = "<group>"; };
 		84B6241029AA2B4C00FCDBDA /* BottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomBar.swift; sourceTree = "<group>"; };
 		84BAEE3429A4BB2B000D7C5C /* ScheduleDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleDayView.swift; sourceTree = "<group>"; };
@@ -220,7 +222,7 @@
 		84CC5BDE29B47E8400567F4F /* MakeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeList.swift; sourceTree = "<group>"; };
 		84CC5BE229B4903200567F4F /* ScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewModel.swift; sourceTree = "<group>"; };
 		84CC5BE529B4CD4D00567F4F /* FindGroupIdByName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindGroupIdByName.swift; sourceTree = "<group>"; };
-		84CCA8F029B1AA49008A147F /* UsernameValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameValidation.swift; sourceTree = "<group>"; };
+		84CCA8F029B1AA49008A147F /* FullNameValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullNameValidation.swift; sourceTree = "<group>"; };
 		84CFDDAF29ADEF9700061429 /* TokenResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenResponseModel.swift; sourceTree = "<group>"; };
 		84E72C29299A86D40060B9D7 /* Schedule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Schedule.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84E72C2C299A86D40060B9D7 /* ScheduleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleApp.swift; sourceTree = "<group>"; };
@@ -635,6 +637,7 @@
 				8490872E299CF92900D82210 /* Views */,
 				84CC1C04299BE5130075EAFC /* MainScreen */,
 				84B494E829A76942004D2A75 /* GeneralViewModel.swift */,
+				84B4BE1629BB4938001A97BA /* Launch Screen.storyboard */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -678,12 +681,12 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		84CC5BDA29B4782800567F4F /* Protocols */ = {
+		84CC5BDA29B4782800567F4F /* Additional Classes */ = {
 			isa = PBXGroup;
 			children = (
 				84CC5BDB29B4784700567F4F /* LoadingDataClass.swift */,
 			);
-			path = Protocols;
+			path = "Additional Classes";
 			sourceTree = "<group>";
 		};
 		84CC5BDD29B47E7600567F4F /* UseCases */ = {
@@ -751,7 +754,7 @@
 			isa = PBXGroup;
 			children = (
 				84B4BDEF29BB479F001A97BA /* ProjectFonts */,
-				84CC5BDA29B4782800567F4F /* Protocols */,
+				84CC5BDA29B4782800567F4F /* Additional Classes */,
 				8415767E29AC77660057D8D1 /* Network */,
 				846F8F35299E54CD00FB3F93 /* Info.plist */,
 				84CC1C07299BE6890075EAFC /* Colors */,
@@ -793,7 +796,7 @@
 			isa = PBXGroup;
 			children = (
 				84F581BE29B0A5E9001A3953 /* PasswordValidation.swift */,
-				84CCA8F029B1AA49008A147F /* UsernameValidation.swift */,
+				84CCA8F029B1AA49008A147F /* FullNameValidation.swift */,
 			);
 			path = "Use Cases";
 			sourceTree = "<group>";
@@ -918,6 +921,7 @@
 				84B4BE1129BB47AE001A97BA /* Poppins-Thin.ttf in Resources */,
 				84B4BE1329BB47AE001A97BA /* Poppins-MediumItalic.ttf in Resources */,
 				84B4BE0929BB47AE001A97BA /* Poppins-Bold.ttf in Resources */,
+				84B4BE1729BB4938001A97BA /* Launch Screen.storyboard in Resources */,
 				84B4BE0D29BB47AE001A97BA /* Poppins-Medium.ttf in Resources */,
 				84B4BE1529BB47AE001A97BA /* Poppins-Light.ttf in Resources */,
 				84B4BE0829BB47AE001A97BA /* Poppins-SemiBoldItalic.ttf in Resources */,
@@ -1007,7 +1011,7 @@
 				84CC5BCF29B44F1200567F4F /* GeneralError.swift in Sources */,
 				8470825529A349D3000EC745 /* EditAvatarView.swift in Sources */,
 				84F581BF29B0A5E9001A3953 /* PasswordValidation.swift in Sources */,
-				84CCA8F129B1AA49008A147F /* UsernameValidation.swift in Sources */,
+				84CCA8F129B1AA49008A147F /* FullNameValidation.swift in Sources */,
 				84CC5BE329B4903200567F4F /* ScheduleViewModel.swift in Sources */,
 				845F93A829B64F2900E560DD /* DaySchedule.swift in Sources */,
 				84C274AE29A8D52F001A48ED /* TeacherPickerScreenViewModel.swift in Sources */,
@@ -1197,8 +1201,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1226,8 +1231,9 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

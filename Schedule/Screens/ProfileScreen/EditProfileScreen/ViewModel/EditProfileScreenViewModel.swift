@@ -65,7 +65,6 @@ class EditProfileScreenViewModel: LoadingDataClass {
                 if(self.error == AppError.profileError(.unauthorized)) {
                     self.isUnauthorized = true
                 }
-                print(self.error)
                 completion(false)
             }
         }

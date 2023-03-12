@@ -51,16 +51,16 @@ class LoginScreenViewModel: LoadingDataClass {
         AuthenticationViewModel.shared.login(email: emailText, password: passwordText) { [unowned self] (result: Result<TokenResponseModel, AppError>) in
             switch result {
             case .success(let data):
-                if let teacherId = data.teacher?.id {
-                    print("teacherId", teacherId)
-                    UserStorage.shared.saveTeacherId(teacherId: teacherId)
-                    completion(("teacher", teacherId))
-                    return
-                }
                 if let groupId = data.group?.id {
                     print("groupId", groupId)
                     UserStorage.shared.saveGroupId(groupId: groupId)
                     completion(("group", groupId))
+                    return
+                }
+                if let teacherId = data.teacher?.id {
+                    print("teacherId", teacherId)
+                    UserStorage.shared.saveTeacherId(teacherId: teacherId)
+                    completion(("teacher", teacherId))
                     return
                 }
             case .failure(let authError):

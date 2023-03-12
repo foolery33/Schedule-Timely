@@ -23,12 +23,6 @@ struct ScheduleApp: App {
                 }
             }
             .environmentObject(viewModel)
-            .onChange(of: viewModel.isValidated) { newValue in
-                print("VALIDATED: ", viewModel.isValidated)
-                print("VALIDATED: ", UserStorage.shared.fetchGroupId())
-                print("VALIDATED: ", UserStorage.shared.fetchTeacherId())
-                print("VALIDATED: ", UserStorage.shared.fetchClassroomId())
-            }
             .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)) { _ in
                 if(!viewModel.loginScreenViewModel.rememberPassword) {
                     UserStorage.shared.clearAllData()

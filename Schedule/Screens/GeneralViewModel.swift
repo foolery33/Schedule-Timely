@@ -104,6 +104,11 @@ class GeneralViewModel: ObservableObject {
             self.isValidated = result
         })
     }
+    func getEditProfileScreenViewModel() -> EditProfileScreenViewModel {
+        return EditProfileScreenViewModel(toggleValidationStatusClosure: { result in
+            self.isValidated = result
+        })
+    }
     
     func initViewModels() {
         loginScreenViewModel = .init(

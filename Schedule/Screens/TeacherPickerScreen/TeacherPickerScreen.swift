@@ -129,6 +129,9 @@ struct TeacherPickerScreen: View {
         .alert(item: $viewModel.error) { error in
             Alert(title: Text("Invalid Loading"), message: Text(error.errorDescription))
         }
+        .onDisappear {
+            viewModel.teacherText = ""
+        }
     }
 }
 

@@ -107,7 +107,10 @@ struct ProfileScreen: View {
                                         NavigationStack {
                                             EditProfileScreen(viewModel: generalViewModel.editProfileScreenViewModel, selectedRole: viewModel.role == "Student" ? 0 : 1, additionalInfo: viewModel.role == "Student" ? viewModel.additionalInfo.components(separatedBy: " ")[1] : "Teacher")
                                         }
-                                        .presentationDetents([.medium, .medium])
+                                        .presentationDetents([.medium])
+                                        .onDisappear {
+                                            generalViewModel.editProfileScreenViewModel = generalViewModel.getEditProfileScreenViewModel()
+                                        }
                                     }
                             }
                             NavigationLink(destination: GroupPickerScreen(viewModel: generalViewModel.groupPickerScreenViewModel, editingProfileMode: false, goToNextScreen: true, isGuest: isGuest).navigationBarBackButtonHidden(true)) {

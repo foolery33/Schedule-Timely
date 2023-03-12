@@ -156,12 +156,12 @@ class AuthenticationViewModel {
                 do {
                     let decodedData = try JSONDecoder().decode(TokenResponseModel.self, from: data)
                     UserStorage.shared.saveProfileData(email: email, password: password, accessToken: decodedData.token ?? "")
+                    print("Succ register")
                     completion(.success(true))
                 } catch(_) {
                     completion(.failure(.authenticationError(.serverError)))
                 }
             case .failure(_):
-                
                 if let requestStatusCode = response.response?.statusCode {
                     switch requestStatusCode {
                     case 400:
@@ -169,7 +169,12 @@ class AuthenticationViewModel {
                             completion(.failure(.authenticationError(passwordValidationResult)))
                         }
                         else {
-                            completion(.failure(.authenticationError(.wrongPassword)))
+                            if(!FullNameValidation().isValidUsername(fullName)) {
+                                completion(.failure(.authenticationError(.invalidName)))
+                            }
+                            else {
+                                completion(.failure(.authenticationError(.invalidEmail)))
+                            }
                         }
                     case 409:
                         completion(.failure(.authenticationError(.emailExists)))

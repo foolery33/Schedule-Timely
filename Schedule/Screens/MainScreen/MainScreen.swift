@@ -198,12 +198,16 @@ struct MainScreen: View {
                 }
                 loadSchedule()
             }
+            print(viewModel.sortedWeekLessons)
         }
         .onChange(of: refreshCount) { _ in
             viewModel.showContent = false
             viewModel.daysOfWeek = viewModel.getDaysOfWeek(for: Date())
             viewModel.currentDayIndex = viewModel.weekdayIndex(for: Date())
             loadSchedule()
+        }
+        .onChange(of: viewModel.sortedWeekLessons) { _ in
+            print(viewModel.sortedWeekLessons)
         }
         .id(generalViewModel.mainScreenId)
     }
