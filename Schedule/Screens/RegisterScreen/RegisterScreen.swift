@@ -82,31 +82,33 @@ struct RegisterScreen: View {
                 Group {
                     FilledButton(text: "Sign up") {
                         viewModel.register { success in
-                            viewModel.toggleValidationStatusClosure(success)
                             if(success) {
                                 print("Succ register")
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                    if(!(viewModel.group.name?.isEmpty ?? true)) {
-                                        viewModel.setGroup(group: viewModel.group.id) { success in
-                                            if(success) {
-                                                generalViewModel.mainScreenId += 1
-                                                generalViewModel.scheduleType = .group
-                                                UserStorage.shared.saveGroupId(groupId: viewModel.group.id)
-                                                presentationMode.wrappedValue.dismiss()
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                                    viewModel.showProgressView = false
-                                                }
+                                if(!(viewModel.group.name?.isEmpty ?? true)) {
+                                    print("group", viewModel.group.id)
+                                    viewModel.setGroup(group: viewModel.group.id) { success in
+                                        if(success) {
+                                            viewModel.toggleValidationStatusClosure(success)
+                                            generalViewModel.mainScreenId += 1
+                                            generalViewModel.scheduleType = .group
+                                            UserStorage.shared.saveGroupId(groupId: viewModel.group.id)
+                                            presentationMode.wrappedValue.dismiss()
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                viewModel.showProgressView = false
                                             }
                                         }
                                     }
-                                    else {
-                                        generalViewModel.scheduleType = .teacher
-                                        UserStorage.shared.saveTeacherId(teacherId: viewModel.teacher.id)
-                                        presentationMode.wrappedValue.dismiss()
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                            viewModel.showProgressView = false
-                                        }
+                                }
+                                else {
+                                    print("teacher", viewModel.teacher.id)
+                                    generalViewModel.scheduleType = .teacher
+                                    UserStorage.shared.saveTeacherId(teacherId: viewModel.teacher.id)
+                                    presentationMode.wrappedValue.dismiss()
+                                    viewModel.toggleValidationStatusClosure(success)
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5)  {
+                                        viewModel.showProgressView = false
                                     }
+
                                 }
                             }
                             else {
