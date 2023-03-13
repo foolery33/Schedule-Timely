@@ -108,7 +108,6 @@ struct RegisterScreen: View {
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5)  {
                                         viewModel.showProgressView = false
                                     }
-
                                 }
                             }
                             else {

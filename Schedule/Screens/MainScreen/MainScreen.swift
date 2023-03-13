@@ -15,6 +15,7 @@ struct MainScreen: View {
     @State private var refreshCount: Int = 0
     @State private var showDatePicker: Bool = false
     @State private var currentDate: Date = Date()
+    @State private var disabledPreviousButton: Bool = false
     private let animationLength: Double = 0.2
     
     var body: some View {
@@ -32,9 +33,16 @@ struct MainScreen: View {
                                     .font(.system(size: 16, weight: .medium))
                                     .imageScale(.large)
                                     .onTapGesture {
-                                        viewModel.daysOfWeek = viewModel.getDaysOfWeek(for: Date())
-                                        viewModel.currentDayIndex = viewModel.weekdayIndex(for: Date())
-                                        generalViewModel.mainScreenId -= 1
+                                        if(!disabledPreviousButton) {
+                                            print("Not disabled")
+                                            viewModel.daysOfWeek = viewModel.getDaysOfWeek(for: Date())
+                                            viewModel.currentDayIndex = viewModel.weekdayIndex(for: Date())
+                                            generalViewModel.mainScreenId -= 1
+                                            disabledPreviousButton = true
+                                        }
+                                        else {
+                                            print("disabled")
+                                        }
                                     }
                                 Spacer()
                             }
@@ -46,7 +54,7 @@ struct MainScreen: View {
                             )
                             .font(.custom("Poppins-Medium", size: 40))
                             .onTapGesture {
-                                print(generalViewModel.mainScreenId)
+                                print("INFO ", generalViewModel.mainScreenId, generalViewModel.path[generalViewModel.mainScreenId])
                             }
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(viewModel.getDayOfWeekByDate(date: viewModel.daysOfWeek[viewModel.currentDayIndex], lettersCount: 3))
@@ -198,7 +206,6 @@ struct MainScreen: View {
                 }
                 loadSchedule()
             }
-            print(viewModel.sortedWeekLessons)
         }
         .onChange(of: refreshCount) { _ in
             viewModel.showContent = false
@@ -207,7 +214,7 @@ struct MainScreen: View {
             loadSchedule()
         }
         .onChange(of: viewModel.sortedWeekLessons) { _ in
-            print(viewModel.sortedWeekLessons)
+//            print(viewModel.sortedWeekLessons)
         }
         .id(generalViewModel.mainScreenId)
     }
@@ -237,6 +244,7 @@ struct MainScreen: View {
                         DispatchQueue.main.asyncAfter(deadline: .now() + animationLength + 0.1) {
                             viewModel.showProgressView = false
                             viewModel.showContent = true
+                            disabledPreviousButton = false
                         }
                     }
                 }
@@ -253,6 +261,7 @@ struct MainScreen: View {
                             generalViewModel.path[generalViewModel.mainScreenId] = (ScheduleType.teacher, teacher)
                             viewModel.showProgressView = false
                             viewModel.showContent = true
+                            disabledPreviousButton = false
                         }
                     }
                 }
@@ -269,6 +278,7 @@ struct MainScreen: View {
                             generalViewModel.path[generalViewModel.mainScreenId] = (ScheduleType.classroom, classroom)
                             viewModel.showProgressView = false
                             viewModel.showContent = true
+                            disabledPreviousButton = false
                         }
                     }
                 }
