@@ -53,9 +53,6 @@ struct MainScreen: View {
                                 viewModel.getDayOfMonthByDate(date: viewModel.daysOfWeek[viewModel.currentDayIndex])
                             )
                             .font(.custom("Poppins-Medium", size: 40))
-                            .onTapGesture {
-                                print("INFO ", generalViewModel.mainScreenId, generalViewModel.path[generalViewModel.mainScreenId])
-                            }
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(viewModel.getDayOfWeekByDate(date: viewModel.daysOfWeek[viewModel.currentDayIndex], lettersCount: 3))
                                 Text(
