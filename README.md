@@ -36,7 +36,24 @@
 
 <img src="https://sun9-41.userapi.com/impg/6nwbEsjHmQzqjnE5hJY9djbRp85RLrZMEDNe-g/7uHiMlAeAsA.jpg?size=2481x1182&quality=95&sign=7f24f7cd4787922bcca61dcf784dee65&type=album" width = 650>
 
+## Используемые зависимости
+- [**Alamofire**](https://github.com/Alamofire/Alamofire) - для работы с HTTP запросами к [серверу](https://timely.markridge.space/swagger/index.html)
+- [**SwiftKeychainWrapper**](https://github.com/jrendel/SwiftKeychainWrapper) - для сохранения данных в iOS KeyChain в похожем на User Defaults стиле
+- [**SwiftUICurvedRectangleShape**](https://github.com/CypherPoet/SwiftUICurvedRectangleShape) - для добавления CurvedRectangle на Profile Screen
+
 ## Дизайн экранов
 | Splash Screen | Login Screen | Register Screen |
 | :------------:|:-----------: | :-------------: |
-| <img src="https://sun9-4.userapi.com/impg/pzRMdeuvgfJX2j6i28lx5M0wFYOm7UkkRD20zg/v38uaZ-ox8c.jpg?size=996x2160&quality=95&sign=b3db8c50410c66883c2157395890a267&type=album" width = 300>
+| <img src="https://github.com/foolery33/Schedule-Timely/blob/main/Schedule/Assets.xcassets/Splash%20Screen.imageset/Splash%20Screen.png?raw=true" width = 300> | <img src="https://github.com/foolery33/Schedule-Timely/blob/main/Schedule/Assets.xcassets/Login%20Screen.imageset/Login%20Screen.png?raw=true" width = 300> | <img src="https://github.com/foolery33/Schedule-Timely/blob/main/Schedule/Assets.xcassets/Register%20Screen.imageset/Register%20Screen.png?raw=true" width = 300> |
+
+| Group Picker Screen | Teacher Picker Screen | Classroom Picker Screen |
+| :------------:|:-----------: | :-------------: |
+| <img src="https://github.com/foolery33/Schedule-Timely/blob/main/Schedule/Assets.xcassets/Group%20Picker%20Screen.imageset/Group%20Picker%20Screen.png?raw=true" width = 300> | <img src="https://github.com/foolery33/Schedule-Timely/blob/main/Schedule/Assets.xcassets/Teacher%20Picker%20Screen.imageset/Teacher%20Picker%20Screen.png?raw=true" width = 300> | <img src="https://github.com/foolery33/Schedule-Timely/blob/main/Schedule/Assets.xcassets/Classroom%20Picker%20Screen.imageset/Classroom%20Picker%20Screen.png?raw=true" width = 300> |
+
+| Main Screen | About Subject Screen |
+| :------------:|:-----------: |
+| <img src="https://github.com/foolery33/Schedule-Timely/blob/main/Schedule/Assets.xcassets/Main%20Screen.imageset/Main%20Screen.png?raw=true" width = 300> | <img src="https://github.com/foolery33/Schedule-Timely/blob/main/Schedule/Assets.xcassets/About%20Subject%20Screen.imageset/About%20Subject%20Screen.png?raw=true" width = 300> |
+
+| Profile Screen | Edit Profile Screen |
+| :------------:|:-----------: |
+| <img src="https://github.com/foolery33/Schedule-Timely/blob/main/Schedule/Assets.xcassets/Profile%20Screen.imageset/Profile%20Screen.png?raw=true" width = 300> | <img src="https://github.com/foolery33/Schedule-Timely/blob/main/Schedule/Assets.xcassets/Edit%20Profile%20Screen.imageset/Edit%20Profile%20Screen.png?raw=true" width = 300> |
